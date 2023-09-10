@@ -60,7 +60,6 @@ func saveConfig(cfg Config) error {
 		return err
 	}
 
-	// or create
 	fd, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, configPermissions)
 	if err != nil {
 		return err
