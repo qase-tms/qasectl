@@ -1,6 +1,9 @@
 package model
 
-import "github.com/qase-tms/qasectl/internal/xcresult"
+import (
+	"encoding/json"
+	"github.com/qase-tms/qasectl/internal/xcresult"
+)
 
 type ActionRecord struct {
 	Result ActionResult

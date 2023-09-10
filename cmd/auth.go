@@ -11,7 +11,8 @@ func init() {
 }
 
 var authCmd = &cobra.Command{
-	Use: "auth",
+	Use:   "auth",
+	Short: "Authenticate qasectl with Qase",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var token string
 		prompt := &survey.Password{
