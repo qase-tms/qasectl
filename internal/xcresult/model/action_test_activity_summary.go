@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/qase-tms/qasectl/internal/xcresult"
-	"github.com/qase-tms/qasectl/pkg"
+	"slices"
 )
 
 type ActivityType string
@@ -48,7 +48,7 @@ func (a *ActionTestActivitySummary) Decode(m map[string]any) {
 }
 
 func (a *ActionTestActivitySummary) activityTypeFromString(s string) ActivityType {
-	if pkg.Contains(activityTypes, ActivityType(s)) {
+	if slices.Contains(activityTypes, ActivityType(s)) {
 		return ActivityType(s)
 	}
 

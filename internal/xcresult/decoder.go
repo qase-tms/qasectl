@@ -2,7 +2,7 @@ package xcresult
 
 import (
 	"fmt"
-	"github.com/qase-tms/qasectl/pkg"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -48,7 +48,7 @@ func DecodeObject[T any, PT pt[T]](m map[string]any) T {
 
 	actualTypes := types(m)
 	expectedType := obj.TypeName()
-	if !pkg.Contains(actualTypes, expectedType) {
+	if !slices.Contains(actualTypes, expectedType) {
 		actualTypes := strings.Join(actualTypes, ",")
 		panic(fmt.Errorf("incorrectObjectType (actual=%s, expected=%q)", actualTypes, expectedType))
 	}
