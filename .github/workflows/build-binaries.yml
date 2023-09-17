@@ -26,11 +26,7 @@ jobs:
 
       - name: Install dependencies (Ubuntu)
         if: runner.os == 'Linux'
-        run: sudo apt-get update -qq && sudo apt-get install -y upx-ucl build-essential cargo git golang
-
-      - name: Install dependencies (macOS)
-        if: runner.os == 'macOS'
-        run: brew install upx cargo-c
+        run: sudo apt-get update -qq && sudo apt-get install -y git
 
       - name: Set up Go
         uses: actions/setup-go@v4.1.0
@@ -40,21 +36,21 @@ jobs:
       - name: Build binary
         run: |
           GOARCH=${{ matrix.architecture }} make build
-          mv build/qasectl qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
+          mv build/qli qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
 
       - name: Generate Checksum
         id: checksum
         run: |
           if [[ "${{ runner.os }}" == "macOS" ]]; then
-            shasum -a 256 qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }} > qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
+            shasum -a 256 qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }} > qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
           else
-            sha256sum qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }} > qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
+            sha256sum qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }} > qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
           fi
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
+          name: qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
           path: |
-            qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
-            qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
+            qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
+            qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
