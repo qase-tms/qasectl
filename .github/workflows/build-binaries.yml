@@ -4,18 +4,14 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
 
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-latest
-            architecture: amd64
-          - os: macOS-latest
-            architecture: amd64
+        os: [ ubuntu-latest, macOS-latest ]
+        architecture: [ arm64, amd64 ]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -63,9 +59,3 @@ jobs:
           path: |
             qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
             qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
-
-      - name: Cleanup
-        if: matrix.os == 'self-hosted'
-        run: |
-          rm qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
-          rm qasectl-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
