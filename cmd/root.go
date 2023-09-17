@@ -16,7 +16,6 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 	rootCmd.SetUsageTemplate(rootUsageTemplate())
-	rootCmd.Flags().BoolP("version", "v", false, "Show Qase CLI version")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
