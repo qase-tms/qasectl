@@ -16,5 +16,8 @@
 .idea/
 *.json
 
+# MacOS specific files
+.DS_Store
+
 qasectl
 qli
