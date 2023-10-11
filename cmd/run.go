@@ -6,14 +6,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const (
-	titleFlag       = "title"
-	descriptionFlag = "description"
-)
-
 func init() {
 	runCmd.Flags().String(titleFlag, "", "")
-	runCmd.MarkFlagRequired(titleFlag)
+	requireFlags(runCmd, titleFlag)
 
 	runCmd.Flags().String(descriptionFlag, "", "")
 

@@ -2,6 +2,7 @@ package xcresult
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/pkg/errors"
 	"os/exec"
 )
@@ -26,6 +27,9 @@ func ToJson(xcResultPath string, fileID *string) (map[string]any, error) {
 
 	buff, err := cmd.Output()
 	if err != nil {
+		possErr := string(err.(*exec.ExitError).Stderr)
+		fmt.Println("ERROR: ", possErr)
+
 		return nil, errors.Wrap(err, "cmd failed")
 	}
 

@@ -15,10 +15,14 @@ var authCmd = &cobra.Command{
 	Short: "Authenticate qasectl with Qase",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var token string
+
 		prompt := &survey.Password{
 			Message: "Please type your token:",
 		}
-		survey.AskOne(prompt, &token)
+		err := survey.AskOne(prompt, &token)
+		if err != nil {
+			return err
+		}
 
 		return internal.UpdateToken(token)
 	},

@@ -7,16 +7,16 @@ import (
 )
 
 func init() {
-	setCmd.Flags().String("projectCode", "", "")
-	setCmd.Flags().Int("runId", 0, "")
+	setCmd.Flags().String(projectCodeFlag, "", "")
+	setCmd.Flags().Int(runIdFlag, 0, "")
 	rootCmd.AddCommand(setCmd)
 }
 
 var setCmd = &cobra.Command{
 	Use: "set",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		projectCode := cmd.Flag("projectCode")
-		runId := cmd.Flag("runId")
+		projectCode := cmd.Flag(projectCodeFlag)
+		runId := cmd.Flag(runIdFlag)
 
 		return internal.UpdateConfig(func(cfg internal.Config) internal.Config {
 			if projectCode != nil && projectCode.Changed {

@@ -3,6 +3,7 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/pkg/errors"
 	"github.com/qase-tms/qasectl/internal/xcresult"
 	"github.com/qase-tms/qasectl/internal/xcresult/model"
@@ -14,6 +15,8 @@ func Import(xcPath string) error {
 	if err != nil {
 		return errors.Wrap(err, "xcresult to json")
 	}
+
+	spew.Dump(json)
 
 	record := xcresult.DecodeObject[model.ActionsInvocationRecord](json)
 	tests, err := extractTests(xcPath, record)
@@ -31,6 +34,11 @@ func Import(xcPath string) error {
 		caseIDs = append(caseIDs, *caseID)
 	}
 
+	// 1. create test run
+
+	for _, test := range tests {
+		test.ID()
+	}
 	return nil
 }
 

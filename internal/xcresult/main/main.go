@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	buff, err := os.ReadFile(`/Users/home/go/src/github.com/qase-tms/qasectl/internal/xcresult/main/result.json`)
+	buff, err := os.ReadFile(`/Users/home/Desktop/XCResultData`)
 	if err != nil {
 		panic(err)
 	}

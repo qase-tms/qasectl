@@ -5,11 +5,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const pathFlag = "path"
-
 func init() {
 	importCmd.Flags().String(pathFlag, "", "")
-	importCmd.MarkFlagRequired(pathFlag)
+	requireFlags(importCmd, pathFlag)
+
+	importCmd.Flags().String(runIdFlag, "", "")
+	requireFlags(importCmd, runIdFlag)
+
+	importCmd.Flags().String(projectCodeFlag, "", "")
+	requireFlags(importCmd, projectCodeFlag)
 
 	rootCmd.AddCommand(importCmd)
 }
