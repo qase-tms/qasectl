@@ -2,42 +2,51 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/qase-tms/qasectl/cmd/flags"
+	"github.com/qase-tms/qasectl/cmd/run"
+	"github.com/qase-tms/qasectl/cmd/version"
 	"github.com/spf13/cobra"
-	"os"
+	"github.com/spf13/viper"
+)
+
+const (
+	tokenFlag   = "token"
+	projectFlag = "project"
 )
 
 var rootCmd = &cobra.Command{
-	Use:     "qasectl",
-	Example: "qasectl run create",
-	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
-	},
+	Use:   "qli",
+	Short: "CLI tool for Qase TestOps",
 }
 
 func Execute() {
-	rootCmd.SetUsageTemplate(rootUsageTemplate())
-
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
+	cobra.CheckErr(rootCmd.Execute())
 }
 
-func rootUsageTemplate() string {
-	return `USAGE{{if .HasAvailableSubCommands}}
-  {{.CommandPath}} <command> <subcommand> [flags]{{end}}{{if .HasAvailableSubCommands}}
+func init() {
+	viper.SetEnvPrefix("QASE_TESTOPS")
+	viper.AutomaticEnv()
 
-CORE COMMANDS{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
-  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
+	rootCmd.PersistentFlags().StringP(tokenFlag, "t", "", "token for Qase API access")
+	err := viper.BindPFlag(flags.TokenFlag, rootCmd.PersistentFlags().Lookup(tokenFlag))
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = rootCmd.MarkPersistentFlagRequired(tokenFlag)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-FLAGS
-{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasExample}}
+	rootCmd.PersistentFlags().StringP(projectFlag, "p", "", "project code for Qase API access")
+	err = viper.BindPFlag(flags.ProjectFlag, rootCmd.PersistentFlags().Lookup(projectFlag))
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = rootCmd.MarkPersistentFlagRequired(projectFlag)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-EXAMPLES
-{{.Example}}{{end}}
-
-LEARN MORE
-  Use 'qasectl <command> <subcommand> --help' for more information about a command.
-  Read the manual at https://developers.qase.io/cli
-`
+	rootCmd.AddCommand(run.Command())
+	rootCmd.AddCommand(version.VersionCmd())
 }

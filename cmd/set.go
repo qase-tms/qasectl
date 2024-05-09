@@ -6,11 +6,11 @@ import (
 	"strconv"
 )
 
-func init() {
-	setCmd.Flags().String("projectCode", "", "")
-	setCmd.Flags().Int("runId", 0, "")
-	rootCmd.AddCommand(setCmd)
-}
+//func init() {
+//	setCmd.Flags().String("projectCode", "", "")
+//	setCmd.Flags().Int("runId", 0, "")
+//	rootCmd.AddCommand(setCmd)
+//}
 
 var setCmd = &cobra.Command{
 	Use: "set",
