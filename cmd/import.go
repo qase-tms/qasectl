@@ -7,12 +7,12 @@ import (
 
 const pathFlag = "path"
 
-func init() {
-	importCmd.Flags().String(pathFlag, "", "")
-	importCmd.MarkFlagRequired(pathFlag)
-
-	rootCmd.AddCommand(importCmd)
-}
+//func init() {
+//	importCmd.Flags().String(pathFlag, "", "")
+//	importCmd.MarkFlagRequired(pathFlag)
+//
+//	rootCmd.AddCommand(importCmd)
+//}
 
 var importCmd = &cobra.Command{
 	Use: "import",
