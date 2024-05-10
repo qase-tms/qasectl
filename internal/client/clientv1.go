@@ -3,6 +3,8 @@ package client
 import (
 	"context"
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
+	models "github.com/qase-tms/qasectl/internal/models/import"
+	"os"
 )
 
 // ClientV1 is a client for Qase API v1
@@ -47,6 +49,40 @@ func (c *ClientV1) CompleteRun(ctx context.Context, projectCode string, runId in
 
 	return err
 
+}
+
+// UploadData uploads results to Qase
+func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, results []models.Result) error {
+	ctx, client := c.getApiV1Client(ctx)
+
+	resultModels := make([]apiV1Client.ResultCreate, 0, len(results))
+	for _, result := range results {
+		resultModels = append(resultModels, c.convertResultToApiModel(ctx, project, result))
+	}
+
+	bulkModel := apiV1Client.NewResultcreateBulk(resultModels)
+
+	_, _, err := client.ResultsAPI.
+		CreateResultBulk(ctx, project, int32(runID)).
+		ResultcreateBulk(*bulkModel).
+		Execute()
+
+	return err
+}
+
+// uploadAttachment uploads attachments to Qase
+func (c *ClientV1) uploadAttachment(ctx context.Context, projectCode string, file []*os.File) (string, error) {
+	ctx, client := c.getApiV1Client(ctx)
+
+	resp, _, err := client.AttachmentsAPI.
+		UploadAttachment(ctx, projectCode).
+		File(file).
+		Execute()
+	if err != nil {
+		return "", err
+	}
+
+	return *resp.Result[0].Hash, err
 }
 
 // getApiV1Client returns a context and a client for Qase API v1
