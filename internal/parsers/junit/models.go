@@ -2,7 +2,6 @@ package junit
 
 import (
 	"encoding/xml"
-	"time"
 )
 
 type Property struct {
@@ -54,7 +53,6 @@ type TestSuite struct {
 	Skipped    int        `xml:"skipped,attr"`
 	Assertions int        `xml:"assertions,attr"`
 	Time       float64    `xml:"time,attr"`
-	Timestamp  time.Time  `xml:"timestamp,attr"`
 	File       string     `xml:"file,attr"`
 	Properties Properties `xml:"properties"`
 	SystemOut  string     `xml:"system-out"`
@@ -71,6 +69,5 @@ type TestSuites struct {
 	Skipped    int         `xml:"skipped,attr"`
 	Assertions int         `xml:"assertions,attr"`
 	Time       float64     `xml:"time,attr"`
-	Timestamp  time.Time   `xml:"timestamp,attr"`
 	TestSuites []TestSuite `xml:"testsuite"`
 }

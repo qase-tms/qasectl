@@ -3,7 +3,7 @@ package junit
 import (
 	"encoding/xml"
 	"fmt"
-	models "github.com/qase-tms/qasectl/internal/models/import"
+	models "github.com/qase-tms/qasectl/internal/models/result"
 	"io"
 	"log"
 	"os"
@@ -137,7 +137,7 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 				Signature: &signature,
 				Relations: relation,
 				Execution: models.Execution{
-					Duration:   time.Duration(testCase.Time),
+					Duration:   time.Duration(testCase.Time * float64(time.Second)),
 					Status:     status,
 					StackTrace: stackTrace,
 				},
