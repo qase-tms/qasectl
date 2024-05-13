@@ -4,27 +4,35 @@ import (
 	"context"
 	"fmt"
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
-	models "github.com/qase-tms/qasectl/internal/models/import"
+	models "github.com/qase-tms/qasectl/internal/models/result"
 	"os"
 )
 
 func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode string, result models.Result) apiV1Client.ResultCreate {
-	startTime := int32(result.Execution.StartTime.Unix())
-	endTime := result.Execution.EndTime.Unix()
-	duration := result.Execution.EndTime.Sub(*result.Execution.StartTime).Microseconds()
 	defect := false
 	model := apiV1Client.ResultCreate{
 		CaseId:      result.TestOpsID,
 		Status:      result.Execution.Status,
-		StartTime:   *apiV1Client.NewNullableInt32(&startTime),
-		Time:        *apiV1Client.NewNullableInt64(&endTime),
-		TimeMs:      *apiV1Client.NewNullableInt64(&duration),
 		Comment:     *apiV1Client.NewNullableString(result.Message),
 		Defect:      *apiV1Client.NewNullableBool(&defect),
 		Stacktrace:  *apiV1Client.NewNullableString(result.Execution.StackTrace),
 		Param:       result.Params,
 		Steps:       c.convertStepToApiModel(ctx, projectCode, result.Steps),
 		Attachments: c.convertAttachments(ctx, projectCode, result.Attachments),
+	}
+	if result.Execution.StartTime != nil {
+		startTime := int32(result.Execution.StartTime.Unix())
+		model.StartTime = *apiV1Client.NewNullableInt32(&startTime)
+	}
+
+	if result.Execution.EndTime != nil {
+		endTime := result.Execution.EndTime.Unix()
+		model.Time = *apiV1Client.NewNullableInt64(&endTime)
+	}
+
+	if result.Execution.Duration != 0 {
+		duration := int64(result.Execution.Duration.Seconds())
+		model.TimeMs = *apiV1Client.NewNullableInt64(&duration)
 	}
 
 	if result.TestOpsID == nil {
