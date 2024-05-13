@@ -1,8 +1,8 @@
 package run
 
 import (
-	"github.com/qase-tms/qasectl/cmd/run/complete"
-	"github.com/qase-tms/qasectl/cmd/run/create"
+	"github.com/qase-tms/qasectl/cmd/testops/run/complete"
+	"github.com/qase-tms/qasectl/cmd/testops/run/create"
 	"github.com/spf13/cobra"
 )
 
