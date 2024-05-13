@@ -1,4 +1,4 @@
-package _import
+package result
 
 type Attachment struct {
 	ID          *int64
