@@ -1,4 +1,4 @@
-package _import
+package result
 
 type Data struct {
 	Action         string

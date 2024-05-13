@@ -1,4 +1,4 @@
-package _import
+package result
 
 type SuiteData struct {
 	Title    string

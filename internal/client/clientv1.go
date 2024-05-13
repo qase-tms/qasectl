@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
-	models "github.com/qase-tms/qasectl/internal/models/import"
+	models "github.com/qase-tms/qasectl/internal/models/result"
 	"os"
 )
 
