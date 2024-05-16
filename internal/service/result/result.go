@@ -3,10 +3,13 @@ package result
 import (
 	"context"
 	models "github.com/qase-tms/qasectl/internal/models/result"
+	"log/slog"
 )
 
 type client interface {
 	UploadData(ctx context.Context, project string, runID int64, results []models.Result) error
+	CreateRun(ctx context.Context, projectCode, title string, description *string) (int64, error)
+	CompleteRun(ctx context.Context, projectCode string, runId int64) error
 }
 
 type Parser interface {
