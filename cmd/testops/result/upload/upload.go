@@ -30,6 +30,7 @@ func Command() *cobra.Command {
 		title       string
 		description string
 		steps       string
+		batch       int64
 	)
 
 	cmd := &cobra.Command{
@@ -80,20 +81,12 @@ func Command() *cobra.Command {
 
 			s := result.NewService(c, p)
 
-			err := s.Import(cmd.Context(), project, runID)
-			if err != nil {
-				return err
-			}
-
-			if isTestRunCreated {
-				rs := run.NewService(c)
-
-				err := rs.CompleteRun(cmd.Context(), project, runID)
-				if err != nil {
-					return err
-				}
-
-				logger.Debug("Test run completed successfully", slog.Int64("id", runID))
+			param := result.UploadParams{
+				RunID:       runID,
+				Title:       title,
+				Description: &description,
+				Batch:       batch,
+				Project:     project,
 			}
 
 			logger.Info("Results uploaded successfully")
@@ -121,6 +114,7 @@ func Command() *cobra.Command {
 	cmd.MarkFlagsMutuallyExclusive(runIDFlag, titleFlag)
 
 	cmd.Flags().StringVar(&steps, "steps", "", "Steps show mode in XCTest. Allowed values: all, user")
+	cmd.Flags().Int64VarP(&batch, "batch", "b", 200, "Batch size for uploading results")
 
 	return cmd
 }
