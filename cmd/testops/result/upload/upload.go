@@ -5,10 +5,12 @@ import (
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/internal/client"
 	"github.com/qase-tms/qasectl/internal/parsers/junit"
+	"github.com/qase-tms/qasectl/internal/parsers/xctest"
 	"github.com/qase-tms/qasectl/internal/service/result"
 	"github.com/qase-tms/qasectl/internal/service/run"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"log/slog"
 )
 
 const (
@@ -27,6 +29,7 @@ func Command() *cobra.Command {
 		runID       int64
 		title       string
 		description string
+		steps       string
 	)
 
 	cmd := &cobra.Command{
@@ -34,6 +37,9 @@ func Command() *cobra.Command {
 		Short:   "Upload test results",
 		Example: "qli result upload --path 'path' --format 'junit' --id 123 --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			const op = "upload"
+			logger := slog.With("op", op)
+
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
 
@@ -46,13 +52,18 @@ func Command() *cobra.Command {
 			case "allure":
 				fmt.Println("Uploading Allure results")
 			case "xctest":
-				fmt.Println("Uploading XTest results")
+				prs, err := xctest.NewParser(path, steps)
+				if err != nil {
+					return err
+				}
+
+				p = prs
 			default:
 				return fmt.Errorf("unknown format: %s. allowed formats: junit, qase, allure, xctest", format)
 			}
 
 			c := client.NewClientV1(token)
-
+			isTestRunCreated := false
 			if runID == 0 {
 				rs := run.NewService(c)
 
@@ -62,6 +73,9 @@ func Command() *cobra.Command {
 				}
 
 				runID = id
+				isTestRunCreated = true
+
+				logger.Debug("Test run created successfully", slog.String("title", title), slog.Int64("id", runID))
 			}
 
 			s := result.NewService(c, p)
@@ -71,7 +85,19 @@ func Command() *cobra.Command {
 				return err
 			}
 
-			fmt.Println("Results uploaded successfully")
+			if isTestRunCreated {
+				rs := run.NewService(c)
+
+				err := rs.CompleteRun(cmd.Context(), project, runID)
+				if err != nil {
+					return err
+				}
+
+				logger.Debug("Test run completed successfully", slog.Int64("id", runID))
+			}
+
+			logger.Info("Results uploaded successfully")
+
 			return nil
 		},
 	}
@@ -79,13 +105,13 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVar(&path, pathFlag, "", "path to the results file")
 	err := cmd.MarkFlagRequired(pathFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("Error while marking flag as required", "error", err)
 	}
 
 	cmd.Flags().StringVar(&format, formatFlag, "", "format of the results file: junit, qase, allure, xctest")
 	err = cmd.MarkFlagRequired(formatFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("Error while marking flag as required", "error", err)
 	}
 
 	cmd.Flags().Int64Var(&runID, runIDFlag, 0, "ID of the test run")
@@ -93,6 +119,8 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVarP(&description, descriptionFlag, "d", "", "Description of the test run")
 	cmd.MarkFlagsOneRequired(runIDFlag, titleFlag)
 	cmd.MarkFlagsMutuallyExclusive(runIDFlag, titleFlag)
+
+	cmd.Flags().StringVar(&steps, "steps", "", "Steps show mode in XCTest. Allowed values: all, user")
 
 	return cmd
 }
