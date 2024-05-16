@@ -2,8 +2,10 @@ package client
 
 import (
 	"context"
+	"fmt"
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
 	models "github.com/qase-tms/qasectl/internal/models/result"
+	"log/slog"
 	"os"
 )
 
@@ -22,6 +24,11 @@ func NewClientV1(token string) *ClientV1 {
 
 // CreateRun creates a new run
 func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description *string) (int64, error) {
+	const op = "client.clientv1.createrun"
+	logger := slog.With("op", op)
+
+	logger.Debug("creating run", "projectCode", projectCode, "title", title, "description", description)
+
 	ctx, client := c.getApiV1Client(ctx)
 
 	resp, _, err := client.RunsAPI.
@@ -33,26 +40,44 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 		Execute()
 
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failed to create run: %w", err)
 	}
+
+	logger.Info("created run", "runID", resp.Result.GetId(), "title", title, "description", description)
 
 	return resp.Result.GetId(), nil
 }
 
 // CompleteRun completes a run
 func (c *ClientV1) CompleteRun(ctx context.Context, projectCode string, runId int64) error {
+	const op = "client.clientv1.completerun"
+	logger := slog.With("op", op)
+
 	ctx, client := c.getApiV1Client(ctx)
 
-	_, _, err := client.RunsAPI.
+	logger.Debug("completing run", "projectCode", projectCode, "runId", runId)
+
+	res, _, err := client.RunsAPI.
 		CompleteRun(ctx, projectCode, int32(runId)).
 		Execute()
 
-	return err
+	if err != nil {
+		logger.Debug("failed to complete run", "response", res)
+		return fmt.Errorf("failed to complete run: %w", err)
+	}
 
+	logger.Info("completed run", "runId", runId)
+
+	return nil
 }
 
 // UploadData uploads results to Qase
 func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, results []models.Result) error {
+	const op = "client.clientv1.uploaddata"
+	logger := slog.With("op", op)
+
+	logger.Debug("uploading data", "project", project, "runID", runID, "results", results)
+
 	ctx, client := c.getApiV1Client(ctx)
 
 	resultModels := make([]apiV1Client.ResultCreate, 0, len(results))
@@ -60,18 +85,30 @@ func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, 
 		resultModels = append(resultModels, c.convertResultToApiModel(ctx, project, result))
 	}
 
+	logger.Debug("converted results", "resultModels", resultModels)
+
 	bulkModel := apiV1Client.NewResultcreateBulk(resultModels)
 
-	_, _, err := client.ResultsAPI.
+	resp, r, err := client.ResultsAPI.
 		CreateResultBulk(ctx, project, int32(runID)).
 		ResultcreateBulk(*bulkModel).
 		Execute()
 
-	return err
+	if err != nil {
+		logger.Debug("failed to upload data", "response", resp, "r", r, "error", err)
+		return fmt.Errorf("failed to upload data: %w", err)
+	}
+
+	return nil
 }
 
 // uploadAttachment uploads attachments to Qase
 func (c *ClientV1) uploadAttachment(ctx context.Context, projectCode string, file []*os.File) (string, error) {
+	const op = "client.clientv1.uploadattachment"
+	logger := slog.With("op", op)
+
+	logger.Debug("uploading attachment", "projectCode", projectCode, "file", file[0].Name())
+
 	ctx, client := c.getApiV1Client(ctx)
 
 	resp, _, err := client.AttachmentsAPI.
@@ -79,10 +116,11 @@ func (c *ClientV1) uploadAttachment(ctx context.Context, projectCode string, fil
 		File(file).
 		Execute()
 	if err != nil {
-		return "", err
+		logger.Debug("failed to upload attachment", "response", resp)
+		return "", fmt.Errorf("failed to upload attachment: %w", err)
 	}
 
-	return *resp.Result[0].Hash, err
+	return *resp.Result[0].Hash, nil
 }
 
 // getApiV1Client returns a context and a client for Qase API v1
