@@ -7,7 +7,6 @@ import (
 	"github.com/qase-tms/qasectl/internal/parsers/junit"
 	"github.com/qase-tms/qasectl/internal/parsers/xctest"
 	"github.com/qase-tms/qasectl/internal/service/result"
-	"github.com/qase-tms/qasectl/internal/service/run"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"log/slog"
@@ -64,21 +63,6 @@ func Command() *cobra.Command {
 			}
 
 			c := client.NewClientV1(token)
-			isTestRunCreated := false
-			if runID == 0 {
-				rs := run.NewService(c)
-
-				id, err := rs.CreateRun(cmd.Context(), project, title, &description)
-				if err != nil {
-					return err
-				}
-
-				runID = id
-				isTestRunCreated = true
-
-				logger.Debug("Test run created successfully", slog.String("title", title), slog.Int64("id", runID))
-			}
-
 			s := result.NewService(c, p)
 
 			param := result.UploadParams{
@@ -88,6 +72,8 @@ func Command() *cobra.Command {
 				Batch:       batch,
 				Project:     project,
 			}
+
+			s.Upload(cmd.Context(), param)
 
 			logger.Info("Results uploaded successfully")
 
