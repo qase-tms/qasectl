@@ -6,6 +6,7 @@ import (
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"os"
+	"path/filepath"
 )
 
 func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode string, result models.Result) apiV1Client.ResultCreate {
@@ -84,7 +85,24 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 	results := make([]string, 0, len(attachments))
 
 	for _, attachment := range attachments {
-		// TODO: convert attachment from content to file
+		rmAttach := false
+		if attachment.FilePath == nil {
+			path, err := os.Getwd()
+			if err != nil {
+				fmt.Println("cannot get executable path", err)
+			}
+
+			fp := filepath.Join(path, attachment.Name)
+			err = os.WriteFile(fp, *attachment.Content, 0644)
+			if err != nil {
+				fmt.Println("cannot write file", "error", err)
+			}
+
+			attachment.FilePath = &fp
+
+			rmAttach = true
+		}
+
 		file, err := os.Open(*attachment.FilePath)
 		if err != nil {
 			fmt.Println("failed to open file: %w", err)
@@ -98,6 +116,13 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 		}
 
 		results = append(results, hash)
+
+		if rmAttach {
+			err = os.Remove(*attachment.FilePath)
+			if err != nil {
+				fmt.Println("cannot remove file", "error", err)
+			}
+		}
 	}
 
 	return results
@@ -106,13 +131,13 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 func (c *ClientV1) convertStepToApiModel(ctx context.Context, projectCode string, steps []models.Step) []apiV1Client.TestStepResultCreate {
 	stepModels := make([]apiV1Client.TestStepResultCreate, 0, len(steps))
 
-	for _, step := range steps {
+	for i := range steps {
 		stepModel := apiV1Client.TestStepResultCreate{
-			Status:      step.Execution.Status,
-			Comment:     *apiV1Client.NewNullableString(&step.Execution.Comment),
-			Attachments: c.convertAttachments(ctx, projectCode, step.Execution.Attachments),
-			Steps:       c.convertStepToMaps(ctx, projectCode, step.Steps),
-			Action:      &step.Data.Action,
+			Status:      steps[i].Execution.Status,
+			Comment:     *apiV1Client.NewNullableString(&steps[i].Execution.Comment),
+			Attachments: c.convertAttachments(ctx, projectCode, steps[i].Execution.Attachments),
+			Steps:       c.convertStepToMaps(ctx, projectCode, steps[i].Steps),
+			Action:      &steps[i].Data.Action,
 		}
 
 		stepModels = append(stepModels, stepModel)
@@ -124,14 +149,14 @@ func (c *ClientV1) convertStepToApiModel(ctx context.Context, projectCode string
 func (c *ClientV1) convertStepToMaps(ctx context.Context, projectCode string, steps []models.Step) []map[string]interface{} {
 	stepModels := make([]map[string]interface{}, 0, len(steps))
 
-	for _, step := range steps {
+	for i := range steps {
 
 		stepModel := map[string]interface{}{
-			"Status":      step.Execution.Status,
-			"Comment":     *apiV1Client.NewNullableString(&step.Execution.Comment),
-			"Attachments": c.convertAttachments(ctx, projectCode, step.Execution.Attachments),
-			"Steps":       c.convertStepToMaps(ctx, projectCode, step.Steps),
-			"Action":      step.Data.Action,
+			"status":      steps[i].Execution.Status,
+			"comment":     *apiV1Client.NewNullableString(&steps[i].Execution.Comment),
+			"attachments": c.convertAttachments(ctx, projectCode, steps[i].Execution.Attachments),
+			"steps":       c.convertStepToMaps(ctx, projectCode, steps[i].Steps),
+			"action":      steps[i].Data.Action,
 		}
 
 		stepModels = append(stepModels, stepModel)
