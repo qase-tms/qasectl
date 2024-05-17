@@ -30,8 +30,10 @@ func NewParser(path, level string) (*Parser, error) {
 }
 
 var (
-	layoutTime = "2006-01-02T15:04:05.000-0700"
-	caseId     *int64
+	layoutTime        = "2006-01-02T15:04:05.000-0700"
+	caseId            *int64
+	failures          map[string]FailureSummary
+	processedFailures []string
 )
 
 const (
@@ -39,6 +41,7 @@ const (
 	deleteStep     = "com.apple.dt.xctest.activity-type.deletedAttachment"
 	attachmentStep = "com.apple.dt.xctest.activity-type.attachmentContainer"
 	qaseConfig     = "Qase config"
+	heicExt        = ".heic"
 )
 
 // Parse parses the XCTest file and returns the results
@@ -62,7 +65,13 @@ func (p *Parser) Parse() ([]models.Result, error) {
 
 	logger.Debug("got test plan summaries", "testPlanSums", testPlanSums)
 
-	results := p.getTests(testPlanSums)
+	tests := p.getXCTests(testPlanSums)
+
+	logger.Debug("got tests", "xctest", tests)
+
+	results := p.getResults(tests)
+
+	logger.Debug("got results", "results", results)
 
 	return results, nil
 }
@@ -80,7 +89,17 @@ func (p *Parser) readJson(id *string) ([]byte, error) {
 	return out, nil
 }
 
-func (p *Parser) getTestPlanSumIDs() (map[string]string, error) {
+func (p *Parser) readAttachment(id string) ([]byte, error) {
+	args := []string{"xcresulttool", "get", "--path", p.path, "--format", "raw", "--id", id}
+	out, err := exec.Command("xcrun", args...).Output()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get XCResult attachment: %w", err)
+	}
+
+	return out, nil
+}
+
+func (p *Parser) getTestPlanSumIDs() (map[string]TestMeta, error) {
 	out, err := p.readJson(nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get test plan summaries: %w", err)
@@ -92,19 +111,33 @@ func (p *Parser) getTestPlanSumIDs() (map[string]string, error) {
 		return nil, fmt.Errorf("failed to unmarshal test plan summaries: %w", err)
 	}
 
-	testPlanSumIDs := make(map[string]string)
+	testPlanSumIDs := make(map[string]TestMeta)
 
 	for _, action := range structure.Actions.Values {
-		if action.ActionResult.TestsRef != nil {
-			testPlanSumIDs[action.ActionResult.TestsRef.ID.Value] = action.RunDestination.DisplayName.Value
+		if action.ActionResult.TestsRef == nil {
+			continue
 		}
+
+		m := TestMeta{}
+
+		if action.StartedTime != nil {
+			m.StartTime = parseTime(action.StartedTime.Value)
+		}
+		if action.EndedTime != nil {
+			m.EndTime = parseTime(action.EndedTime.Value)
+		}
+		if action.RunDestination != nil {
+			m.Device = action.RunDestination.DisplayName.Value
+		}
+
+		testPlanSumIDs[action.ActionResult.TestsRef.ID.Value] = m
 	}
 
 	return testPlanSumIDs, nil
 }
 
-func (p *Parser) getTestPlanSums(IDs map[string]string) (map[string][]ActionTestPlanRunSummaries, error) {
-	testPlanSums := make(map[string][]ActionTestPlanRunSummaries)
+func (p *Parser) getTestPlanSums(IDs map[string]TestMeta) (map[TestMeta][]ActionTestPlanRunSummaries, error) {
+	testPlanSums := make(map[TestMeta][]ActionTestPlanRunSummaries)
 
 	for k, v := range IDs {
 		out, err := p.readJson(&k)
@@ -138,151 +171,215 @@ func (p *Parser) getActionTestSummary(ID string) (ActionTestSummary, error) {
 	return summary, nil
 }
 
-func (p *Parser) getTests(testPlanSums map[string][]ActionTestPlanRunSummaries) []models.Result {
-	const op = "xctest.Parser.getTests"
-	logger := slog.With("op", op)
-
-	var results []models.Result
+func (p *Parser) getXCTests(testPlanSums map[TestMeta][]ActionTestPlanRunSummaries) []XCTest {
+	tests := make([]XCTest, 0)
 
 	for k, v := range testPlanSums {
 		for _, testPlanSum := range v {
 			for _, testPlanRunSum := range testPlanSum.Summaries.Values {
 				for _, testSum := range testPlanRunSum.TestableSummaries.Values {
 					for _, test := range testSum.Tests.Values {
-						for _, subTest := range test.Subtests.Values {
-							for _, subTest2 := range subTest.Subtests.Values {
-								for _, subTest3 := range subTest2.Subtests.Values {
-									caseId = nil
-
-									logger := logger.With("testTitle", subTest3.Name.Value)
-									logger.Debug("processing test", "test", subTest3)
-
-									act, err := p.getActionTestSummary(subTest3.SummaryRef.ID.Value)
-									if err != nil {
-										logger.Error("failed to get action test summary", "error", err)
-										continue
-									}
-
-									d, err := strconv.ParseFloat(subTest3.Duration.Value, 64)
-									if err != nil {
-										logger.Error("failed to parse duration", "error", err)
-										d = 0
-									}
-
-									result := models.Result{
-										Title:     subTest3.Name.Value,
-										Signature: &subTest3.IdentifierURL.Value,
-										Execution: models.Execution{
-											Status:   getStatus(act.TestStatus.Value),
-											Duration: time.Duration(d * float64(time.Second)),
-										},
-										Fields:      map[string]string{},
-										Attachments: make([]models.Attachment, 0),
-										Params: map[string]string{
-											"Device": k,
-										},
-										Relations: models.Relation{
-											Suite: models.Suite{
-												Data: []models.SuiteData{
-													{
-														Title: subTest.Name.Value,
-													},
-													{
-														Title: subTest2.Name.Value,
-													},
-												},
-											},
-										},
-										StepType: "text",
-										Muted:    false,
-									}
-
-									if act.FailureSummaries != nil {
-										var message string
-										for _, f := range act.FailureSummaries.Values {
-											message += f.Message.Value + "\n"
-										}
-
-										result.Execution.StackTrace = &message
-
-										attachments := make([]models.Attachment, 0)
-										for _, a := range act.FailureSummaries.Values {
-											if a.Attachments != nil {
-												for _, att := range a.Attachments.Values {
-													logger.Debug("processing attachment", "attachment", att)
-													c, err := p.getAttachment(att.PayloadRef.ID.Value)
-													if err != nil {
-														logger.Error("failed to get attachments", "error", err)
-													}
-
-													attachments = append(attachments, models.Attachment{
-														Name:    att.Filename.Value,
-														Content: &c,
-													})
-												}
-											}
-										}
-
-										if len(attachments) > 0 {
-											result.Attachments = append(result.Attachments, attachments...)
-										}
-									}
-
-									steps := p.getSteps(act.ActivitySummaries)
-
-									result.Steps = steps
-									if caseId != nil {
-										result.TestOpsID = caseId
-									}
-
-									results = append(results, result)
-								}
+						if test.Subtests != nil {
+							tt := p.getXCTestsFromSubtest(*test.Subtests, make([]string, 0))
+							for _, t := range tt {
+								t.Metadata = k
+								tests = append(tests, t)
 							}
 						}
 					}
-
 				}
 			}
 		}
 	}
 
+	return tests
+}
+
+func (p *Parser) getXCTestsFromSubtest(s Subtests, suites []string) []XCTest {
+	const op = "xctest.Parser.getXCTestsFromSubtest"
+	logger := slog.With("op", op)
+
+	var tests []XCTest
+
+	for _, v := range s.Values {
+		if v.SummaryRef != nil {
+			act, err := p.getActionTestSummary(v.SummaryRef.ID.Value)
+			if err != nil {
+				logger.Error("failed to get action test summary", "error", err, "ID", v.SummaryRef.ID.Value)
+				continue
+			}
+
+			d, err := strconv.ParseFloat(v.Duration.Value, 64)
+			if err != nil {
+				logger.Error("failed to parse duration", "error", err)
+				d = 0
+			}
+
+			test := XCTest{
+				Name:      v.Name.Value,
+				Action:    act,
+				Suites:    make([]string, 0),
+				Signature: v.IdentifierURL.Value,
+				Duration:  d,
+			}
+
+			if len(suites) > 0 {
+				test.Suites = append(test.Suites, suites...)
+			}
+
+			tests = append(tests, test)
+
+			continue
+		}
+
+		if v.Subtests != nil {
+			suites = append(suites, v.Name.Value)
+
+			tt := p.getXCTestsFromSubtest(*v.Subtests, suites)
+			tests = append(tests, tt...)
+		}
+	}
+
+	return tests
+}
+
+func (p *Parser) getResults(tests []XCTest) []models.Result {
+	const op = "xctest.Parser.getResults"
+	logger := slog.With("op", op)
+
+	var results []models.Result
+
+	for _, t := range tests {
+		caseId = nil
+		failures = make(map[string]FailureSummary)
+		processedFailures = make([]string, 0)
+
+		logger := logger.With("testTitle", t.Name)
+		logger.Debug("processing test", "test", t)
+
+		suites := make([]models.SuiteData, 0)
+		suites = append(suites, models.SuiteData{Title: t.Metadata.Suite})
+		for _, s := range t.Suites {
+			suites = append(suites, models.SuiteData{
+				Title: s,
+			})
+		}
+
+		result := models.Result{
+			Title:     t.Name,
+			Signature: &t.Signature,
+			Execution: models.Execution{
+				Status:   getStatus(t.Action.TestStatus.Value),
+				Duration: time.Duration(t.Duration * float64(time.Second)),
+			},
+			Fields:      map[string]string{},
+			Attachments: make([]models.Attachment, 0),
+			Params: map[string]string{
+				"Device": t.Metadata.Device,
+			},
+			StartTime: &t.Metadata.StartTime,
+			EndTime:   &t.Metadata.EndTime,
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: suites,
+				},
+			},
+			StepType: "text",
+			Muted:    false,
+		}
+
+		if t.Action.FailureSummaries != nil {
+			var message string
+
+			for _, f := range t.Action.FailureSummaries.Values {
+				failures[f.UUID.Value] = f
+				message += f.Message.Value + "\n"
+
+			}
+
+			result.Execution.StackTrace = &message
+		}
+
+		steps, _, a := p.getSteps(t.Action.ActivitySummaries, 0)
+		result.Attachments = append(result.Attachments, a...)
+
+		result.Steps = steps
+		if caseId != nil {
+			result.TestOpsID = caseId
+		}
+
+		for k, v := range failures {
+			if isFailureProcessed(k) {
+				continue
+			}
+
+			if v.Attachments != nil {
+				for _, att := range v.Attachments.Values {
+					a, err := p.getAttachment(att)
+					if err != nil {
+						logger.Error("failed to get attachments", "error", err)
+						continue
+					}
+
+					result.Attachments = append(result.Attachments, a)
+				}
+			}
+		}
+
+		results = append(results, result)
+	}
+
 	return results
 }
 
-func (p *Parser) getAttachment(ID string) ([]byte, error) {
-	args := []string{"xcresulttool", "get", "--path", p.path, "--format", "raw", "--id", ID}
-
-	out, err := exec.Command("xcrun", args...).Output()
-	if err != nil {
-		return nil, fmt.Errorf("failed to get attachments from XCResult: %w", err)
+func isFailureProcessed(f string) bool {
+	for _, p := range processedFailures {
+		if f == p {
+			return true
+		}
 	}
 
-	return out, nil
+	return false
 }
 
-func (p *Parser) getSteps(as ActivitySummaries) []models.Step {
+func (p *Parser) getAttachment(a Attachment) (models.Attachment, error) {
+	if strings.Contains(a.Filename.Value, heicExt) {
+		a.Filename.Value = strings.Replace(a.Filename.Value, heicExt, ".jpeg", 1)
+	}
+
+	att, err := p.readAttachment(a.PayloadRef.ID.Value)
+	if err != nil {
+		return models.Attachment{}, fmt.Errorf("failed to get attachment: %w", err)
+	}
+
+	return models.Attachment{
+		Name:    a.Filename.Value,
+		Content: &att,
+	}, nil
+}
+
+func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool, []models.Attachment) {
 	const op = "xctest.Parser.getSteps"
 	logger := slog.With("op", op)
 
 	steps := make([]models.Step, 0, len(as.Values))
+	attachments := make([]models.Attachment, 0)
+	isFailedStep := false
 
 	for _, v := range as.Values {
-		if p.level != All && (v.ActivityType.Value == internalStep || v.ActivityType.Value == deleteStep) {
-			continue
-		}
-
-		logger := logger.With("stepTitle", v.Title.Value)
-		logger.Debug("processing step", "step", v)
-
-		if v.ActivityType.Value == attachmentStep && len(v.Attachments.Values) == 1 &&
-			v.Attachments.Values[0].Name.Value == qaseConfig {
-			att, err := p.getAttachment(v.Attachments.Values[0].PayloadRef.ID.Value)
+		stepAttachments := make([]models.Attachment, 0)
+		stepComment := ""
+		isStepFailed := false
+		childSteps := make([]models.Step, 0)
+		if v.ActivityType.Value == attachmentStep && v.Attachments != nil &&
+			len(v.Attachments.Values) == 1 && v.Attachments.Values[0].Name.Value == qaseConfig {
+			att, err := p.getAttachment(v.Attachments.Values[0])
 			if err != nil {
 				logger.Error("failed to get attachments", "error", err)
 			}
 
 			var ID QaseId
-			err = json.Unmarshal(att, &ID)
+			err = json.Unmarshal(*att.Content, &ID)
 			if err != nil {
 				logger.Error("failed to unmarshal Qase ID", "error", err)
 			}
@@ -294,74 +391,66 @@ func (p *Parser) getSteps(as ActivitySummaries) []models.Step {
 			continue
 		}
 
-		step := models.Step{
-			Data: models.Data{
-				Action: v.Title.Value,
-			},
-			Execution: models.StepExecution{
-				Status:      "passed",
-				Attachments: make([]models.Attachment, 0),
-			},
-		}
+		if v.FailureSummaryIDs != nil {
+			for _, f := range v.FailureSummaryIDs.Values {
+				if fm, ok := failures[f.Value]; ok {
+					processedFailures = append(processedFailures, f.Value)
+					isStepFailed = true
+					stepComment = fmt.Sprintf("Line: %s\n%s", fm.LineNumber.Value, fm.Message.Value)
+					if fm.Attachments != nil {
+						for _, a := range fm.Attachments.Values {
+							att, err := p.getAttachment(a)
+							if err != nil {
+								logger.Error("failed to get attachments", "error", err)
+								continue
+							}
 
-		if v.Start.Value != "" {
-			st, err := time.Parse(layoutTime, v.Start.Value)
-			if err != nil {
-				logger.Error("failed to parse start time", "error", err)
-			}
-			step.Execution.StartTime = &st
-		}
-
-		if v.Finish.Value != "" {
-			et, err := time.Parse(layoutTime, v.Finish.Value)
-			if err != nil {
-				logger.Error("failed to parse finish time", "error", err)
-			}
-			step.Execution.EndTime = &et
-		}
-
-		if v.Attachments != nil {
-			for _, a := range v.Attachments.Values {
-				att, err := p.getAttachment(a.PayloadRef.ID.Value)
-				if err != nil {
-					logger.Error("failed to get attachments", "error", err)
+							stepAttachments = append(stepAttachments, att)
+						}
+					}
 				}
+			}
 
-				step.Execution.Attachments = append(step.Execution.Attachments, models.Attachment{
-					Name:    a.Filename.Value,
-					Content: &att,
-				})
+			if v.Attachments != nil {
+				for _, a := range v.Attachments.Values {
+					att, err := p.getAttachment(a)
+					if err != nil {
+						logger.Error("failed to get attachments", "error", err)
+						continue
+					}
 
-				if a.Name.Value == "Failed Image" {
-					step.Execution.Status = "failed"
+					stepAttachments = append(stepAttachments, att)
 				}
 			}
 		}
 
 		if v.Subactivities != nil {
-			cs := p.getChildSteps(*v.Subactivities)
+			cs, f, a := p.getSteps(*v.Subactivities, level+1)
+			if f {
+				isStepFailed = true
+			}
+			childSteps = append(childSteps, cs...)
 
-			step.Steps = cs
+			if len(cs) == 0 {
+				stepAttachments = append(stepAttachments, a...)
+			}
 		}
 
-		steps = append(steps, step)
-	}
+		isActivityTypeInternalOrDelete := v.ActivityType.Value == internalStep || v.ActivityType.Value == deleteStep
+		isLevelNotAll := p.level != All
+		isLevelZeroOrAboveFirst := level == 0 || (level > 0 && p.level != FirstLevel)
 
-	return steps
-}
+		if isActivityTypeInternalOrDelete && isLevelNotAll && isLevelZeroOrAboveFirst {
+			attachments = append(attachments, stepAttachments...)
 
-func (p *Parser) getChildSteps(s Subactivities) []models.Step {
-	const op = "xctest.Parser.getChildSteps"
-	logger := slog.With("op", op)
+			if isStepFailed {
+				isFailedStep = true
+			}
 
-	steps := make([]models.Step, 0, len(s.Values))
-	for _, v := range s.Values {
-		if p.level != All && p.level != FirstLevel &&
-			(v.ActivityType.Value == internalStep || v.ActivityType.Value == deleteStep) {
 			continue
 		}
 
-		logger := logger.With("stepTitle", v.Title.Value)
+		logger := logger.With("stepAction", v.Title.Value)
 		logger.Debug("processing step", "step", v)
 
 		step := models.Step{
@@ -369,56 +458,32 @@ func (p *Parser) getChildSteps(s Subactivities) []models.Step {
 				Action: v.Title.Value,
 			},
 			Execution: models.StepExecution{
-				Status: "passed",
+				Status:      "passed",
+				Attachments: stepAttachments,
+				Comment:     stepComment,
 			},
+			Steps: childSteps,
 		}
 
 		if v.Start.Value != "" {
-			st, err := time.Parse(layoutTime, v.Start.Value)
-			if err != nil {
-				logger.Error("failed to parse start time", "error", err)
-			}
+			st := parseTime(v.Start.Value)
 			step.Execution.StartTime = &st
 		}
 
 		if v.Finish.Value != "" {
-			et, err := time.Parse(layoutTime, v.Finish.Value)
-			if err != nil {
-				logger.Error("failed to parse finish time", "error", err)
-			}
+			et := parseTime(v.Finish.Value)
 			step.Execution.EndTime = &et
 		}
 
-		if v.Subactivities != nil {
-			cs := p.getChildSteps(*v.Subactivities)
-
-			step.Steps = cs
-		}
-
-		if v.Attachments != nil {
-			for _, a := range v.Attachments.Values {
-				logger.Debug("processing attachment", "attachment", a)
-
-				att, err := p.getAttachment(a.PayloadRef.ID.Value)
-				if err != nil {
-					logger.Error("failed to get attachments", "error", err, "ID", a.PayloadRef.ID.Value)
-				}
-
-				step.Execution.Attachments = append(step.Execution.Attachments, models.Attachment{
-					Name:    a.Filename.Value,
-					Content: &att,
-				})
-
-				if a.Name.Value == "Failed Image" {
-					step.Execution.Status = "failed"
-				}
-			}
+		if isStepFailed {
+			step.Execution.Status = "failed"
+			isFailedStep = true
 		}
 
 		steps = append(steps, step)
 	}
 
-	return steps
+	return steps, isFailedStep, attachments
 }
 
 func getStatus(s string) string {
@@ -434,4 +499,14 @@ func getStatus(s string) string {
 	default:
 		return "passed"
 	}
+}
+
+func parseTime(s string) time.Time {
+	t, err := time.Parse(layoutTime, s)
+	if err != nil {
+		slog.Error("failed to parse time", "error", err, "time", s)
+		return time.Time{}
+	}
+
+	return t
 }
