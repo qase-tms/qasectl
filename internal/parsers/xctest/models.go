@@ -1,5 +1,14 @@
 package xctest
 
+import "time"
+
+type TestMeta struct {
+	Device    string
+	StartTime time.Time
+	EndTime   time.Time
+	Suite     string
+}
+
 type Structure struct {
 	Actions struct {
 		Values []struct {
@@ -10,13 +19,21 @@ type Structure struct {
 					} `json:"id"`
 				} `json:"testsRef,omitempty"`
 			} `json:"actionResult"`
-			RunDestination struct {
-				DisplayName struct {
-					Value string `json:"_value"`
-				} `json:"displayName"`
-			} `json:"runDestination"`
+			RunDestination *RunDestination `json:"runDestination"`
+			EndedTime      *struct {
+				Value string `json:"_value"`
+			} `json:"endedTime"`
+			StartedTime *struct {
+				Value string `json:"_value"`
+			} `json:"startedTime"`
 		} `json:"_values"`
 	} `json:"actions"`
+}
+
+type RunDestination struct {
+	DisplayName struct {
+		Value string `json:"_value"`
+	} `json:"displayName"`
 }
 
 type ActionTestPlanRunSummaries struct {
@@ -26,41 +43,7 @@ type ActionTestPlanRunSummaries struct {
 				Values []struct {
 					Tests struct {
 						Values []struct {
-							Subtests struct {
-								Values []struct {
-									Name struct {
-										Value string `json:"_value"`
-									} `json:"name"`
-									Subtests struct {
-										Values []struct {
-											Name struct {
-												Value string `json:"_value"`
-											} `json:"name"`
-											Subtests struct {
-												Values []struct {
-													Duration struct {
-														Value string `json:"_value"`
-													} `json:"duration"`
-													IdentifierURL struct {
-														Value string `json:"_value"`
-													} `json:"identifierURL"`
-													Name struct {
-														Value string `json:"_value"`
-													} `json:"name"`
-													SummaryRef struct {
-														ID struct {
-															Value string `json:"_value"`
-														} `json:"id"`
-													} `json:"summaryRef"`
-													TestStatus struct {
-														Value string `json:"_value"`
-													} `json:"testStatus"`
-												} `json:"_values"`
-											} `json:"subtests"`
-										} `json:"_values"`
-									} `json:"subtests"`
-								} `json:"_values"`
-							} `json:"subtests"`
+							Subtests *Subtests `json:"subtests"`
 						} `json:"_values"`
 					} `json:"tests"`
 				} `json:"_values"`
@@ -69,19 +52,62 @@ type ActionTestPlanRunSummaries struct {
 	} `json:"summaries"`
 }
 
+type Subtests struct {
+	Values []struct {
+		Type struct {
+			Name string `json:"_name"`
+		}
+		Duration struct {
+			Value string `json:"_value"`
+		} `json:"duration"`
+		IdentifierURL struct {
+			Value string `json:"_value"`
+		} `json:"identifierURL"`
+		Name struct {
+			Value string `json:"_value"`
+		} `json:"name"`
+		SummaryRef *struct {
+			ID struct {
+				Value string `json:"_value"`
+			} `json:"id"`
+		} `json:"summaryRef"`
+		TestStatus *struct {
+			Value string `json:"_value"`
+		} `json:"testStatus"`
+		Subtests *Subtests `json:"subtests"`
+	} `json:"_values"`
+}
+
+type XCTest struct {
+	Name      string
+	Suites    []string
+	Action    ActionTestSummary
+	Metadata  TestMeta
+	Signature string
+	Duration  float64
+}
+
 type ActionTestSummary struct {
 	ActivitySummaries ActivitySummaries `json:"activitySummaries"`
 	TestStatus        struct {
 		Value string `json:"_value"`
 	} `json:"testStatus"`
 	FailureSummaries *struct {
-		Values []struct {
-			Attachments *Attachments `json:"attachments,omitempty"`
-			Message     struct {
-				Value string `json:"_value"`
-			} `json:"message"`
-		} `json:"_values"`
+		Values []FailureSummary `json:"_values"`
 	} `json:"failureSummaries,omitempty"`
+}
+
+type FailureSummary struct {
+	Attachments *Attachments `json:"attachments,omitempty"`
+	Message     struct {
+		Value string `json:"_value"`
+	} `json:"message"`
+	LineNumber struct {
+		Value string `json:"_value"`
+	} `json:"lineNumber"`
+	UUID struct {
+		Value string `json:"_value"`
+	} `json:"uuid"`
 }
 
 type ActivitySummaries struct {
@@ -98,44 +124,32 @@ type ActivitySummaries struct {
 		Title struct {
 			Value string `json:"_value"`
 		} `json:"title"`
-		Attachments   *Attachments   `json:"attachments,omitempty"`
-		Subactivities *Subactivities `json:"subactivities,omitempty"`
-	} `json:"_values"`
-}
-
-type Subactivities struct {
-	Values []struct {
-		ActivityType struct {
-			Value string `json:"_value"`
-		} `json:"activityType"`
-		Finish struct {
-			Value string `json:"_value"`
-		} `json:"finish"`
-		Start struct {
-			Value string `json:"_value"`
-		} `json:"start"`
-		Attachments   *Attachments   `json:"attachments,omitempty"`
-		Subactivities *Subactivities `json:"subactivities"`
-		Title         struct {
-			Value string `json:"_value"`
-		} `json:"title"`
+		Attachments       *Attachments       `json:"attachments,omitempty"`
+		Subactivities     *ActivitySummaries `json:"subactivities,omitempty"`
+		FailureSummaryIDs *struct {
+			Values []struct {
+				Value string `json:"_value"`
+			} `json:"_values"`
+		} `json:"failureSummaryIDs"`
 	} `json:"_values"`
 }
 
 type Attachments struct {
-	Values []struct {
-		Filename struct {
+	Values []Attachment `json:"_values"`
+}
+
+type Attachment struct {
+	Filename struct {
+		Value string `json:"_value"`
+	} `json:"filename"`
+	Name struct {
+		Value string `json:"_value"`
+	} `json:"name"`
+	PayloadRef struct {
+		ID struct {
 			Value string `json:"_value"`
-		} `json:"filename"`
-		Name struct {
-			Value string `json:"_value"`
-		} `json:"name"`
-		PayloadRef struct {
-			ID struct {
-				Value string `json:"_value"`
-			} `json:"id"`
-		} `json:"payloadRef"`
-	} `json:"_values"`
+		} `json:"id"`
+	} `json:"payloadRef"`
 }
 
 type QaseId struct {
