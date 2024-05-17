@@ -31,7 +31,7 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 
 	ctx, client := c.getApiV1Client(ctx)
 
-	resp, _, err := client.RunsAPI.
+	resp, r, err := client.RunsAPI.
 		CreateRun(ctx, projectCode).
 		RunCreate(apiV1Client.RunCreate{
 			Title:       title,
@@ -40,6 +40,7 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 		Execute()
 
 	if err != nil {
+		logger.Debug("failed to create run", "response", r)
 		return 0, fmt.Errorf("failed to create run: %w", err)
 	}
 
@@ -57,12 +58,12 @@ func (c *ClientV1) CompleteRun(ctx context.Context, projectCode string, runId in
 
 	logger.Debug("completing run", "projectCode", projectCode, "runId", runId)
 
-	res, _, err := client.RunsAPI.
+	_, r, err := client.RunsAPI.
 		CompleteRun(ctx, projectCode, int32(runId)).
 		Execute()
 
 	if err != nil {
-		logger.Debug("failed to complete run", "response", res)
+		logger.Debug("failed to complete run", "response", r)
 		return fmt.Errorf("failed to complete run: %w", err)
 	}
 
@@ -95,7 +96,7 @@ func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, 
 		Execute()
 
 	if err != nil {
-		logger.Debug("failed to upload data", "response", resp, "r", r, "error", err)
+		logger.Debug("failed to upload data", "model", resp, "response", r)
 		return fmt.Errorf("failed to upload data: %w", err)
 	}
 
@@ -111,12 +112,12 @@ func (c *ClientV1) uploadAttachment(ctx context.Context, projectCode string, fil
 
 	ctx, client := c.getApiV1Client(ctx)
 
-	resp, _, err := client.AttachmentsAPI.
+	resp, r, err := client.AttachmentsAPI.
 		UploadAttachment(ctx, projectCode).
 		File(file).
 		Execute()
 	if err != nil {
-		logger.Debug("failed to upload attachment", "response", resp)
+		logger.Debug("failed to upload attachment", "response", r)
 		return "", fmt.Errorf("failed to upload attachment: %w", err)
 	}
 
