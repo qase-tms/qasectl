@@ -12,7 +12,6 @@ import (
 func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode string, result models.Result) apiV1Client.ResultCreate {
 	defect := false
 	model := apiV1Client.ResultCreate{
-		CaseId:      result.TestOpsID,
 		Status:      result.Execution.Status,
 		Comment:     *apiV1Client.NewNullableString(result.Message),
 		Defect:      *apiV1Client.NewNullableBool(&defect),
@@ -21,6 +20,7 @@ func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode stri
 		Steps:       c.convertStepToApiModel(ctx, projectCode, result.Steps),
 		Attachments: c.convertAttachments(ctx, projectCode, result.Attachments),
 	}
+
 	if result.Execution.StartTime != nil {
 		startTime := int32(result.Execution.StartTime.Unix())
 		model.StartTime = *apiV1Client.NewNullableInt32(&startTime)
@@ -76,6 +76,8 @@ func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode stri
 		}
 
 		model.Case = &caseModel
+	} else {
+		model.CaseId = result.TestOpsID
 	}
 
 	return model
@@ -106,26 +108,36 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 		file, err := os.Open(*attachment.FilePath)
 		if err != nil {
 			fmt.Println("failed to open file: %w", err)
+			if rmAttach {
+				removeFile(*attachment.FilePath)
+			}
 			continue
 		}
 
 		hash, err := c.uploadAttachment(ctx, projectCode, []*os.File{file})
 		if err != nil {
 			fmt.Println("failed to upload attachment: %w", err)
+			if rmAttach {
+				removeFile(*attachment.FilePath)
+			}
 			continue
 		}
 
 		results = append(results, hash)
 
 		if rmAttach {
-			err = os.Remove(*attachment.FilePath)
-			if err != nil {
-				fmt.Println("cannot remove file", "error", err)
-			}
+			removeFile(*attachment.FilePath)
 		}
 	}
 
 	return results
+}
+
+func removeFile(path string) {
+	err := os.Remove(path)
+	if err != nil {
+		fmt.Println("cannot remove file", "error", err)
+	}
 }
 
 func (c *ClientV1) convertStepToApiModel(ctx context.Context, projectCode string, steps []models.Step) []apiV1Client.TestStepResultCreate {
