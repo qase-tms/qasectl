@@ -1,7 +1,7 @@
 package result
 
 type Step struct {
-	Data      Data
-	Execution StepExecution
-	Steps     []Step
+	Data      Data          `json:"data"`
+	Execution StepExecution `json:"execution"`
+	Steps     []Step        `json:"steps"`
 }

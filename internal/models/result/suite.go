@@ -1,5 +1,5 @@
 package result
 
 type Suite struct {
-	Data []SuiteData
+	Data []SuiteData `json:"data"`
 }

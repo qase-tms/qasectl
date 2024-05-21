@@ -1,6 +1,6 @@
 package result
 
 type SuiteData struct {
-	Title    string
-	PublicID *int64
+	Title    string `json:"title"`
+	PublicID *int64 `json:"public_id"`
 }

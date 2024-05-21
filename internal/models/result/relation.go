@@ -1,5 +1,5 @@
 package result
 
 type Relation struct {
-	Suite Suite
+	Suite Suite `json:"suite"`
 }
