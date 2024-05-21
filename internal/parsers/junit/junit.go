@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 // Parser is a parser for Junit XML files
@@ -137,7 +136,7 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 				Signature: &signature,
 				Relations: relation,
 				Execution: models.Execution{
-					Duration:   time.Duration(testCase.Time * float64(time.Second)),
+					Duration:   &testCase.Time,
 					Status:     status,
 					StackTrace: stackTrace,
 				},

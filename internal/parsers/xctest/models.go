@@ -1,11 +1,9 @@
 package xctest
 
-import "time"
-
 type TestMeta struct {
 	Device    string
-	StartTime time.Time
-	EndTime   time.Time
+	StartTime *float64
+	EndTime   *float64
 	Suite     string
 }
 

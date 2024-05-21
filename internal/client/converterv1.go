@@ -22,17 +22,17 @@ func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode stri
 	}
 
 	if result.Execution.StartTime != nil {
-		startTime := int32(result.Execution.StartTime.Unix())
+		startTime := int32(*result.Execution.StartTime)
 		model.StartTime = *apiV1Client.NewNullableInt32(&startTime)
 	}
 
 	if result.Execution.EndTime != nil {
-		endTime := result.Execution.EndTime.Unix()
+		endTime := int64(*result.Execution.EndTime)
 		model.Time = *apiV1Client.NewNullableInt64(&endTime)
 	}
 
-	if result.Execution.Duration != 0 {
-		duration := int64(result.Execution.Duration.Seconds())
+	if result.Execution.Duration != nil {
+		duration := int64(*result.Execution.Duration)
 		model.TimeMs = *apiV1Client.NewNullableInt64(&duration)
 	}
 

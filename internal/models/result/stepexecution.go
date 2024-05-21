@@ -1,12 +1,10 @@
 package result
 
-import "time"
-
 type StepExecution struct {
-	StartTime   *time.Time
-	EndTime     *time.Time
-	Status      string
-	Duration    *time.Duration
-	Comment     string
-	Attachments []Attachment
+	StartTime   *float64     `json:"start_time"`
+	EndTime     *float64     `json:"end_time"`
+	Status      string       `json:"status"`
+	Duration    *float64     `json:"duration"`
+	Comment     string       `json:"comment"`
+	Attachments []Attachment `json:"attachments"`
 }

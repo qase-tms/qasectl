@@ -1,12 +1,10 @@
 package result
 
-import "time"
-
 type Execution struct {
-	StartTime  *time.Time
-	EndTime    *time.Time
-	Status     string
-	Duration   time.Duration
-	StackTrace *string
-	Thread     *string
+	StartTime  *float64 `json:"start_time"`
+	EndTime    *float64 `json:"end_time"`
+	Status     string   `json:"status"`
+	Duration   *float64 `json:"duration"`
+	StackTrace *string  `json:"stack_trace"`
+	Thread     *string  `json:"thread"`
 }
