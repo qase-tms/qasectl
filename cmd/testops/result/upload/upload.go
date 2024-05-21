@@ -5,6 +5,7 @@ import (
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/internal/client"
 	"github.com/qase-tms/qasectl/internal/parsers/junit"
+	"github.com/qase-tms/qasectl/internal/parsers/qase"
 	"github.com/qase-tms/qasectl/internal/parsers/xctest"
 	"github.com/qase-tms/qasectl/internal/service/result"
 	"github.com/spf13/cobra"
@@ -48,7 +49,7 @@ func Command() *cobra.Command {
 			case "junit":
 				p = junit.NewParser(path)
 			case "qase":
-				fmt.Println("Uploading Qase results")
+				p = qase.NewParser(path)
 			case "allure":
 				fmt.Println("Uploading Allure results")
 			case "xctest":
