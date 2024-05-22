@@ -82,7 +82,7 @@ func (p *Parser) parseFile(path string) (models.Result, error) {
 	if err != nil {
 		return models.Result{}, fmt.Errorf("failed to read file: %w", err)
 	}
-	fmt.Println("byteValue", string(byteValue))
+
 	var result models.Result
 	err = json.Unmarshal(byteValue, &result)
 	if err != nil {
