@@ -179,6 +179,7 @@ func (p *Parser) getXCTests(testPlanSums map[TestMeta][]ActionTestPlanRunSummari
 	for k, v := range testPlanSums {
 		for _, testPlanSum := range v {
 			for _, testPlanRunSum := range testPlanSum.Summaries.Values {
+				k.Configuration = testPlanRunSum.Name.Value
 				for _, testSum := range testPlanRunSum.TestableSummaries.Values {
 					for _, test := range testSum.Tests.Values {
 						if test.Subtests != nil {
@@ -277,7 +278,8 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 			Fields:      map[string]string{},
 			Attachments: make([]models.Attachment, 0),
 			Params: map[string]string{
-				"Device": t.Metadata.Device,
+				"Device":        t.Metadata.Device,
+				"Configuration": t.Metadata.Configuration,
 			},
 			StartTime: t.Metadata.StartTime,
 			EndTime:   t.Metadata.EndTime,

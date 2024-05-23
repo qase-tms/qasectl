@@ -1,10 +1,11 @@
 package xctest
 
 type TestMeta struct {
-	Device    string
-	StartTime *float64
-	EndTime   *float64
-	Suite     string
+	Device        string
+	Configuration string
+	StartTime     *float64
+	EndTime       *float64
+	Suite         string
 }
 
 type Structure struct {
@@ -37,6 +38,9 @@ type RunDestination struct {
 type ActionTestPlanRunSummaries struct {
 	Summaries struct {
 		Values []struct {
+			Name struct {
+				Value string `json:"_value"`
+			} `json:"name"`
 			TestableSummaries struct {
 				Values []struct {
 					Tests struct {
