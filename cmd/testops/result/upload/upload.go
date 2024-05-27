@@ -9,6 +9,7 @@ import (
 	"github.com/qase-tms/qasectl/internal/parsers/qase"
 	"github.com/qase-tms/qasectl/internal/parsers/xctest"
 	"github.com/qase-tms/qasectl/internal/service/result"
+	"github.com/qase-tms/qasectl/internal/service/run"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"log/slog"
@@ -65,12 +66,13 @@ func Command() *cobra.Command {
 			}
 
 			c := client.NewClientV1(token)
-			s := result.NewService(c, p)
+			rs := run.NewService(c)
+			s := result.NewService(c, p, rs)
 
 			param := result.UploadParams{
 				RunID:       runID,
 				Title:       title,
-				Description: &description,
+				Description: description,
 				Batch:       batch,
 				Project:     project,
 			}
