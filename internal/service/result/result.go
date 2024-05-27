@@ -8,23 +8,27 @@ import (
 
 type client interface {
 	UploadData(ctx context.Context, project string, runID int64, results []models.Result) error
-	CreateRun(ctx context.Context, projectCode, title string, description *string) (int64, error)
-	CompleteRun(ctx context.Context, projectCode string, runId int64) error
 }
 
 type Parser interface {
 	Parse() ([]models.Result, error)
 }
 
+type runService interface {
+	CreateRun(ctx context.Context, p, t string, d, e string) (int64, error)
+	CompleteRun(ctx context.Context, projectCode string, runId int64) error
+}
+
 // Service is a service for importing data
 type Service struct {
 	client client
 	parser Parser
+	rs     runService
 }
 
 // NewService creates a new service
-func NewService(client client, parser Parser) *Service {
-	return &Service{client: client, parser: parser}
+func NewService(client client, parser Parser, rs runService) *Service {
+	return &Service{client: client, parser: parser, rs: rs}
 }
 
 // Upload imports the data
@@ -47,12 +51,11 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 
 	isTestRunCreated := false
 	if p.RunID == 0 {
-		runID, err := s.client.CreateRun(ctx, p.Project, p.Title, p.Description)
+		runID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "")
 		if err != nil {
 			logger.Error("failed to create run", "error", err)
 			return
 		}
-
 		p.RunID = runID
 		isTestRunCreated = true
 	}
@@ -72,7 +75,7 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 	}
 
 	if isTestRunCreated {
-		err := s.client.CompleteRun(ctx, p.Project, p.RunID)
+		err := s.rs.CompleteRun(ctx, p.Project, p.RunID)
 		if err != nil {
 			logger.Error("failed to complete run", "error", err)
 		}
