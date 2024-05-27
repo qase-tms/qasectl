@@ -5,6 +5,7 @@ import (
 	"fmt"
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
 	models "github.com/qase-tms/qasectl/internal/models/result"
+	"github.com/qase-tms/qasectl/internal/models/run"
 	"log/slog"
 	"os"
 )
@@ -22,21 +23,62 @@ func NewClientV1(token string) *ClientV1 {
 	}
 }
 
-// CreateRun creates a new run
-func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description *string) (int64, error) {
-	const op = "client.clientv1.createrun"
+// GetEnvironments returns environments
+func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]run.Environment, error) {
+	const op = "client.clientv1.getenvironments"
 	logger := slog.With("op", op)
 
-	logger.Debug("creating run", "projectCode", projectCode, "title", title, "description", description)
+	logger.Debug("getting environments", "projectCode", projectCode)
 
 	ctx, client := c.getApiV1Client(ctx)
 
+	resp, r, err := client.EnvironmentsAPI.
+		GetEnvironments(ctx, projectCode).
+		Execute()
+
+	if err != nil {
+		logger.Debug("failed to get environments", "response", r)
+		return nil, fmt.Errorf("failed to get environments: %w", err)
+	}
+
+	environments := make([]run.Environment, 0, len(resp.Result.Entities))
+	for _, env := range resp.Result.Entities {
+		environments = append(environments, run.Environment{
+			Title: env.GetTitle(),
+			ID:    env.GetId(),
+			Slug:  env.GetSlug(),
+		})
+	}
+
+	logger.Debug("got environments", "environments", environments)
+
+	return environments, nil
+}
+
+// CreateRun creates a new run
+func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description string, envID int64) (int64, error) {
+	const op = "client.clientv1.createrun"
+	logger := slog.With("op", op)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	m := apiV1Client.RunCreate{
+		Title: title,
+	}
+
+	if description != "" {
+		m.SetDescription(description)
+	}
+
+	if envID != 0 {
+		m.SetEnvironmentId(envID)
+	}
+
+	logger.Debug("creating run", "projectCode", projectCode, "model", m)
+
 	resp, r, err := client.RunsAPI.
 		CreateRun(ctx, projectCode).
-		RunCreate(apiV1Client.RunCreate{
-			Title:       title,
-			Description: description,
-		}).
+		RunCreate(m).
 		Execute()
 
 	if err != nil {
