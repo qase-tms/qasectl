@@ -5,3 +5,7 @@ build:
 
 clean:
 	@rm -rf ./build/*
+
+.PHONY: test
+test:
+	@go test -v ./...
