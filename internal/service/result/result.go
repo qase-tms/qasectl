@@ -15,7 +15,7 @@ type Parser interface {
 }
 
 type runService interface {
-	CreateRun(ctx context.Context, p, t string, d, e string) (int64, error)
+	CreateRun(ctx context.Context, p, t string, d, e, m, plan string) (int64, error)
 	CompleteRun(ctx context.Context, projectCode string, runId int64) error
 }
 
@@ -51,7 +51,7 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 
 	isTestRunCreated := false
 	if p.RunID == 0 {
-		runID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "")
+		runID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", "", "")
 		if err != nil {
 			logger.Error("failed to create run", "error", err)
 			return
