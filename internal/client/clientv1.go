@@ -10,6 +10,10 @@ import (
 	"os"
 )
 
+const (
+	defaultLimit = 20
+)
+
 // ClientV1 is a client for Qase API v1
 type ClientV1 struct {
 	// token is a token for Qase API
@@ -34,6 +38,7 @@ func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]r
 
 	resp, r, err := client.EnvironmentsAPI.
 		GetEnvironments(ctx, projectCode).
+		Limit(defaultLimit).
 		Execute()
 
 	if err != nil {
@@ -55,8 +60,85 @@ func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]r
 	return environments, nil
 }
 
+// GetMilestones returns milestones
+func (c *ClientV1) GetMilestones(ctx context.Context, projectCode, milestoneName string) ([]run.Milestone, error) {
+	const op = "client.clientv1.getmilestones"
+	logger := slog.With("op", op)
+
+	logger.Debug("getting milestones", "projectCode", projectCode, "milestoneName", milestoneName)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	resp, r, err := client.MilestonesAPI.
+		GetMilestones(ctx, projectCode).
+		Search(milestoneName).
+		Execute()
+
+	if err != nil {
+		logger.Debug("failed to get milestones", "response", r)
+		return nil, fmt.Errorf("failed to get milestones: %w", err)
+	}
+
+	milestones := make([]run.Milestone, 0, len(resp.Result.Entities))
+	for _, milestone := range resp.Result.Entities {
+		milestones = append(milestones, run.Milestone{
+			Title: milestone.GetTitle(),
+			ID:    milestone.GetId(),
+		})
+	}
+
+	logger.Debug("got milestones", "milestones", milestones)
+
+	return milestones, nil
+}
+
+// GetPlans returns plans
+func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan, error) {
+	const op = "client.clientv1.getplans"
+	logger := slog.With("op", op)
+
+	logger.Debug("getting plans", "projectCode", projectCode)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	plans := make([]run.Plan, 0)
+
+	var limit int32 = defaultLimit
+	var offset int32 = 0
+	for {
+		resp, r, err := client.PlansAPI.
+			GetPlans(ctx, projectCode).
+			Limit(limit).
+			Offset(offset).
+			Execute()
+
+		if err != nil {
+			logger.Debug("failed to get plans", "response", r)
+			return nil, fmt.Errorf("failed to get plans: %w", err)
+		}
+
+		for _, plan := range resp.Result.Entities {
+			plans = append(plans, run.Plan{
+				Title: plan.GetTitle(),
+				ID:    plan.GetId(),
+			})
+		}
+
+		if resp.Result.GetTotal() <= limit {
+			break
+		} else {
+			limit += defaultLimit
+			offset += defaultLimit
+		}
+	}
+
+	logger.Debug("got plans", "plans", plans)
+
+	return plans, nil
+}
+
 // CreateRun creates a new run
-func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description string, envID int64) (int64, error) {
+func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description string, envID, mileID, planID int64) (int64, error) {
 	const op = "client.clientv1.createrun"
 	logger := slog.With("op", op)
 
@@ -72,6 +154,14 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 
 	if envID != 0 {
 		m.SetEnvironmentId(envID)
+	}
+
+	if mileID != 0 {
+		m.SetMilestoneId(mileID)
+	}
+
+	if planID != 0 {
+		m.SetPlanId(planID)
 	}
 
 	logger.Debug("creating run", "projectCode", projectCode, "model", m)
