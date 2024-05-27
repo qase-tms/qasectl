@@ -13,6 +13,8 @@ const (
 	titleFlag       = "title"
 	descriptionFlag = "description"
 	environmentFlag = "environment"
+	milestoneFlag   = "milestone"
+	planFlag        = "plan"
 )
 
 // Command returns a new cobra command for create runs
@@ -21,6 +23,8 @@ func Command() *cobra.Command {
 		title       string
 		description string
 		environment string
+		milestone   string
+		plan        string
 	)
 
 	cmd := &cobra.Command{
@@ -34,7 +38,7 @@ func Command() *cobra.Command {
 			c := client.NewClientV1(token)
 			s := run.NewService(c)
 
-			id, err := s.CreateRun(cmd.Context(), project, title, description, environment)
+			id, err := s.CreateRun(cmd.Context(), project, title, description, environment, milestone, plan)
 			if err != nil {
 				return err
 			}
@@ -52,6 +56,8 @@ func Command() *cobra.Command {
 	}
 	cmd.Flags().StringVarP(&description, descriptionFlag, "d", "", "description of the test run")
 	cmd.Flags().StringVarP(&environment, environmentFlag, "e", "", "environment of the test run")
+	cmd.Flags().StringVarP(&milestone, milestoneFlag, "m", "", "milestone of the test run")
+	cmd.Flags().StringVar(&plan, planFlag, "", "plan of the test run")
 
 	return cmd
 }
