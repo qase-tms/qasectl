@@ -347,9 +347,7 @@ func isFailureProcessed(f string) bool {
 }
 
 func (p *Parser) getAttachment(a Attachment) (models.Attachment, error) {
-	if strings.Contains(a.Filename.Value, heicExt) {
-		a.Filename.Value = strings.Replace(a.Filename.Value, heicExt, ".jpeg", 1)
-	}
+	a.Filename.Value = strings.Replace(a.Filename.Value, heicExt, ".jpeg", 1)
 
 	att, err := p.readAttachment(a.PayloadRef.ID.Value)
 	if err != nil {
