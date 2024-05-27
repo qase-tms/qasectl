@@ -1,14 +1,12 @@
 name: Build Binaries
 
-on:
-  push:
-    tags:
-      - 'v*'
+on: [ push ]
 
 jobs:
-  build:
+  test:
     strategy:
       fail-fast: false
+      max-parallel: 4
       matrix:
         os: [ ubuntu-latest, macOS-latest ]
         architecture: [ arm64, amd64 ]
@@ -16,9 +14,39 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Install dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -qq
+
+      - name: Set up Go
+        uses: actions/setup-go@v5.0.1
         with:
-          fetch-depth: 0
+          go-version-file: go.mod
+
+      - name: Run lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+
+      - name: Run tests
+        run: GOARCH=${{ matrix.architecture }} make test
+
+  build-n-publish:
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        os: [ ubuntu-latest, macOS-latest ]
+        architecture: [ arm64, amd64 ]
+    runs-on: ${{ matrix.os }}
+    if: startsWith(github.event.ref, 'refs/tags')
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Get latest tag
         id: tag
@@ -26,10 +54,10 @@ jobs:
 
       - name: Install dependencies (Ubuntu)
         if: runner.os == 'Linux'
-        run: sudo apt-get update -qq && sudo apt-get install -y git
+        run: sudo apt-get update -qq
 
       - name: Set up Go
-        uses: actions/setup-go@v4.1.0
+        uses: actions/setup-go@v5.0.1
         with:
           go-version-file: go.mod
 
@@ -48,7 +76,7 @@ jobs:
           fi
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
           path: |
