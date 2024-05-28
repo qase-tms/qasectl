@@ -31,7 +31,7 @@ jobs:
           version: latest
 
       - name: Run tests
-        run: GOARCH=${{ matrix.architecture }} make test
+        run: make test
 
   build-n-publish:
     strategy:
