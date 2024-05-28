@@ -7,6 +7,8 @@ import (
 )
 
 // client is a client for run
+//
+//go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
 type client interface {
 	GetEnvironments(ctx context.Context, projectCode string) ([]run.Environment, error)
 	GetMilestones(ctx context.Context, projectCode, milestoneName string) ([]run.Milestone, error)
