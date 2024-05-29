@@ -6,14 +6,17 @@ import (
 	"log/slog"
 )
 
+//go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
 type client interface {
 	UploadData(ctx context.Context, project string, runID int64, results []models.Result) error
 }
 
+//go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
 type Parser interface {
 	Parse() ([]models.Result, error)
 }
 
+//go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
 type runService interface {
 	CreateRun(ctx context.Context, p, t string, d, e, m, plan string) (int64, error)
 	CompleteRun(ctx context.Context, projectCode string, runId int64) error
@@ -48,26 +51,26 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 		logger.Info("no results to upload")
 		return
 	}
-
+	runID := p.RunID
 	isTestRunCreated := false
-	if p.RunID == 0 {
-		runID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", "", "")
+	if runID == 0 {
+		ID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", "", "")
 		if err != nil {
 			logger.Error("failed to create run", "error", err)
 			return
 		}
-		p.RunID = runID
+		runID = ID
 		isTestRunCreated = true
 	}
 
 	if int64(len(results)) < p.Batch {
-		err := s.client.UploadData(ctx, p.Project, p.RunID, results)
+		err := s.client.UploadData(ctx, p.Project, runID, results)
 		if err != nil {
 			logger.Error("failed to upload results", "error", err)
 		}
 	} else {
 		for i := int64(0); i < int64(len(results)); i += p.Batch {
-			err := s.client.UploadData(ctx, p.Project, p.RunID, results[i:i+p.Batch])
+			err := s.client.UploadData(ctx, p.Project, runID, results[i:i+p.Batch])
 			if err != nil {
 				logger.Error("failed to upload results", "error", err)
 			}
@@ -75,7 +78,7 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 	}
 
 	if isTestRunCreated {
-		err := s.rs.CompleteRun(ctx, p.Project, p.RunID)
+		err := s.rs.CompleteRun(ctx, p.Project, runID)
 		if err != nil {
 			logger.Error("failed to complete run", "error", err)
 		}
