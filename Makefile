@@ -1,10 +1,12 @@
+version := $(shell git describe --tags)
+
 .PHONY: build
 build:
 	@mkdir -p build
-	@go build -a -ldflags="-X github.com/qase-tms/qasectl/internal.Version=$(shell git describe --tags)" -o build/qli ./main.go
+	@go build -a -ldflags="-X github.com/qase-tms/qasectl/internal.Version=$(version)" -o build/qli ./main.go
 
 clean:
-	@rm -rf ./build/*
+	@rm -rf ./build/qli
 
 .PHONY: lint
 lint:
@@ -27,3 +29,7 @@ install:
 coverage:
 	@go test -coverprofile=coverage.out ./...
 	@go tool cover -func=coverage.out
+
+.PHONY: docker
+docker:
+	@docker build -t qase:$(version) -f ./build/Dockerfile --build-arg VERSION=$(version) .
