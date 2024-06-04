@@ -119,6 +119,7 @@ jobs:
           context: .
           file: ./build/Dockerfile
           push: ${{ startsWith(github.event.ref, 'refs/tags') }}
+          provenance: false
           tags: ghcr.io/qase-tms/qase:${{ env.TAG }},ghcr.io/qase-tms/qase:latest
           platforms: linux/amd64,linux/arm64
           build-args: |
