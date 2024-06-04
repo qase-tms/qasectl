@@ -4,44 +4,41 @@
 
 Qase CLI is available for Qase and Qase Enterprise users.
 
-## Documentation
+# Installation
 
-For [installation options see below](#installation), for usage instructions [see the manual][manual].
+## Build from source
 
-## Contributing
+1. Clone the repository
 
-If anything feels off, or if you feel that some functionality is missing, please check out the [contributing page][contributing]. There you will find instructions for sharing your feedback, building the tool locally, and submitting pull requests to the project.
+```bash
+git clone https://github.com/qase-tms/qasectl.git && cd qasectl
+```
 
-<!-- this anchor is linked to from elsewhere, so avoid renaming it -->
-## Installation
+2. Build the binary
 
-### macOS
+```bash
+make build
+```
 
-`qli` is available via [Homebrew][] and as a downloadable binary from the [releases page][].
+You will find the binary in the `build` directory.
 
-#### Homebrew
+## Docker image
 
-Coming soon
+1. Pull the Docker image
 
-| Install:          | Upgrade:          |
-| ----------------- | ----------------- |
-| `brew install qli` | `brew upgrade qli` |
+```bash
+docker pull ghcr.io/qase-tms/qase:latest
+```
 
-### Linux & BSD
+2. Run the Docker container
 
-`qli` is available via:
+```bash
+docker run -it ghcr.io/qase-tms/qase:latest 
+```
 
-- [our Debian and RPM repositories](./docs/install_linux.md);
-- our [releases page][] as precompiled binaries.
+# Usage
 
-For more information, see [Linux & BSD installation](./docs/install_linux.md).
+The tool is designed to be used in a terminal.
+You can run `qli` with the `--help` flag to see the available commands and options.
 
-### Build from source
-
-See here on how to [build GitHub CLI from source][build from source].
-
-[manual]: https://developers.qase.io/cli/
-[Homebrew]: https://brew.sh
-[releases page]: https://github.com/qase-tms/cli/releases/latest
-[contributing]: ./.github/CONTRIBUTING.md
-[build from source]: ./docs/source.md
+You can find more information about the commands and options in the [documentation](docs/command.md).
