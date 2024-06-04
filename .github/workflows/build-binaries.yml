@@ -85,8 +85,7 @@ jobs:
 
   build-docker-n-publish:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.ref, 'refs/tags')
-    needs: build-n-publish
+    needs: test
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -116,8 +115,8 @@ jobs:
         with:
           context: .
           file: ./build/Dockerfile
-          push: true
-          tags: ghcr.io/qase-tms/qase:${{ env.TAG }}
+          push: ${{ startsWith(github.event.ref, 'refs/tags') }}
+          tags: ghcr.io/qase-tms/qase:${{ env.TAG }},ghcr.io/qase-tms/qase:latest
           platforms: linux/amd64,linux/arm64
           build-args: |
             VERSION=${{ env.TAG }}
