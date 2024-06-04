@@ -7,6 +7,9 @@ import (
 	"github.com/qase-tms/qasectl/internal/service/run"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"log/slog"
+	"os"
+	"strconv"
 )
 
 const (
@@ -15,6 +18,7 @@ const (
 	environmentFlag = "environment"
 	milestoneFlag   = "milestone"
 	planFlag        = "plan"
+	runIDEnv        = "QASE_TESTOPS_RUN_ID"
 )
 
 // Command returns a new cobra command for create runs
@@ -40,10 +44,15 @@ func Command() *cobra.Command {
 
 			id, err := s.CreateRun(cmd.Context(), project, title, description, environment, milestone, plan)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to create run: %w", err)
 			}
 
-			fmt.Println("Run created with ID:", id)
+			err = os.Setenv(runIDEnv, strconv.Itoa(int(id)))
+			if err != nil {
+				return fmt.Errorf("failed to set %s environment variable: %w", runIDEnv, err)
+			}
+
+			slog.Info(fmt.Sprintf("Run created with ID: %d", id))
 
 			return nil
 		},
