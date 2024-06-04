@@ -91,6 +91,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Define the tag for the Docker image
+        # actions/checkout is making a shallow copy, so unless it's a tag event,
+        # tag will be empty; in such case, use shortened commit SHA
+        id: tag
+        run: echo "TAG=$(git describe --tags || git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
