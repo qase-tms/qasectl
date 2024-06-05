@@ -27,13 +27,13 @@ You will find the binary in the `build` directory.
 1. Pull the Docker image
 
 ```bash
-docker pull ghcr.io/qase-tms/qase:latest
+docker pull ghcr.io/qase-tms/qase-cli:latest
 ```
 
 2. Run the Docker container
 
 ```bash
-docker run -it ghcr.io/qase-tms/qase:latest 
+docker run -it ghcr.io/qase-tms/qase-cli:latest 
 ```
 
 # Usage
