@@ -32,4 +32,4 @@ coverage:
 
 .PHONY: docker
 docker:
-	@docker build -t ghcr.io/qase-tms/qase:$(version) -t ghcr.io/qase-tms/qase:$latest -f ./build/Dockerfile --build-arg VERSION=$(version) .
+	@docker build -t ghcr.io/qase-tms/qase-cli:$(version) -t ghcr.io/qase-tms/qase-cli:$latest -f ./build/Dockerfile --build-arg VERSION=$(version) .
