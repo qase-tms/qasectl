@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/viper"
 	"log/slog"
 	"os"
-	"strconv"
+	"path"
 )
 
 const (
@@ -18,7 +18,7 @@ const (
 	environmentFlag = "environment"
 	milestoneFlag   = "milestone"
 	planFlag        = "plan"
-	runIDEnv        = "QASE_TESTOPS_RUN_ID"
+	outputFlag      = "output"
 )
 
 // Command returns a new cobra command for create runs
@@ -29,6 +29,7 @@ func Command() *cobra.Command {
 		environment string
 		milestone   string
 		plan        string
+		output      string
 	)
 
 	cmd := &cobra.Command{
@@ -47,9 +48,17 @@ func Command() *cobra.Command {
 				return fmt.Errorf("failed to create run: %w", err)
 			}
 
-			err = os.Setenv(runIDEnv, strconv.Itoa(int(id)))
+			if output == "" {
+				dir, err := os.Getwd()
+				if err != nil {
+					return fmt.Errorf("failed to get current directory: %w", err)
+				}
+				output = path.Join(dir, "qase.env")
+			}
+
+			err = os.WriteFile(output, []byte(fmt.Sprintf("QASE_TESTOPS_RUN_ID=%d", id)), 0644)
 			if err != nil {
-				return fmt.Errorf("failed to set %s environment variable: %w", runIDEnv, err)
+				return fmt.Errorf("failed to write run ID to file: %w", err)
 			}
 
 			slog.Info(fmt.Sprintf("Run created with ID: %d", id))
@@ -67,6 +76,7 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVarP(&environment, environmentFlag, "e", "", "environment of the test run")
 	cmd.Flags().StringVarP(&milestone, milestoneFlag, "m", "", "milestone of the test run")
 	cmd.Flags().StringVar(&plan, planFlag, "", "plan of the test run")
+	cmd.Flags().StringVarP(&output, outputFlag, "o", "", "output path for the test run ID")
 
 	return cmd
 }
