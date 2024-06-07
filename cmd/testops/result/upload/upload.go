@@ -38,7 +38,7 @@ func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "upload",
 		Short:   "Upload test results",
-		Example: "qli result upload --path 'path' --format 'junit' --id 123 --project 'PRJ' --token 'TOKEN'",
+		Example: "qli testops result upload --path 'path' --format 'junit' --id 123 --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			const op = "upload"
 			logger := slog.With("op", op)

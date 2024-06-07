@@ -22,7 +22,7 @@ func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "complete",
 		Short:   "Complete a test run",
-		Example: "qli run complete --id 123 --project 'PRJ' --token 'TOKEN'",
+		Example: "qli testops run complete --id 123 --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
