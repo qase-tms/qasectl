@@ -35,7 +35,7 @@ func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Create a new test run",
-		Example: "qli run create --title 'My test run' --description 'This is a test run' --environment local --project 'PRJ' --token 'TOKEN'",
+		Example: "qli testops run create --title 'My test run' --description 'This is a test run' --environment local --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
