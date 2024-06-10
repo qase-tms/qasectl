@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	defaultLimit = 20
+	defaultLimit = 50
 )
 
 // ClientV1 is a client for Qase API v1
@@ -36,23 +36,34 @@ func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]r
 
 	ctx, client := c.getApiV1Client(ctx)
 
-	resp, r, err := client.EnvironmentsAPI.
-		GetEnvironments(ctx, projectCode).
-		Limit(defaultLimit).
-		Execute()
+	environments := make([]run.Environment, 0)
 
-	if err != nil {
-		logger.Debug("failed to get environments", "response", r)
-		return nil, fmt.Errorf("failed to get environments: %w", err)
-	}
+	var offset int32 = 0
+	for {
+		resp, r, err := client.EnvironmentsAPI.
+			GetEnvironments(ctx, projectCode).
+			Limit(defaultLimit).
+			Offset(offset).
+			Execute()
 
-	environments := make([]run.Environment, 0, len(resp.Result.Entities))
-	for _, env := range resp.Result.Entities {
-		environments = append(environments, run.Environment{
-			Title: env.GetTitle(),
-			ID:    env.GetId(),
-			Slug:  env.GetSlug(),
-		})
+		if err != nil {
+			logger.Debug("failed to get environments", "response", r)
+			return nil, fmt.Errorf("failed to get environments: %w", err)
+		}
+
+		for _, env := range resp.Result.Entities {
+			environments = append(environments, run.Environment{
+				Title: env.GetTitle(),
+				ID:    env.GetId(),
+				Slug:  env.GetSlug(),
+			})
+		}
+
+		if resp.Result.GetTotal() <= offset {
+			break
+		} else {
+			offset += defaultLimit
+		}
 	}
 
 	logger.Debug("got environments", "environments", environments)
@@ -103,12 +114,11 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 
 	plans := make([]run.Plan, 0)
 
-	var limit int32 = defaultLimit
 	var offset int32 = 0
 	for {
 		resp, r, err := client.PlansAPI.
 			GetPlans(ctx, projectCode).
-			Limit(limit).
+			Limit(defaultLimit).
 			Offset(offset).
 			Execute()
 
@@ -124,10 +134,9 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 			})
 		}
 
-		if resp.Result.GetTotal() <= limit {
+		if resp.Result.GetTotal() <= offset {
 			break
 		} else {
-			limit += defaultLimit
 			offset += defaultLimit
 		}
 	}
