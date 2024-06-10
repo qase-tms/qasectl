@@ -27,6 +27,49 @@ func NewClientV1(token string) *ClientV1 {
 	}
 }
 
+// CreateEnvironment creates a new environment
+func (c *ClientV1) CreateEnvironment(ctx context.Context, pc, n, d, s, h string) (run.Environment, error) {
+	const op = "client.clientv1.createenvironment"
+	logger := slog.With("op", op)
+
+	logger.Debug("creating environment", "projectCode", pc, "name", n, "description", d, "slug", s, "host", h)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	m := apiV1Client.EnvironmentCreate{
+		Title: n,
+		Slug:  s,
+	}
+
+	if d != "" {
+		m.SetDescription(d)
+	}
+
+	if h != "" {
+		m.SetHost(h)
+	}
+
+	resp, r, err := client.EnvironmentsAPI.
+		CreateEnvironment(ctx, pc).
+		EnvironmentCreate(m).
+		Execute()
+
+	if err != nil {
+		logger.Debug("failed to create environment", "response", r)
+		return run.Environment{}, fmt.Errorf("failed to create environment: %w", err)
+	}
+
+	env := run.Environment{
+		Title: n,
+		Slug:  s,
+		ID:    resp.Result.GetId(),
+	}
+
+	logger.Info("created environment", "environment", env)
+
+	return env, nil
+}
+
 // GetEnvironments returns environments
 func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]run.Environment, error) {
 	const op = "client.clientv1.getenvironments"
