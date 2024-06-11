@@ -59,12 +59,12 @@ func Command() *cobra.Command {
 				output = path.Join(dir, "qase.env")
 			}
 
-			err = os.WriteFile(output, []byte(fmt.Sprintf("QASE_ENVIRONMENT=%d", e.ID)), 0644)
+			err = os.WriteFile(output, []byte(fmt.Sprintf("QASE_ENVIRONMENT=%s", e.Slug)), 0644)
 			if err != nil {
-				return fmt.Errorf("failed to write environament ID to file: %w", err)
+				return fmt.Errorf("failed to write environament slug to file: %w", err)
 			}
 
-			slog.Info(fmt.Sprintf("Environment created with ID: %d", e.ID))
+			slog.Info(fmt.Sprintf("Environment created with slug: %s", e.Slug))
 
 			return nil
 		},
