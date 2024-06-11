@@ -11,8 +11,6 @@ import (
 //go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
 type client interface {
 	GetEnvironments(ctx context.Context, projectCode string) ([]run.Environment, error)
-	GetMilestones(ctx context.Context, projectCode, milestoneName string) ([]run.Milestone, error)
-	GetPlans(ctx context.Context, projectCode string) ([]run.Plan, error)
 	CreateRun(ctx context.Context, projectCode, title, description string, envID, mileID, planID int64) (int64, error)
 	CompleteRun(ctx context.Context, projectCode string, runId int64) error
 }
@@ -28,7 +26,7 @@ func NewService(client client) *Service {
 }
 
 // CreateRun creates a new run
-func (s *Service) CreateRun(ctx context.Context, pc, t, d, e, m, plan string) (int64, error) {
+func (s *Service) CreateRun(ctx context.Context, pc, t, d, e string, m, plan int64) (int64, error) {
 	var envID int64 = 0
 	if e != "" {
 		es, err := s.client.GetEnvironments(ctx, pc)
@@ -42,31 +40,7 @@ func (s *Service) CreateRun(ctx context.Context, pc, t, d, e, m, plan string) (i
 		}
 	}
 
-	var mileID int64 = 0
-	if m != "" {
-		ms, err := s.client.GetMilestones(ctx, pc, m)
-		if err != nil {
-			return 0, fmt.Errorf("failed to get milestones: %w", err)
-		}
-		if len(ms) != 0 {
-			mileID = ms[0].ID
-		}
-	}
-
-	var planID int64 = 0
-	if plan != "" {
-		plans, err := s.client.GetPlans(ctx, pc)
-		if err != nil {
-			return 0, fmt.Errorf("failed to get plans: %w", err)
-		}
-		for _, p := range plans {
-			if p.Title == plan {
-				planID = p.ID
-			}
-		}
-	}
-
-	return s.client.CreateRun(ctx, pc, t, d, envID, mileID, planID)
+	return s.client.CreateRun(ctx, pc, t, d, envID, m, plan)
 }
 
 // CompleteRun completes a run

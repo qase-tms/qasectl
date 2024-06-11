@@ -27,8 +27,8 @@ func Command() *cobra.Command {
 		title       string
 		description string
 		environment string
-		milestone   string
-		plan        string
+		milestone   int64
+		plan        int64
 		output      string
 	)
 
@@ -73,9 +73,9 @@ func Command() *cobra.Command {
 		fmt.Println(err)
 	}
 	cmd.Flags().StringVarP(&description, descriptionFlag, "d", "", "description of the test run")
-	cmd.Flags().StringVarP(&environment, environmentFlag, "e", "", "environment of the test run")
-	cmd.Flags().StringVarP(&milestone, milestoneFlag, "m", "", "milestone of the test run")
-	cmd.Flags().StringVar(&plan, planFlag, "", "plan of the test run")
+	cmd.Flags().StringVarP(&environment, environmentFlag, "e", "", "slug of environment of the test run")
+	cmd.Flags().Int64VarP(&milestone, milestoneFlag, "m", 0, "ID of milestone of the test run")
+	cmd.Flags().Int64Var(&plan, planFlag, 0, "ID of plan of the test run")
 	cmd.Flags().StringVarP(&output, outputFlag, "o", "", "output path for the test run ID")
 
 	return cmd

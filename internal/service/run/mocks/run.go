@@ -83,33 +83,3 @@ func (mr *MockclientMockRecorder) GetEnvironments(ctx, projectCode any) *gomock.
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEnvironments", reflect.TypeOf((*Mockclient)(nil).GetEnvironments), ctx, projectCode)
 }
-
-// GetMilestones mocks base method.
-func (m *Mockclient) GetMilestones(ctx context.Context, projectCode, milestoneName string) ([]run.Milestone, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMilestones", ctx, projectCode, milestoneName)
-	ret0, _ := ret[0].([]run.Milestone)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetMilestones indicates an expected call of GetMilestones.
-func (mr *MockclientMockRecorder) GetMilestones(ctx, projectCode, milestoneName any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMilestones", reflect.TypeOf((*Mockclient)(nil).GetMilestones), ctx, projectCode, milestoneName)
-}
-
-// GetPlans mocks base method.
-func (m *Mockclient) GetPlans(ctx context.Context, projectCode string) ([]run.Plan, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPlans", ctx, projectCode)
-	ret0, _ := ret[0].([]run.Plan)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetPlans indicates an expected call of GetPlans.
-func (mr *MockclientMockRecorder) GetPlans(ctx, projectCode any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPlans", reflect.TypeOf((*Mockclient)(nil).GetPlans), ctx, projectCode)
-}
