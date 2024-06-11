@@ -337,7 +337,7 @@ func TestService_Upload(t *testing.T) {
 			}
 
 			if tt.rArgs.isUsed {
-				f.rs.EXPECT().CreateRun(gomock.Any(), tt.args.p.Project, tt.args.p.Title, tt.args.p.Description, "", "", "").Return(tt.rArgs.model, tt.rArgs.err)
+				f.rs.EXPECT().CreateRun(gomock.Any(), tt.args.p.Project, tt.args.p.Title, tt.args.p.Description, "", int64(0), int64(0)).Return(tt.rArgs.model, tt.rArgs.err)
 			}
 
 			if tt.cArgs.isUsed {
