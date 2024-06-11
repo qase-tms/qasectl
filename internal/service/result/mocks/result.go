@@ -130,7 +130,7 @@ func (mr *MockrunServiceMockRecorder) CompleteRun(ctx, projectCode, runId any) *
 }
 
 // CreateRun mocks base method.
-func (m_2 *MockrunService) CreateRun(ctx context.Context, p, t, d, e, m, plan string) (int64, error) {
+func (m_2 *MockrunService) CreateRun(ctx context.Context, p, t, d, e string, m, plan int64) (int64, error) {
 	m_2.ctrl.T.Helper()
 	ret := m_2.ctrl.Call(m_2, "CreateRun", ctx, p, t, d, e, m, plan)
 	ret0, _ := ret[0].(int64)

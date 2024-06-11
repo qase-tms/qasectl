@@ -18,7 +18,7 @@ type Parser interface {
 
 //go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
 type runService interface {
-	CreateRun(ctx context.Context, p, t string, d, e, m, plan string) (int64, error)
+	CreateRun(ctx context.Context, p, t string, d, e string, m, plan int64) (int64, error)
 	CompleteRun(ctx context.Context, projectCode string, runId int64) error
 }
 
@@ -54,7 +54,7 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 	runID := p.RunID
 	isTestRunCreated := false
 	if runID == 0 {
-		ID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", "", "")
+		ID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", 0, 0)
 		if err != nil {
 			logger.Error("failed to create run", "error", err)
 			return
