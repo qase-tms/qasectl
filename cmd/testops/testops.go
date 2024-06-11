@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/cmd/testops/env"
+	"github.com/qase-tms/qasectl/cmd/testops/milestone"
 	"github.com/qase-tms/qasectl/cmd/testops/result"
 	"github.com/qase-tms/qasectl/cmd/testops/run"
 	"github.com/spf13/cobra"
@@ -46,6 +47,7 @@ func Command() *cobra.Command {
 	cmd.AddCommand(run.Command())
 	cmd.AddCommand(result.Command())
 	cmd.AddCommand(env.Command())
+	cmd.AddCommand(milestone.Command())
 
 	return cmd
 }

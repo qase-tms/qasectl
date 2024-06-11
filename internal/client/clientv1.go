@@ -27,6 +27,51 @@ func NewClientV1(token string) *ClientV1 {
 	}
 }
 
+// CreateMilestone creates a new milestone
+func (c *ClientV1) CreateMilestone(ctx context.Context, projectCode, n, d, s string, t int64) (run.Milestone, error) {
+	const op = "client.clientv1.createmilestone"
+	logger := slog.With("op", op)
+
+	logger.Debug("creating milestone", "projectCode", projectCode, "name", n, "description", d, "status", s, "dueDate", t)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	m := apiV1Client.MilestoneCreate{
+		Title: n,
+	}
+
+	if d != "" {
+		m.SetDescription(d)
+	}
+
+	if s != "" {
+		m.SetStatus(s)
+	}
+
+	if t != 0 {
+		m.SetDueDate(t)
+	}
+
+	resp, r, err := client.MilestonesAPI.
+		CreateMilestone(ctx, projectCode).
+		MilestoneCreate(m).
+		Execute()
+
+	if err != nil {
+		logger.Debug("failed to create milestone", "response", r)
+		return run.Milestone{}, fmt.Errorf("failed to create milestone: %w", err)
+	}
+
+	milestone := run.Milestone{
+		Title: n,
+		ID:    resp.Result.GetId(),
+	}
+
+	logger.Info("created milestone", "milestone", milestone)
+
+	return milestone, nil
+}
+
 // CreateEnvironment creates a new environment
 func (c *ClientV1) CreateEnvironment(ctx context.Context, pc, n, d, s, h string) (run.Environment, error) {
 	const op = "client.clientv1.createenvironment"
