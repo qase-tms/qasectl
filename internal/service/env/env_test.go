@@ -97,7 +97,7 @@ func TestService_CreateEnvironment(t *testing.T) {
 			errCreate:  nil,
 			createUse:  false,
 			errGet:     errors.New("error"),
-			errMessage: "error",
+			errMessage: "failed to get environments: error",
 		},
 		{
 			name: "failed create environment",
@@ -128,7 +128,7 @@ func TestService_CreateEnvironment(t *testing.T) {
 
 			srv := NewService(f.client)
 			got, err := srv.CreateEnvironment(context.Background(), tt.args.pc, tt.args.n, tt.args.d, tt.args.s, tt.args.h)
-			if (err != nil) != tt.wantErr {
+			if err != nil {
 				if !tt.wantErr {
 					t.Errorf("CreateEnvironment() error = %v, wantErr %v", err, tt.wantErr)
 					return
