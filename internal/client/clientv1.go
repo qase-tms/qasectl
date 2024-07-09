@@ -245,6 +245,8 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 		Title: title,
 	}
 
+	m.SetIsAutotest(true)
+
 	if description != "" {
 		m.SetDescription(description)
 	}
