@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"github.com/magiconair/properties/assert"
-	"github.com/qase-tms/qasectl/internal/models/run"
 	"go.uber.org/mock/gomock"
 	"testing"
 )
@@ -73,14 +72,9 @@ func TestService_CreateRun(t *testing.T) {
 		plan int64
 		args baseArgs
 	}
-	type eArgs struct {
-		models []run.Environment
-		args   baseArgs
-	}
 	tests := []struct {
 		name       string
 		args       args
-		eArgs      eArgs
 		want       int64
 		wantErr    bool
 		errMessage string
@@ -99,78 +93,9 @@ func TestService_CreateRun(t *testing.T) {
 					isUsed: true,
 				},
 			},
-			eArgs: eArgs{
-				models: []run.Environment{
-					{
-						ID:   1,
-						Slug: "test",
-					}},
-				args: baseArgs{
-					err:    nil,
-					isUsed: true,
-				},
-			},
 			want:       1,
 			wantErr:    false,
 			errMessage: "",
-		},
-		{
-			name: "environment not found",
-			args: args{
-				pc:   "test",
-				t:    "test",
-				d:    "test",
-				e:    "test",
-				m:    0,
-				plan: 0,
-				args: baseArgs{
-					err:    nil,
-					isUsed: true,
-				},
-			},
-			eArgs: eArgs{
-				models: []run.Environment{
-					{
-						ID:   0,
-						Slug: "test1",
-					}},
-				args: baseArgs{
-					err:    nil,
-					isUsed: true,
-				},
-			},
-			want:       1,
-			wantErr:    false,
-			errMessage: "",
-		},
-		{
-			name: "failed to get environments",
-			args: args{
-				pc:   "test",
-				t:    "test",
-				d:    "test",
-				e:    "test",
-				m:    0,
-				plan: 0,
-				args: baseArgs{
-					err:    nil,
-					isUsed: false,
-				},
-			},
-			eArgs: eArgs{
-				models: []run.Environment{
-					{
-						ID:   0,
-						Slug: "test",
-					}},
-				args: baseArgs{
-					err:    errors.New("error"),
-					isUsed: true,
-				},
-			},
-			want:       0,
-			wantErr:    true,
-			errMessage: "failed to get environments: error",
 		},
 		{
 			name: "failed to create run",
@@ -186,17 +111,6 @@ func TestService_CreateRun(t *testing.T) {
 					isUsed: true,
 				},
 			},
-			eArgs: eArgs{
-				models: []run.Environment{
-					{
-						ID:   0,
-						Slug: "test",
-					}},
-				args: baseArgs{
-					err:    nil,
-					isUsed: true,
-				},
-			},
 			want:       0,
 			wantErr:    true,
 			errMessage: "error",
@@ -206,16 +120,12 @@ func TestService_CreateRun(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			f := newFixture(t)
 
-			if tt.eArgs.args.isUsed {
-				f.client.EXPECT().GetEnvironments(gomock.Any(), tt.args.pc).Return(tt.eArgs.models, tt.eArgs.args.err)
-			}
-
 			if tt.args.args.isUsed {
 				f.client.EXPECT().CreateRun(gomock.Any(),
 					tt.args.pc,
 					tt.args.t,
 					tt.args.d,
-					tt.eArgs.models[0].ID,
+					tt.args.e,
 					tt.args.m,
 					tt.args.plan,
 				).

@@ -5,7 +5,6 @@
 //
 //	mockgen -source=run.go -destination=/Users/gda/Documents/github/qase-tms/qasectl/internal/service/run/mocks/run.go -package=mocks
 //
-
 // Package mocks is a generated GoMock package.
 package mocks
 
@@ -13,7 +12,6 @@ import (
 	context "context"
 	reflect "reflect"
 
-	run "github.com/qase-tms/qasectl/internal/models/run"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -55,31 +53,16 @@ func (mr *MockclientMockRecorder) CompleteRun(ctx, projectCode, runId any) *gomo
 }
 
 // CreateRun mocks base method.
-func (m *Mockclient) CreateRun(ctx context.Context, projectCode, title, description string, envID, mileID, planID int64) (int64, error) {
+func (m *Mockclient) CreateRun(ctx context.Context, projectCode, title, description, envSlug string, mileID, planID int64) (int64, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateRun", ctx, projectCode, title, description, envID, mileID, planID)
+	ret := m.ctrl.Call(m, "CreateRun", ctx, projectCode, title, description, envSlug, mileID, planID)
 	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateRun indicates an expected call of CreateRun.
-func (mr *MockclientMockRecorder) CreateRun(ctx, projectCode, title, description, envID, mileID, planID any) *gomock.Call {
+func (mr *MockclientMockRecorder) CreateRun(ctx, projectCode, title, description, envSlug, mileID, planID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRun", reflect.TypeOf((*Mockclient)(nil).CreateRun), ctx, projectCode, title, description, envID, mileID, planID)
-}
-
-// GetEnvironments mocks base method.
-func (m *Mockclient) GetEnvironments(ctx context.Context, projectCode string) ([]run.Environment, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetEnvironments", ctx, projectCode)
-	ret0, _ := ret[0].([]run.Environment)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetEnvironments indicates an expected call of GetEnvironments.
-func (mr *MockclientMockRecorder) GetEnvironments(ctx, projectCode any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEnvironments", reflect.TypeOf((*Mockclient)(nil).GetEnvironments), ctx, projectCode)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRun", reflect.TypeOf((*Mockclient)(nil).CreateRun), ctx, projectCode, title, description, envSlug, mileID, planID)
 }
