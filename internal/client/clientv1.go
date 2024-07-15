@@ -235,7 +235,7 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 }
 
 // CreateRun creates a new run
-func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description string, envID, mileID, planID int64) (int64, error) {
+func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64) (int64, error) {
 	const op = "client.clientv1.createrun"
 	logger := slog.With("op", op)
 
@@ -251,8 +251,8 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 		m.SetDescription(description)
 	}
 
-	if envID != 0 {
-		m.SetEnvironmentId(envID)
+	if envSlug != "" {
+		m.SetEnvironmentSlug(envSlug)
 	}
 
 	if mileID != 0 {
@@ -272,7 +272,7 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 
 	if err != nil {
 		logger.Debug("failed to create run", "response", r)
-		return 0, fmt.Errorf("failed to create run: %w", err)
+		return 0, fmt.Errorf("failed to create run: %w. %s", err, r.Body)
 	}
 
 	logger.Info("created run", "runID", resp.Result.GetId(), "title", title, "description", description)
@@ -295,7 +295,7 @@ func (c *ClientV1) CompleteRun(ctx context.Context, projectCode string, runId in
 
 	if err != nil {
 		logger.Debug("failed to complete run", "response", r)
-		return fmt.Errorf("failed to complete run: %w", err)
+		return fmt.Errorf("failed to complete run: %w. %s", err, r.Body)
 	}
 
 	logger.Info("completed run", "runId", runId)
