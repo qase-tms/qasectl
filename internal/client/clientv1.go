@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"github.com/qase-tms/qasectl/internal/models/run"
@@ -58,8 +57,7 @@ func (c *ClientV1) CreateMilestone(ctx context.Context, projectCode, n, d, s str
 		Execute()
 
 	if err != nil {
-		logger.Debug("failed to create milestone", "response", r)
-		return run.Milestone{}, fmt.Errorf("failed to create milestone: %w", err)
+		return run.Milestone{}, NewQaseApiError(err.Error(), r.Body)
 	}
 
 	milestone := run.Milestone{
@@ -100,8 +98,7 @@ func (c *ClientV1) CreateEnvironment(ctx context.Context, pc, n, d, s, h string)
 		Execute()
 
 	if err != nil {
-		logger.Debug("failed to create environment", "response", r)
-		return run.Environment{}, fmt.Errorf("failed to create environment: %w", err)
+		return run.Environment{}, NewQaseApiError(err.Error(), r.Body)
 	}
 
 	env := run.Environment{
@@ -135,8 +132,7 @@ func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]r
 			Execute()
 
 		if err != nil {
-			logger.Debug("failed to get environments", "response", r)
-			return nil, fmt.Errorf("failed to get environments: %w", err)
+			return nil, NewQaseApiError(err.Error(), r.Body)
 		}
 
 		for _, env := range resp.Result.Entities {
@@ -174,8 +170,7 @@ func (c *ClientV1) GetMilestones(ctx context.Context, projectCode, milestoneName
 		Execute()
 
 	if err != nil {
-		logger.Debug("failed to get milestones", "response", r)
-		return nil, fmt.Errorf("failed to get milestones: %w", err)
+		return nil, NewQaseApiError(err.Error(), r.Body)
 	}
 
 	milestones := make([]run.Milestone, 0, len(resp.Result.Entities))
@@ -211,8 +206,7 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 			Execute()
 
 		if err != nil {
-			logger.Debug("failed to get plans", "response", r)
-			return nil, fmt.Errorf("failed to get plans: %w", err)
+			return nil, NewQaseApiError(err.Error(), r.Body)
 		}
 
 		for _, plan := range resp.Result.Entities {
@@ -271,8 +265,7 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 		Execute()
 
 	if err != nil {
-		logger.Debug("failed to create run", "response", r)
-		return 0, fmt.Errorf("failed to create run: %w. %s", err, r.Body)
+		return 0, NewQaseApiError(err.Error(), r.Body)
 	}
 
 	logger.Info("created run", "runID", resp.Result.GetId(), "title", title, "description", description)
@@ -294,8 +287,7 @@ func (c *ClientV1) CompleteRun(ctx context.Context, projectCode string, runId in
 		Execute()
 
 	if err != nil {
-		logger.Debug("failed to complete run", "response", r)
-		return fmt.Errorf("failed to complete run: %w. %s", err, r.Body)
+		return NewQaseApiError(err.Error(), r.Body)
 	}
 
 	logger.Info("completed run", "runId", runId)
@@ -321,14 +313,13 @@ func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, 
 
 	bulkModel := apiV1Client.NewResultcreateBulk(resultModels)
 
-	resp, r, err := client.ResultsAPI.
+	_, r, err := client.ResultsAPI.
 		CreateResultBulk(ctx, project, int32(runID)).
 		ResultcreateBulk(*bulkModel).
 		Execute()
 
 	if err != nil {
-		logger.Debug("failed to upload data", "model", resp, "response", r)
-		return fmt.Errorf("failed to upload data: %w", err)
+		return NewQaseApiError(err.Error(), r.Body)
 	}
 
 	return nil
@@ -347,9 +338,9 @@ func (c *ClientV1) uploadAttachment(ctx context.Context, projectCode string, fil
 		UploadAttachment(ctx, projectCode).
 		File(file).
 		Execute()
+
 	if err != nil {
-		logger.Debug("failed to upload attachment", "response", r)
-		return "", fmt.Errorf("failed to upload attachment: %w", err)
+		return "", NewQaseApiError(err.Error(), r.Body)
 	}
 
 	return *resp.Result[0].Hash, nil

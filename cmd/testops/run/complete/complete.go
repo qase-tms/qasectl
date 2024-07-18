@@ -32,11 +32,7 @@ func Command() *cobra.Command {
 
 			err := s.CompleteRun(cmd.Context(), project, runID)
 			if err != nil {
-				if err.Error() == "404 Not Found" {
-					fmt.Printf("Run %v not found", runID)
-					return nil
-				}
-				return err
+				return fmt.Errorf("failed to complete run with ID %d: %w", runID, err)
 			}
 
 			fmt.Printf("Run %v completed", runID)
