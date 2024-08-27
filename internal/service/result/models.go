@@ -6,4 +6,5 @@ type UploadParams struct {
 	Description string
 	Batch       int64
 	Project     string
+	Suite       string
 }

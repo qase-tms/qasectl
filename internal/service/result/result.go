@@ -63,6 +63,18 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 		isTestRunCreated = true
 	}
 
+	if p.Suite != "" {
+		s := []models.SuiteData{
+			{Title: p.Suite,
+				PublicID: nil,
+			},
+		}
+
+		for i := range results {
+			results[i].Relations.Suite.Data = append(s, results[i].Relations.Suite.Data...)
+		}
+	}
+
 	if int64(len(results)) < p.Batch {
 		err := s.client.UploadData(ctx, p.Project, runID, results)
 		if err != nil {
