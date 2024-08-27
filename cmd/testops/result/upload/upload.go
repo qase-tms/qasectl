@@ -33,6 +33,7 @@ func Command() *cobra.Command {
 		description string
 		steps       string
 		batch       int64
+		suite       string
 	)
 
 	cmd := &cobra.Command{
@@ -75,6 +76,7 @@ func Command() *cobra.Command {
 				Description: description,
 				Batch:       batch,
 				Project:     project,
+				Suite:       suite,
 			}
 
 			s.Upload(cmd.Context(), param)
@@ -105,6 +107,7 @@ func Command() *cobra.Command {
 
 	cmd.Flags().StringVar(&steps, "steps", "", "Steps show mode in XCTest. Allowed values: all, user")
 	cmd.Flags().Int64VarP(&batch, "batch", "b", 200, "Batch size for uploading results")
+	cmd.Flags().StringVarP(&suite, "suite", "s", "", "Root suite for the results")
 
 	return cmd
 }

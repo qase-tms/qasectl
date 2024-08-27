@@ -88,6 +88,7 @@ The `upload` command has the following options:
 - `--path`: The path to the test results file or folder. Required.
 - `--steps`: The mode of upload steps for XCTest. Optional. Allow values: `all`, `user`.
 - `--batch`: The batch number of the test results. Optional. Default is 200.
+- `--suite`, `-s`: The suite name of the test results. Optional.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
 
 The following example shows how to upload test results in the JUnit format for a test run with the ID `1` in the project
