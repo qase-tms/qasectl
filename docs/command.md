@@ -57,13 +57,13 @@ The `complete` command has the following options:
 
 - `--project`, `-p`: The project code where the test run will be completed. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
-- `--run`, `-r`: The ID of the test run to complete. Required.
+- `--id`: The ID of the test run to complete. Required.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
 
 The following example shows how to complete a test run with the ID `1` in the project with the code `PROJ`:
 
 ```bash
-qli testops run complete --project PROJ --token <token> --run 1 --verbose
+qli testops run complete --project PROJ --token <token> --id 1 --verbose
 ```
 
 # Upload test results
