@@ -50,7 +50,7 @@ the specified project.
 ## Example usage:
 
 ```bash
-qli testops run complete --project <project_code> --token <token> --run <run_id> --verbose
+qli testops run complete --project <project_code> --token <token> --id <run_id> --verbose
 ```
 
 The `complete` command has the following options:
