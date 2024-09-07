@@ -120,3 +120,89 @@ with the code `PROJ`:
 ```bash
 qli testops result upload --project PROJ --token <token> --id 1 --format xctest --steps user --path /path/to/xctest-results --verbose
 ```
+
+# Create an environment
+
+You can create an environment by using the `create` command. The `create` command is used to create a new environment
+in the specified project and save an environment slug to a file. You can specify the file path using the `--output`
+option.
+If the file path is not specified, the environment ID will be saved to `qase.env` in the current directory.
+
+The file will contain the environment slug in the following format:
+
+```text
+QASE_ENVIRONMENT=production
+```
+
+You can use the environment slug in subsequent steps to specify the environment for a test run.
+For exctract environment slug from file you can use command:
+
+```bash
+cat qase.env | grep QASE_ENVIRONMENT | cut -d'=' -f2
+```
+
+## Example usage:
+
+```bash
+qli testops env create --project <project_code> --token <token> --title <title> --slug <slug> --description <description> --host <host> --verbose
+```
+
+The `create` command has the following options:
+
+- `--project`, `-p`: The project code where the environment will be created. Required.
+- `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--title`, `-t`: The name of the environment. Required.
+- `--slug`, `-s`: The slug of the environment. Required.
+- `--description`, `-d`: The description of the environment. Optional.
+- `--host`, `-h`: The host of the environment. Optional.
+- `--output`, `-o`: The output path to save the environment slug. Optional. Default is `qase.env` in the current
+  directory.
+- `--verbose`, `-v`: Enable verbose mode. Optional.
+
+The following example shows how to create an environment in the project with the code `PROJ`:
+
+```bash
+qli testops env create --title 'New environment' --slug local --description 'This is an environment' --host app.server.com --project 'PRJ' --token 'TOKEN' --output 'env.env' --verbose
+``` 
+
+# Create a milestone
+
+You can create a milestone by using the `create` command. The `create` command is used to create a new milestone in the
+specified project and save a milestone ID to a file. You can specify the file path using the `--output` option. If the
+file path is not specified, the milestone ID will be saved to `qase.env` in the current directory.
+
+The file will contain the milestone ID in the following format:
+
+```text
+QASE_MILESTONE=123
+```
+
+You can use the milestone ID in subsequent steps to specify the milestone for a test run.
+For exctract milestone ID from file you can use command:
+
+```bash
+cat qase.env | grep QASE_MILESTONE | cut -d'=' -f2
+```
+
+## Example usage:
+
+```bash
+qli testops milestone create --project <project_code> --token <token> --title <title> --description <description> --status <status> --due-date <due_date> --verbose
+```
+
+The `create` command has the following options:
+
+- `--project`, `-p`: The project code where the milestone will be created. Required.
+- `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--title`, `-t`: The name of the milestone. Required.
+- `--description`, `-d`: The description of the milestone. Optional.
+- `--status`, `-s`: The status of the milestone. Optional. Allow values: `active`, `completed`.
+- `--due-date`, `-d`: The due date of the milestone. Optional.
+- `--output`, `-o`: The output path to save the milestone ID. Optional. Default is `qase.env` in the current directory.
+- `--verbose`, `-v`: Enable verbose mode. Optional.
+
+The following example shows how to create a milestone in the project with the code `PROJ`:
+
+```bash
+qli testops milestone create --project PROJ --token <token> --title "Milestone 1" --description "This is a milestone" --status active --due-date "2022-12-31" --verbose
+```
