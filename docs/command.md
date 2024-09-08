@@ -151,10 +151,10 @@ The `create` command has the following options:
 
 - `--project`, `-p`: The project code where the environment will be created. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
-- `--title`, `-t`: The name of the environment. Required.
+- `--title` : The name of the environment. Required.
 - `--slug`, `-s`: The slug of the environment. Required.
 - `--description`, `-d`: The description of the environment. Optional.
-- `--host`, `-h`: The host of the environment. Optional.
+- `--host` : The host of the environment. Optional.
 - `--output`, `-o`: The output path to save the environment slug. Optional. Default is `qase.env` in the current
   directory.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
@@ -194,10 +194,10 @@ The `create` command has the following options:
 
 - `--project`, `-p`: The project code where the milestone will be created. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
-- `--title`, `-t`: The name of the milestone. Required.
+- `--title` : The name of the milestone. Required.
 - `--description`, `-d`: The description of the milestone. Optional.
 - `--status`, `-s`: The status of the milestone. Optional. Allow values: `active`, `completed`.
-- `--due-date`, `-d`: The due date of the milestone. Optional.
+- `--due-date` : The due date of the milestone. Optional.
 - `--output`, `-o`: The output path to save the milestone ID. Optional. Default is `qase.env` in the current directory.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
 
