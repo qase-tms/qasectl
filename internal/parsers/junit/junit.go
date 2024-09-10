@@ -6,6 +6,7 @@ import (
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"io"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 )
@@ -24,21 +25,27 @@ func NewParser(path string) *Parser {
 
 // Parse parses the Junit XML file and returns the results
 func (p *Parser) Parse() ([]models.Result, error) {
+	const op = "parser.parse"
+	logger := slog.With("op", op)
+
 	var results []models.Result
 
 	fileInfo, err := os.Stat(p.path)
 	if err != nil {
+		logger.Error("failed to get file info", "error", err)
 		return nil, err
 	}
 
 	if fileInfo.IsDir() {
 		err := filepath.Walk(p.path, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
+				logger.Error("failed to walk path", "error", err)
 				return err
 			}
 			if !info.IsDir() {
 				result, err := p.parseFile(path)
 				if err != nil {
+					logger.Error("failed to parse file", "error", err)
 					return err
 				}
 				results = append(results, result...)
@@ -51,6 +58,7 @@ func (p *Parser) Parse() ([]models.Result, error) {
 	} else {
 		result, err := p.parseFile(p.path)
 		if err != nil {
+			logger.Error("failed to parse file", "error", err)
 			return nil, err
 		}
 		results = append(results, result...)
@@ -61,13 +69,18 @@ func (p *Parser) Parse() ([]models.Result, error) {
 
 // parseFile parses a single Junit XML file
 func (p *Parser) parseFile(path string) ([]models.Result, error) {
+	const op = "parser.parseFile"
+	logger := slog.With("op", op)
+
 	xmlFile, err := os.Open(path)
 	if err != nil {
+		logger.Error("failed to open file", "error", err)
 		return nil, err
 	}
 	defer func() {
 		err := xmlFile.Close()
 		if err != nil {
+			logger.Error("failed to close file", "error", err)
 			log.Println(err)
 		}
 	}()
@@ -77,6 +90,7 @@ func (p *Parser) parseFile(path string) ([]models.Result, error) {
 	var testSuites TestSuites
 	err = xml.Unmarshal(byteValue, &testSuites)
 	if err != nil {
+		logger.Error("failed to unmarshal xml", "error", err)
 		return nil, err
 	}
 
