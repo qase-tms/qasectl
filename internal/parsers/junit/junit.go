@@ -107,12 +107,14 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 		for _, testCase := range testSuite.TestCases {
 			relation := models.Relation{
 				Suite: models.Suite{
-					Data: []models.SuiteData{
-						{
-							Title: testSuites.Name,
-						},
-					},
+					Data: []models.SuiteData{},
 				},
+			}
+
+			if testSuites.Name != "" {
+				relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
+					Title: testSuites.Name,
+				})
 			}
 
 			parts := strings.Split(testSuite.Name, string(filepath.Separator))
