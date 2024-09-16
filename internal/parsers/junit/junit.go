@@ -3,12 +3,14 @@ package junit
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/google/uuid"
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"io"
 	"log"
 	"log/slog"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // Parser is a parser for Junit XML files
@@ -109,11 +111,21 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 						{
 							Title: testSuites.Name,
 						},
-						{
-							Title: testSuite.Name,
-						},
 					},
 				},
+			}
+
+			parts := strings.Split(testSuite.Name, string(filepath.Separator))
+			if len(parts) > 1 {
+				for _, part := range parts {
+					relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
+						Title: part,
+					})
+				}
+			} else {
+				relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
+					Title: testSuite.Name,
+				})
 			}
 
 			signature := fmt.Sprintf("%s::%s::%s::%s", testSuites.Name, testSuite.Name, testCase.ClassName, testCase.Name)
@@ -162,6 +174,29 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 				Fields:      fields,
 				Message:     message,
 			}
+
+			if testCase.SystemOut != "" {
+				c := []byte(testCase.SystemOut)
+				id := uuid.New()
+				result.Attachments = append(result.Attachments, models.Attachment{
+					ID:          &id,
+					Name:        "system-out.txt",
+					ContentType: "plain/text",
+					Content:     &c,
+				})
+			}
+
+			if testCase.SystemErr != "" {
+				c := []byte(testCase.SystemErr)
+				id := uuid.New()
+				result.Attachments = append(result.Attachments, models.Attachment{
+					ID:          &id,
+					Name:        "system-err.txt",
+					ContentType: "plain/text",
+					Content:     &c,
+				})
+			}
+
 			results = append(results, result)
 		}
 	}
