@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/magiconair/properties/assert"
+	"github.com/qase-tms/qasectl/internal/models/run"
 	"go.uber.org/mock/gomock"
 	"testing"
 )
@@ -145,6 +146,174 @@ func TestService_CreateRun(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("CreateRun() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestService_DeleteRun(t *testing.T) {
+	type args struct {
+		projectCode string
+		ids         []int64
+		all         bool
+		start       int64
+		end         int64
+	}
+	type argsGetTr struct {
+		models []run.Run
+		isUsed bool
+		err    error
+	}
+	type argsDelTr struct {
+		ids    []int64
+		isUsed bool
+		err    error
+	}
+	tests := []struct {
+		name       string
+		args       args
+		argsGetTr  argsGetTr
+		argsDelTr  argsDelTr
+		wantErr    bool
+		errMessage string
+	}{
+		{
+			name: "success with ids",
+			args: args{
+				projectCode: "test",
+				ids:         []int64{1},
+				all:         false,
+				start:       0,
+				end:         0,
+			},
+			argsGetTr: argsGetTr{
+				models: []run.Run{{
+					ID: 1,
+				}},
+				isUsed: true,
+				err:    nil,
+			},
+			argsDelTr: argsDelTr{
+				ids:    []int64{1},
+				isUsed: true,
+				err:    nil,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "success with all",
+			args: args{
+				projectCode: "test",
+				ids:         []int64{},
+				all:         true,
+				start:       0,
+				end:         0,
+			},
+			argsGetTr: argsGetTr{
+				models: []run.Run{{
+					ID: 1,
+				}},
+				isUsed: true,
+				err:    nil,
+			},
+			argsDelTr: argsDelTr{
+				ids:    []int64{1},
+				isUsed: true,
+				err:    nil,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "incorrect args",
+			args: args{
+				projectCode: "test",
+				ids:         []int64{},
+				all:         false,
+				start:       0,
+				end:         0,
+			},
+			argsGetTr: argsGetTr{
+				models: []run.Run{{}},
+				isUsed: false,
+				err:    nil,
+			},
+			argsDelTr: argsDelTr{
+				ids:    []int64{1},
+				isUsed: false,
+				err:    nil,
+			},
+			wantErr:    true,
+			errMessage: "no ids provided",
+		},
+		{
+			name: "error get test runs",
+			args: args{
+				projectCode: "test",
+				ids:         []int64{1},
+				all:         false,
+				start:       0,
+				end:         0,
+			},
+			argsGetTr: argsGetTr{
+				models: []run.Run{{}},
+				isUsed: true,
+				err:    errors.New("error"),
+			},
+			argsDelTr: argsDelTr{
+				ids:    []int64{},
+				isUsed: false,
+				err:    nil,
+			},
+			wantErr:    true,
+			errMessage: "failed to get test runs: error",
+		},
+		{
+			name: "error delete test run",
+			args: args{
+				projectCode: "test",
+				ids:         []int64{1},
+				all:         false,
+				start:       0,
+				end:         0,
+			},
+			argsGetTr: argsGetTr{
+				models: []run.Run{{
+					ID: 1,
+				}},
+				isUsed: true,
+				err:    nil,
+			},
+			argsDelTr: argsDelTr{
+				ids:    []int64{1},
+				isUsed: true,
+				err:    errors.New("error"),
+			},
+			wantErr:    true,
+			errMessage: "failed to delete run with id 1: error",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			f := newFixture(t)
+
+			if tt.argsGetTr.isUsed {
+				f.client.EXPECT().GetTestRuns(gomock.Any(), tt.args.projectCode, tt.args.start, tt.args.end).Return(tt.argsGetTr.models, tt.argsGetTr.err)
+			}
+			if tt.argsDelTr.isUsed {
+				f.client.EXPECT().DeleteTestRun(gomock.Any(), tt.args.projectCode, tt.argsDelTr.ids[0]).Return(tt.argsDelTr.err).Times(len(tt.argsDelTr.ids))
+			}
+
+			s := NewService(f.client)
+
+			if err := s.DeleteRun(context.Background(), tt.args.projectCode, tt.args.ids, tt.args.all, tt.args.start, tt.args.end); err != nil {
+				if !tt.wantErr {
+					t.Errorf("DeleteRun() error = %v, wantErr %v", err, tt.wantErr)
+					return
+				}
+
+				assert.Equal(t, tt.errMessage, err.Error())
 			}
 		})
 	}

@@ -325,6 +325,76 @@ func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, 
 	return nil
 }
 
+// GetTestRuns returns test runs
+func (c *ClientV1) GetTestRuns(ctx context.Context, projectCode string, start, end int64) ([]run.Run, error) {
+	const op = "client.clientv1.gettestruns"
+	logger := slog.With("op", op)
+
+	logger.Debug("getting test runs", "projectCode", projectCode)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	testRuns := make([]run.Run, 0)
+
+	var offset int32 = 0
+	for {
+		req := client.RunsAPI.
+			GetRuns(ctx, projectCode).
+			Limit(defaultLimit).
+			Offset(offset)
+
+		if start != 0 {
+			req = req.FromStartTime(start)
+		}
+
+		if end != 0 {
+			req = req.ToStartTime(end)
+		}
+
+		resp, r, err := req.Execute()
+
+		if err != nil {
+			return nil, NewQaseApiError(err.Error(), r.Body)
+		}
+
+		for _, testRun := range resp.Result.Entities {
+			testRuns = append(testRuns, run.Run{
+				ID: testRun.GetId(),
+			})
+		}
+
+		if resp.Result.GetFiltered() <= offset {
+			break
+		} else {
+			offset += defaultLimit
+		}
+	}
+
+	logger.Debug("got test runs", "testRuns", testRuns)
+
+	return testRuns, nil
+}
+
+// DeleteTestRun deletes test run
+func (c *ClientV1) DeleteTestRun(ctx context.Context, projectCode string, id int64) error {
+	const op = "client.clientv1.deletetestrun"
+	logger := slog.With("op", op)
+
+	logger.Debug("deleting test run", "projectCode", projectCode, "id", id)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	_, r, err := client.RunsAPI.
+		DeleteRun(ctx, projectCode, int32(id)).
+		Execute()
+
+	if err != nil {
+		return NewQaseApiError(err.Error(), r.Body)
+	}
+
+	return nil
+}
+
 // uploadAttachment uploads attachments to Qase
 func (c *ClientV1) uploadAttachment(ctx context.Context, projectCode string, file []*os.File) (string, error) {
 	const op = "client.clientv1.uploadattachment"
