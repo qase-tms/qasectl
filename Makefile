@@ -27,8 +27,13 @@ install:
 
 .PHONY: coverage
 coverage:
-	@go test -coverprofile=coverage.out ./...
+	@go test ./... -coverprofile=coverage.out
 	@go tool cover -func=coverage.out
+
+.PHONY: coverhtml
+coverhtml:
+	@go test ./... -coverprofile=coverage.out
+	@go tool cover -html=coverage.out
 
 .PHONY: docker
 docker:
