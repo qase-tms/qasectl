@@ -3,6 +3,7 @@ package run
 import (
 	"github.com/qase-tms/qasectl/cmd/testops/run/complete"
 	"github.com/qase-tms/qasectl/cmd/testops/run/create"
+	"github.com/qase-tms/qasectl/cmd/testops/run/delete"
 	"github.com/spf13/cobra"
 )
 
@@ -16,6 +17,7 @@ func Command() *cobra.Command {
 
 	cmd.AddCommand(create.Command())
 	cmd.AddCommand(complete.Command())
+	cmd.AddCommand(delete.Command())
 
 	return cmd
 }

@@ -66,6 +66,46 @@ The following example shows how to complete a test run with the ID `1` in the pr
 qli testops run complete --project PROJ --token <token> --id 1 --verbose
 ```
 
+# Delete test runs
+
+You can delete test runs by using the `delete` command. The `delete` command is used to delete test runs in the
+specified project.
+
+## Example usage:
+
+```bash
+qli testops run delete --project <project_code> --token <token> --ids <run_id> --verbose
+```
+
+The `delete` command has the following options:
+
+- `--project`, `-p`: The project code where the test runs will be deleted. Required.
+- `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--ids`: The IDs of the test runs to delete. Optional if all doesn't set.
+- `--all`: Delete all test runs in the project. Optional if ids doesn't set.
+- `--start`, `-s`: The start date of the test runs to delete. Optional.
+- `--end`, `-e`: The end date of the test runs to delete. Optional.
+- `--verbose`, `-v`: Enable verbose mode. Optional.
+
+The following example shows how to delete a test run with the ID `1` in the project with the code `PROJ`:
+
+```bash
+qli testops run delete --project PROJ --token <token> --ids 1 --verbose
+```
+
+The following example shows how to delete all test runs in the project with the code `PROJ`:
+
+```bash
+qli testops run delete --project PROJ --token <token> --all --verbose
+```
+
+The following example shows how to delete all test runs in the project with the code `PROJ` that were created between
+`2022-01-01` and `2022-12-31`:
+
+```bash
+qli testops run delete --project PROJ --token <token> --all --start "2022-01-01" --end "2022-12-31" --verbose
+```
+
 # Upload test results
 
 You can upload test results by using the `upload` command. The `upload` command is used to upload test results for a
