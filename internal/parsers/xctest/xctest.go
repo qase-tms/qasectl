@@ -81,9 +81,26 @@ func (p *Parser) readJson(id *string) ([]byte, error) {
 	if id != nil {
 		args = append(args, "--id", *id)
 	}
-	out, err := exec.Command("xcrun", args...).Output()
+
+	executeCommand := func(args []string) ([]byte, error) {
+		out, err := exec.Command("xcrun", args...).Output()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get XCResult: %w", err)
+		}
+		return out, nil
+	}
+
+	out, err := executeCommand(args)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get XCResult: %w", err)
+		if strings.Contains(err.Error(), "exit status 64") {
+			args = append(args, "--legacy")
+			out, err = executeCommand(args)
+			if err != nil {
+				return nil, fmt.Errorf("failed to get XCResult with --legacy: %w", err)
+			}
+			return out, nil
+		}
+		return nil, err
 	}
 
 	return out, nil
@@ -91,9 +108,26 @@ func (p *Parser) readJson(id *string) ([]byte, error) {
 
 func (p *Parser) readAttachment(id string) ([]byte, error) {
 	args := []string{"xcresulttool", "get", "--path", p.path, "--format", "raw", "--id", id}
-	out, err := exec.Command("xcrun", args...).Output()
+
+	executeCommand := func(args []string) ([]byte, error) {
+		out, err := exec.Command("xcrun", args...).Output()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get XCResult attachment: %w", err)
+		}
+		return out, nil
+	}
+
+	out, err := executeCommand(args)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get XCResult attachment: %w", err)
+		if strings.Contains(err.Error(), "exit status 64") {
+			args = append(args, "--legacy")
+			out, err = executeCommand(args)
+			if err != nil {
+				return nil, fmt.Errorf("failed to get XCResult attachment with --legacy: %w", err)
+			}
+		} else {
+			return nil, err
+		}
 	}
 
 	return out, nil
