@@ -93,6 +93,8 @@ func (p *Parser) parseFile(path string) (models.Result, error) {
 
 	result.Steps = p.convertStepAttachments(result.Steps)
 
+	result = p.calculateDuration(result)
+
 	return result, nil
 }
 
@@ -127,4 +129,16 @@ func (p *Parser) convertAttachments(attachments []models.Attachment) []models.At
 	}
 
 	return attachments
+}
+
+func (p *Parser) calculateDuration(result models.Result) models.Result {
+	if result.StartTime != nil && result.EndTime != nil {
+		duration := *result.Execution.EndTime - *result.Execution.StartTime
+		result.Execution.Duration = &duration
+	}
+
+	result.Execution.StartTime = nil
+	result.Execution.EndTime = nil
+
+	return result
 }
