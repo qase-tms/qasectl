@@ -66,9 +66,10 @@ func Command() *cobra.Command {
 				return fmt.Errorf("unknown format: %s. allowed formats: junit, qase, allure, xctest", format)
 			}
 
-			c := client.NewClientV1(token)
-			rs := run.NewService(c)
-			s := result.NewService(c, p, rs)
+			cv1 := client.NewClientV1(token)
+			cv2 := client.NewClientV2(token, cv1)
+			rs := run.NewService(cv1)
+			s := result.NewService(cv2, p, rs)
 
 			param := result.UploadParams{
 				RunID:       runID,
