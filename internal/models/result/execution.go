@@ -5,6 +5,6 @@ type Execution struct {
 	EndTime    *float64 `json:"end_time"`
 	Status     string   `json:"status"`
 	Duration   *float64 `json:"duration"`
-	StackTrace *string  `json:"stack_trace"`
+	StackTrace *string  `json:"stacktrace"`
 	Thread     *string  `json:"thread"`
 }

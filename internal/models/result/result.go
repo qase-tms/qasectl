@@ -13,6 +13,7 @@ type Result struct {
 	Steps       []Step            `json:"steps"`
 	StepType    string            `json:"step_type,omitempty"`
 	Params      map[string]string `json:"params"`
+	ParamGroups [][]string        `json:"param_groups"`
 	Relations   Relation          `json:"relations"`
 	Muted       bool              `json:"muted"`
 	Message     *string           `json:"message"`
