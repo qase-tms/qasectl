@@ -100,6 +100,9 @@ func (p *Parser) convertTest(test Test) models.Result {
 		Attachments: p.convertAttachments(test.Attachments),
 		StepType:    "text",
 		Duration:    &d,
+		Params:      map[string]string{},
+		ParamGroups: make([][]string, 0),
+		Fields:      map[string]string{},
 		Execution: models.Execution{
 			Duration:   &d,
 			Status:     test.Status,
@@ -117,22 +120,22 @@ func (p *Parser) convertTest(test Test) models.Result {
 			result.Execution.Thread = &v.Value
 		}
 
-		if v.Name != "package" {
-			continue
+		if v.Name == "package" {
+			suites := strings.Split(v.Value, ".")
+			data := make([]models.SuiteData, 0, len(suites))
+
+			for i := range suites {
+				data = append(data, models.SuiteData{Title: suites[i]})
+			}
+
+			result.Relations = models.Relation{
+				Suite: models.Suite{
+					Data: data,
+				},
+			}
 		}
 
-		suites := strings.Split(v.Value, ".")
-		data := make([]models.SuiteData, 0, len(suites))
-
-		for i := range suites {
-			data = append(data, models.SuiteData{Title: suites[i]})
-		}
-
-		result.Relations = models.Relation{
-			Suite: models.Suite{
-				Data: data,
-			},
-		}
+		result.Fields[v.Name] = v.Value
 	}
 
 	return result
