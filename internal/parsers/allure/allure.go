@@ -13,7 +13,8 @@ import (
 
 // Parser is a parser for Allure files
 type Parser struct {
-	path string
+	path     string
+	rootPath string
 }
 
 // NewParser creates a new Parser
@@ -22,6 +23,23 @@ func NewParser(path string) *Parser {
 		path: path,
 	}
 }
+
+var (
+	validStepStatuses = map[string]bool{
+		"passed":  true,
+		"failed":  true,
+		"skipped": true,
+		"blocked": true,
+	}
+
+	validTestStatuses = map[string]bool{
+		"passed":  true,
+		"failed":  true,
+		"skipped": true,
+		"blocked": true,
+		"invalid": true,
+	}
+)
 
 // Parse parses the Allure file and returns the results
 func (p *Parser) Parse() ([]models.Result, error) {
@@ -35,6 +53,7 @@ func (p *Parser) Parse() ([]models.Result, error) {
 	}
 
 	if fileInfo.IsDir() {
+		p.rootPath = p.path
 		err := filepath.Walk(p.path, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return fmt.Errorf("failed to walk path: %w", err)
@@ -48,6 +67,7 @@ func (p *Parser) Parse() ([]models.Result, error) {
 			return nil, fmt.Errorf("failed to walk path: %w", err)
 		}
 	} else {
+		p.rootPath = filepath.Dir(p.path)
 		files = append(files, p.path)
 	}
 
@@ -59,7 +79,7 @@ func (p *Parser) Parse() ([]models.Result, error) {
 	results := make([]models.Result, 0, len(files))
 
 	for _, file := range files {
-		if filepath.Ext(file) != ".json" {
+		if !strings.Contains(file, "-result.json") {
 			logger.Debug("skipping file. Only support json format", "file", file)
 			continue
 		}
@@ -105,7 +125,7 @@ func (p *Parser) convertTest(test Test) models.Result {
 		Fields:      map[string]string{},
 		Execution: models.Execution{
 			Duration:   &d,
-			Status:     test.Status,
+			Status:     p.convertTestResultStatus(test.Status),
 			StackTrace: test.StatusDetails.Trace,
 		},
 		Message: test.StatusDetails.Message,
@@ -150,7 +170,7 @@ func (p *Parser) convertStep(step TestStep) models.Step {
 		Execution: models.StepExecution{
 			Attachments: p.convertAttachments(step.Attachments),
 			Duration:    &d,
-			Status:      step.Status,
+			Status:      p.convertStepResultStatus(step.Status),
 		},
 		Steps: make([]models.Step, 0, len(step.Steps)),
 	}
@@ -166,13 +186,27 @@ func (p *Parser) convertAttachments(attachments []Attachment) []models.Attachmen
 	result := make([]models.Attachment, 0, len(attachments))
 
 	for _, attachment := range attachments {
-		d := filepath.Dir(p.path)
-		p := path.Join(d, attachment.Source)
+		p := path.Join(p.rootPath, attachment.Source)
 		result = append(result, models.Attachment{
-			Name:     attachment.Name,
-			FilePath: &p,
+			Name:        attachment.Name,
+			ContentType: attachment.Type,
+			FilePath:    &p,
 		})
 	}
 
 	return result
+}
+
+func (p *Parser) convertTestResultStatus(status string) string {
+	if validTestStatuses[status] {
+		return status
+	}
+	return "invalid"
+}
+
+func (p *Parser) convertStepResultStatus(status string) string {
+	if validStepStatuses[status] {
+		return status
+	}
+	return "blocked"
 }
