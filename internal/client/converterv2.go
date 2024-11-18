@@ -129,15 +129,17 @@ func (c *ClientV2) createStepModel(ctx context.Context, projectCode string, step
 	m := apiV2Client.NewResultStep()
 	d := apiV2Client.NewResultStepData(step.Data.Action)
 	m.SetData(*d)
-	m.SetExecution(c.createStepExecution(step.Execution))
+	m.SetExecution(c.createStepExecution(ctx, projectCode, step.Execution))
 	m.SetSteps(c.convertStepMaps(ctx, projectCode, step.Steps))
 
 	return *m
 }
 
-func (c *ClientV2) createStepExecution(execution models.StepExecution) apiV2Client.ResultStepExecution {
+func (c *ClientV2) createStepExecution(ctx context.Context, projectCode string, execution models.StepExecution) apiV2Client.ResultStepExecution {
 	status, _ := apiV2Client.NewResultStepStatusFromValue(execution.Status)
 	exec := apiV2Client.NewResultStepExecution(*status)
+
+	exec.Attachments = c.clientV1.convertAttachments(ctx, projectCode, execution.Attachments)
 
 	if execution.Duration != nil {
 		exec.SetDuration(int64(*execution.Duration))
@@ -152,7 +154,7 @@ func (c *ClientV2) convertStepMaps(ctx context.Context, projectCode string, step
 	for i := range steps {
 		stepMaps[i] = map[string]interface{}{
 			"data":      apiV2Client.NewResultStepData(steps[i].Data.Action),
-			"execution": c.createStepExecution(steps[i].Execution),
+			"execution": c.createStepExecution(ctx, projectCode, steps[i].Execution),
 			"steps":     c.convertStepMaps(ctx, projectCode, steps[i].Steps),
 		}
 	}
