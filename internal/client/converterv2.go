@@ -12,8 +12,11 @@ func (c *ClientV2) convertResultToApiModel(ctx context.Context, projectCode stri
 		Signature:   result.Signature,
 		Attachments: c.clientV1.convertAttachments(ctx, projectCode, result.Attachments),
 		Steps:       c.convertSteps(ctx, projectCode, result.Steps),
-		Params:      &result.Params,
 		ParamGroups: result.ParamGroups,
+	}
+
+	if result.Params != nil {
+		model.SetParams(result.Params)
 	}
 
 	if result.TestOpsID != nil {

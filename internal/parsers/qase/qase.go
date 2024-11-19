@@ -6,8 +6,8 @@ import (
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"log/slog"
 	"os"
+	"path"
 	"path/filepath"
-	"strings"
 )
 
 // Parser is a parser for Qase files
@@ -122,9 +122,9 @@ func (p *Parser) convertAttachments(attachments []models.Attachment) []models.At
 		}
 
 		if os.IsNotExist(err) {
-			id := strings.Split(*attachments[i].FilePath, "attachments/")[1]
-			dir := strings.Split(filepath.Dir(p.path), "results")[0]
-			*attachments[i].FilePath = dir + "attachments/" + id
+			id := filepath.Base(*attachments[i].FilePath)
+			dir := filepath.Dir(p.path)
+			*attachments[i].FilePath = path.Join(dir, "attachments", id)
 		}
 	}
 
