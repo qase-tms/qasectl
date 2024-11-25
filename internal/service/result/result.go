@@ -82,7 +82,13 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 		}
 	} else {
 		for i := int64(0); i < int64(len(results)); i += p.Batch {
-			err := s.client.UploadData(ctx, p.Project, runID, results[i:i+p.Batch])
+			end := i + p.Batch
+
+			if end > int64(len(results)) {
+				end = int64(len(results))
+			}
+
+			err := s.client.UploadData(ctx, p.Project, runID, results[i:end])
 			if err != nil {
 				logger.Error("failed to upload results", "error", err)
 			}
