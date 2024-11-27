@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -116,6 +117,7 @@ func (p *Parser) convertTest(test Test) models.Result {
 	d := test.Stop - test.Start
 	result := models.Result{
 		Title:       test.Name,
+		TestOpsID:   p.getTestOpsID(test.Links),
 		Steps:       make([]models.Step, 0, len(test.Steps)),
 		Attachments: p.convertAttachments(test.Attachments),
 		StepType:    "text",
@@ -209,4 +211,37 @@ func (p *Parser) convertStepResultStatus(status string) string {
 		return status
 	}
 	return "blocked"
+}
+
+func (p *Parser) getTestOpsID(links []Link) *int64 {
+	if len(links) == 0 {
+		return nil
+	}
+
+	for _, link := range links {
+		if link.Type == "tms" {
+			return p.extractTestOpsID(link.Name)
+		}
+	}
+
+	return nil
+}
+
+func (p *Parser) extractTestOpsID(name string) *int64 {
+	if name == "" {
+		return nil
+	}
+
+	parts := strings.Split(name, "-")
+	if len(parts) == 0 {
+		return nil
+	}
+
+	id := strings.TrimSpace(parts[len(parts)-1])
+	if testOpsID, err := strconv.ParseInt(id, 10, 64); err == nil {
+		return &testOpsID
+	}
+
+	slog.Warn("failed to parse testops id", "id", id)
+	return nil
 }
