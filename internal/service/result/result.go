@@ -2,6 +2,7 @@ package result
 
 import (
 	"context"
+	"fmt"
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"log/slog"
 )
@@ -35,29 +36,27 @@ func NewService(client client, parser Parser, rs runService) *Service {
 }
 
 // Upload imports the data
-func (s *Service) Upload(ctx context.Context, p UploadParams) {
+func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 	const op = "result.parser.import"
 	logger := slog.With("op", op)
 
 	results, err := s.parser.Parse()
 	if err != nil {
-		logger.Error("failed to parse results", "error", err)
-		return
+		return fmt.Errorf("failed to parse results: %w", err)
 	}
 
 	logger.Info("number of results found", "count", len(results))
 
 	if len(results) == 0 {
-		logger.Info("no results to upload")
-		return
+		return fmt.Errorf("no results to upload")
 	}
+
 	runID := p.RunID
 	isTestRunCreated := false
 	if runID == 0 {
 		ID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", 0, 0)
 		if err != nil {
-			logger.Error("failed to create run", "error", err)
-			return
+			return err
 		}
 		runID = ID
 		isTestRunCreated = true
@@ -78,7 +77,7 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 	if int64(len(results)) < p.Batch {
 		err := s.client.UploadData(ctx, p.Project, runID, results)
 		if err != nil {
-			logger.Error("failed to upload results", "error", err)
+			return fmt.Errorf("failed to upload results: %w", err)
 		}
 	} else {
 		for i := int64(0); i < int64(len(results)); i += p.Batch {
@@ -90,7 +89,7 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 
 			err := s.client.UploadData(ctx, p.Project, runID, results[i:end])
 			if err != nil {
-				logger.Error("failed to upload results", "error", err)
+				return fmt.Errorf("failed to upload results: %w", err)
 			}
 		}
 	}
@@ -98,7 +97,9 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) {
 	if isTestRunCreated {
 		err := s.rs.CompleteRun(ctx, p.Project, runID)
 		if err != nil {
-			logger.Error("failed to complete run", "error", err)
+			return err
 		}
 	}
+
+	return nil
 }
