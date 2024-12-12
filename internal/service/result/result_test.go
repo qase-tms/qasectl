@@ -168,8 +168,8 @@ func TestService_Upload(t *testing.T) {
 				err:    nil,
 				isUsed: false,
 			},
-			wantErr:    false,
-			errMessage: "",
+			wantErr:    true,
+			errMessage: "failed to parse results: failed parser",
 		},
 		{
 			name: "empty results",
@@ -201,8 +201,8 @@ func TestService_Upload(t *testing.T) {
 				err:    nil,
 				isUsed: false,
 			},
-			wantErr:    false,
-			errMessage: "",
+			wantErr:    true,
+			errMessage: "no results to upload",
 		},
 		{
 			name: "failed create test run",
@@ -234,8 +234,8 @@ func TestService_Upload(t *testing.T) {
 				err:    nil,
 				isUsed: false,
 			},
-			wantErr:    false,
-			errMessage: "",
+			wantErr:    true,
+			errMessage: "failed create test run",
 		},
 		{
 			name: "use batch",
@@ -283,7 +283,7 @@ func TestService_Upload(t *testing.T) {
 				},
 				err:    errors.New("failed upload data"),
 				isUsed: true,
-				count:  2,
+				count:  1,
 				runID:  1,
 			},
 			pArgs: pArgs{
@@ -298,10 +298,10 @@ func TestService_Upload(t *testing.T) {
 			},
 			cArgs: cArgs{
 				err:    nil,
-				isUsed: true,
+				isUsed: false,
 			},
-			wantErr:    false,
-			errMessage: "",
+			wantErr:    true,
+			errMessage: "failed to upload results: failed upload data",
 		},
 		{
 			name: "failed upload data",
@@ -331,10 +331,10 @@ func TestService_Upload(t *testing.T) {
 			},
 			cArgs: cArgs{
 				err:    nil,
-				isUsed: true,
+				isUsed: false,
 			},
-			wantErr:    false,
-			errMessage: "",
+			wantErr:    true,
+			errMessage: "failed to upload results: failed upload data",
 		},
 		{
 			name: "failed complete run",
@@ -366,8 +366,8 @@ func TestService_Upload(t *testing.T) {
 				err:    errors.New("failed complete run"),
 				isUsed: true,
 			},
-			wantErr:    false,
-			errMessage: "",
+			wantErr:    true,
+			errMessage: "failed complete run",
 		},
 	}
 	for _, tt := range tests {
@@ -387,15 +387,17 @@ func TestService_Upload(t *testing.T) {
 			}
 
 			if tt.args.isUsed {
-				if tt.args.count != 1 {
-					f.client.EXPECT().UploadData(gomock.Any(), tt.args.p.Project, tt.args.runID, gomock.Any()).Return(tt.args.err).Times(tt.args.count)
-				} else {
-					f.client.EXPECT().UploadData(gomock.Any(), tt.args.p.Project, tt.args.runID, tt.pArgs.models).Return(tt.args.err).Times(tt.args.count)
-				}
+				f.client.EXPECT().UploadData(gomock.Any(), tt.args.p.Project, tt.args.runID, gomock.Any()).Return(tt.args.err).Times(tt.args.count)
 			}
 			s := NewService(f.client, f.parser, f.rs)
 
-			s.Upload(context.Background(), tt.args.p)
+			err := s.Upload(context.Background(), tt.args.p)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Service.Upload() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if err != nil && err.Error() != tt.errMessage {
+				t.Errorf("Service.Upload() error = %v, wantErr %v", err, tt.errMessage)
+			}
 		})
 	}
 }

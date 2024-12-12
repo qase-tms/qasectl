@@ -80,7 +80,10 @@ func Command() *cobra.Command {
 				Suite:       suite,
 			}
 
-			s.Upload(cmd.Context(), param)
+			err := s.Upload(cmd.Context(), param)
+			if err != nil {
+				return err
+			}
 
 			logger.Info("Results uploaded successfully")
 
