@@ -33,56 +33,6 @@ jobs:
       - name: Run tests
         run: make test
 
-  build-n-publish:
-    strategy:
-      fail-fast: false
-      max-parallel: 4
-      matrix:
-        os: [ ubuntu-latest, macOS-latest ]
-        architecture: [ arm64, amd64 ]
-    runs-on: ${{ matrix.os }}
-    if: startsWith(github.event.ref, 'refs/tags')
-    needs: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Get latest tag
-        id: tag
-        run: echo "TAG=$(git describe --tags)" >> $GITHUB_ENV
-
-      - name: Install dependencies (Ubuntu)
-        if: runner.os == 'Linux'
-        run: sudo apt-get update -qq
-
-      - name: Set up Go
-        uses: actions/setup-go@v5.0.1
-        with:
-          go-version-file: go.mod
-
-      - name: Build binary
-        run: |
-          GOARCH=${{ matrix.architecture }} make build
-          mv build/qli qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
-
-      - name: Generate Checksum
-        id: checksum
-        run: |
-          if [[ "${{ runner.os }}" == "macOS" ]]; then
-            shasum -a 256 qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }} > qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
-          else
-            sha256sum qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }} > qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
-          fi
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
-          path: |
-            qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}
-            qli-${{ env.TAG }}-${{ runner.os }}-${{ matrix.architecture }}.sha256
-
   build-docker-n-publish:
     runs-on: ubuntu-latest
     needs: test
@@ -105,20 +55,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./build/Dockerfile
-          push: ${{ startsWith(github.event.ref, 'refs/tags') }}
+          push: false
           provenance: false
           tags: ghcr.io/qase-tms/qase-cli:${{ env.TAG }},ghcr.io/qase-tms/qase-cli:latest
           platforms: linux/amd64,linux/arm64
