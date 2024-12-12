@@ -154,10 +154,15 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 			}
 
 			fields := make(map[string]string)
-
 			for k := range testCase.Properties.Property {
+				if isStepProperty(testCase.Properties.Property[k].Name) {
+					continue
+				}
+
 				fields[testCase.Properties.Property[k].Name] = testCase.Properties.Property[k].Value
 			}
+
+			steps := parseSteps(testCase.Properties)
 
 			result := models.Result{
 				Title:     testCase.Name,
@@ -169,7 +174,7 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 					StackTrace: stackTrace,
 				},
 				Attachments: make([]models.Attachment, 0),
-				Steps:       make([]models.Step, 0),
+				Steps:       steps,
 				StepType:    "text",
 				Params:      make(map[string]string),
 				Muted:       false,
@@ -204,4 +209,76 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 	}
 
 	return results
+}
+
+// parseSteps parses the steps from the properties
+func parseSteps(properties Properties) []models.Step {
+	steps := make([]models.Step, 0)
+	parentSteps := make(map[string][]models.Step)
+
+	for _, prop := range properties.Property {
+		if isStepProperty(prop.Name) {
+			status := extractStepStatus(prop.Name)
+			path := strings.Split(prop.Value, "/")
+
+			if isSimpleStep(path) {
+				step := createStep(prop.Value, status)
+				assignParentSteps(parentSteps, prop.Value, &step)
+				steps = append(steps, step)
+			} else {
+				currentStepName := path[len(path)-1]
+				parentStepName := path[len(path)-2]
+				addChildStepToParent(parentSteps, parentStepName, currentStepName, status)
+			}
+		}
+	}
+
+	return steps
+}
+
+// isStepProperty checks if the property name is a step.
+func isStepProperty(name string) bool {
+	return strings.HasPrefix(name, "step[") && strings.HasSuffix(name, "]")
+}
+
+// extractStepStatus extracts the step status from the property name.
+func extractStepStatus(name string) string {
+	return name[5 : len(name)-1]
+}
+
+// isSimpleStep checks if the step is a simple step (without child steps).
+func isSimpleStep(path []string) bool {
+	return len(path) == 1
+}
+
+// createStep creates a new step with the given action and status.
+func createStep(action, status string) models.Step {
+	return models.Step{
+		Data: models.Data{
+			Action: action,
+		},
+		Execution: models.StepExecution{
+			Status: status,
+		},
+	}
+}
+
+// assignParentSteps assigns parent steps to the current step if any.
+func assignParentSteps(parentSteps map[string][]models.Step, action string, step *models.Step) {
+	if childSteps, exists := parentSteps[action]; exists {
+		step.Steps = childSteps
+		delete(parentSteps, action)
+	}
+}
+
+// addChildStepToParent adds a child step to the parent step map.
+func addChildStepToParent(stepMap map[string][]models.Step, parentStepName, stepName, status string) {
+	if _, exists := stepMap[stepName]; !exists {
+		stepMap[parentStepName] = append(stepMap[parentStepName], createStep(stepName, status))
+	} else {
+		step := createStep(stepName, status)
+		step.Steps = stepMap[stepName]
+		delete(stepMap, stepName)
+		stepMap[parentStepName] = append(stepMap[parentStepName], step)
+	}
 }
