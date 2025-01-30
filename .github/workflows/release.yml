@@ -32,9 +32,9 @@ jobs:
       - name: Build the binary for ${{ matrix.os }}-${{ matrix.arch }}
         run: |
           if [ "${{ matrix.os }}" == "windows" ]; then
-            GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o -ldflags="-X github.com/qase-tms/qasectl/internal.Version=${{ env.TAG }}" "build/qasectl-${{ matrix.os }}-${{ matrix.arch }}.exe" ./main.go
+            GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -ldflags="-X github.com/qase-tms/qasectl/internal.Version=${{ env.TAG }}" -o "build/qasectl-${{ matrix.os }}-${{ matrix.arch }}.exe" ./main.go
           else
-            GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o -ldflags="-X github.com/qase-tms/qasectl/internal.Version=${{ env.TAG }}" "build/qasectl-${{ matrix.os }}-${{ matrix.arch }}" ./main.go
+            GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -ldflags="-X github.com/qase-tms/qasectl/internal.Version=${{ env.TAG }}" -o "build/qasectl-${{ matrix.os }}-${{ matrix.arch }}" ./main.go
           fi
 
       - name: Create GitHub release
