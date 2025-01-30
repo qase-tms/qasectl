@@ -28,9 +28,9 @@ jobs:
       - name: Build the binary for ${{ matrix.os }}-${{ matrix.arch }}
         run: |
           if [ "${{ matrix.os }}" == "windows" ]; then
-            GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o "build/qasectl-${{ matrix.os }}-${{ matrix.arch }}.exe" ./cmd
+            GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o "build/qasectl-${{ matrix.os }}-${{ matrix.arch }}.exe" ./main.go
           else
-            GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o "build/qasectl-${{ matrix.os }}-${{ matrix.arch }}" ./cmd
+            GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -o "build/qasectl-${{ matrix.os }}-${{ matrix.arch }}" ./main.go
           fi
 
       - name: Create GitHub release
