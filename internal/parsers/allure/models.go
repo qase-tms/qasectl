@@ -16,6 +16,7 @@ type Test struct {
 	Stop            float64       `json:"stop"`
 	Description     *string       `json:"description"`
 	DescriptionHTML *string       `json:"descriptionHtml"`
+	Params          []Parameter   `json:"parameters,omitempty"`
 }
 
 type TestStep struct {
@@ -33,6 +34,11 @@ type TestStep struct {
 }
 
 type Label struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
+type Parameter struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
