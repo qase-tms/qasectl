@@ -160,6 +160,10 @@ func (p *Parser) convertTest(test Test) models.Result {
 		result.Fields[v.Name] = v.Value
 	}
 
+	if test.Description != nil {
+		result.Fields["description"] = *test.Description
+	}
+
 	return result
 }
 
