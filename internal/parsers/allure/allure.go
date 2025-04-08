@@ -133,6 +133,10 @@ func (p *Parser) convertTest(test Test) models.Result {
 		Message: test.StatusDetails.Message,
 	}
 
+	for _, param := range test.Params {
+		result.Params[param.Name] = param.Value
+	}
+
 	for _, step := range test.Steps {
 		result.Steps = append(result.Steps, p.convertStep(step))
 	}
