@@ -28,29 +28,29 @@
 
    #### Windows
    ```pwsh
-   # build the `bin\qli.exe` binary
+   # build the `bin\qasectl.exe` binary
    > go run script\build.go
    ```
    There is no install step available on Windows.
 
-4. Run `qli version` to check if it worked.
+4. Run `qasectl version` to check if it worked.
 
    #### Windows
-   Run `bin\qli version` to check if it worked.
+   Run `bin\qasectl version` to check if it worked.
 
 ## Cross-compiling binaries for different platforms
 
 You can use any platform with Go installed to build a binary that is intended for another platform
 or CPU architecture. This is achieved by setting environment variables such as GOOS and GOARCH.
 
-For example, to compile the `qli` binary for the 32-bit Raspberry Pi OS:
+For example, to compile the `qasectl` binary for the 32-bit Raspberry Pi OS:
 ```sh
 # on a Unix-like system:
-$ GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0 make clean bin/qli
+$ GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0 make clean bin/qasectl
 ```
 ```pwsh
 # on Windows, pass environment variables as arguments to the build script:
-> go run script\build.go clean bin\qli GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0
+> go run script\build.go clean bin\qasectl GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0
 ```
 
 Run `go tool dist list` to list all supported values of GOOS/GOARCH.

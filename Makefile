@@ -3,10 +3,10 @@ version := $(shell git describe --tags)
 .PHONY: build
 build:
 	@mkdir -p build
-	@go build -a -ldflags="-X github.com/qase-tms/qasectl/internal.Version=$(version)" -o build/qli ./main.go
+	@go build -a -ldflags="-X github.com/qase-tms/qasectl/internal.Version=$(version)" -o build/qasectl ./main.go
 
 clean:
-	@rm -rf ./build/qli
+	@rm -rf ./build/qasectl
 
 .PHONY: lint
 lint:

@@ -13,10 +13,10 @@ COPY . ./
 
 RUN go mod download
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -a -ldflags="-X github.com/qase-tms/qasectl/internal.Version=$VERSION" -o /qli ./main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -a -ldflags="-X github.com/qase-tms/qasectl/internal.Version=$VERSION" -o /qasectl ./main.go
 
 FROM --platform=${TARGETPLATFORM} alpine:3.20 as final
 
-COPY --from=builder /qli /usr/local/bin/qli
+COPY --from=builder /qasectl /usr/local/bin/qasectl
 
-ENTRYPOINT ["qli"]
+ENTRYPOINT ["qasectl"]

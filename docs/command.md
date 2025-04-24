@@ -20,7 +20,7 @@ cat qase.env | grep QASE_TESTOPS_RUN_ID | cut -d'=' -f2
 ## Example usage:
 
 ```bash
-qli testops run create --project <project_code> --token <token> --title <title> --description <description> --environment <environment> --milestone <milestone> --plan <plan> --verbose
+qasectl testops run create --project <project_code> --token <token> --title <title> --description <description> --environment <environment> --milestone <milestone> --plan <plan> --verbose
 ```
 
 The `create` command has the following options:
@@ -39,7 +39,7 @@ The `create` command has the following options:
 The following example shows how to create a test run in the project with the code `PROJ`:
 
 ```bash
-qli testops run create --project PROJ --token <token> --title "Test Run 1" --description "This is a test run" --environment "Production" --milestone "Milestone 1" --plan "Test Plan 1" --verbose
+qasectl testops run create --project PROJ --token <token> --title "Test Run 1" --description "This is a test run" --environment "Production" --milestone "Milestone 1" --plan "Test Plan 1" --verbose
 ```
 
 # Complete a test run
@@ -50,7 +50,7 @@ the specified project.
 ## Example usage:
 
 ```bash
-qli testops run complete --project <project_code> --token <token> --id <run_id> --verbose
+qasectl testops run complete --project <project_code> --token <token> --id <run_id> --verbose
 ```
 
 The `complete` command has the following options:
@@ -63,7 +63,7 @@ The `complete` command has the following options:
 The following example shows how to complete a test run with the ID `1` in the project with the code `PROJ`:
 
 ```bash
-qli testops run complete --project PROJ --token <token> --id 1 --verbose
+qasectl testops run complete --project PROJ --token <token> --id 1 --verbose
 ```
 
 # Delete test runs
@@ -74,7 +74,7 @@ specified project.
 ## Example usage:
 
 ```bash
-qli testops run delete --project <project_code> --token <token> --ids <run_id> --verbose
+qasectl testops run delete --project <project_code> --token <token> --ids <run_id> --verbose
 ```
 
 The `delete` command has the following options:
@@ -90,20 +90,20 @@ The `delete` command has the following options:
 The following example shows how to delete a test run with the ID `1` in the project with the code `PROJ`:
 
 ```bash
-qli testops run delete --project PROJ --token <token> --ids 1 --verbose
+qasectl testops run delete --project PROJ --token <token> --ids 1 --verbose
 ```
 
 The following example shows how to delete all test runs in the project with the code `PROJ`:
 
 ```bash
-qli testops run delete --project PROJ --token <token> --all --verbose
+qasectl testops run delete --project PROJ --token <token> --all --verbose
 ```
 
 The following example shows how to delete all test runs in the project with the code `PROJ` that were created between
 `2022-01-01` and `2022-12-31`:
 
 ```bash
-qli testops run delete --project PROJ --token <token> --all --start "2022-01-01" --end "2022-12-31" --verbose
+qasectl testops run delete --project PROJ --token <token> --all --start "2022-01-01" --end "2022-12-31" --verbose
 ```
 
 # Upload test results
@@ -114,7 +114,7 @@ test run in the specified project.
 ## Example usage:
 
 ```bash
-qli testops result upload --project <project_code> --token <token> --id <run_id> --format <format> --path <results_file> --batch <batch> --verbose
+qasectl testops result upload --project <project_code> --token <token> --id <run_id> --format <format> --path <results_file> --batch <batch> --verbose
 ```
 
 The `upload` command has the following options:
@@ -135,14 +135,14 @@ The following example shows how to upload test results in the JUnit format for a
 with the code `PROJ`:
 
 ```bash
-qli testops result upload --project PROJ --token <token> --id 1 --format junit --path /path/to/results.xml --verbose
+qasectl testops result upload --project PROJ --token <token> --id 1 --format junit --path /path/to/results.xml --verbose
 ```
 
 The following example shows how to upload test results in the Qase format for a test run with the ID `1` in the project
 with the code `PROJ`:
 
 ```bash
-qli testops result upload --project PROJ --token <token> --id 1 --format qase --path /path/to/results.json --verbose
+qasectl testops result upload --project PROJ --token <token> --id 1 --format qase --path /path/to/results.json --verbose
 ```
 
 The following example shows how to upload test results in the Allure format for a test run with the ID `1` in the
@@ -150,7 +150,7 @@ project
 with the code `PROJ`:
 
 ```bash
-qli testops result upload --project PROJ --token <token> --id 1 --format allure --path /path/to/allure-results --verbose
+qasectl testops result upload --project PROJ --token <token> --id 1 --format allure --path /path/to/allure-results --verbose
 ```
 
 The following example shows how to upload test results in the XCTest format for a test run with the ID `1` in the
@@ -158,7 +158,7 @@ project
 with the code `PROJ`:
 
 ```bash
-qli testops result upload --project PROJ --token <token> --id 1 --format xctest --steps user --path /path/to/xctest-results --verbose
+qasectl testops result upload --project PROJ --token <token> --id 1 --format xctest --steps user --path /path/to/xctest-results --verbose
 ```
 
 # Create an environment
@@ -184,7 +184,7 @@ cat qase.env | grep QASE_ENVIRONMENT | cut -d'=' -f2
 ## Example usage:
 
 ```bash
-qli testops env create --project <project_code> --token <token> --title <title> --slug <slug> --description <description> --host <host> --verbose
+qasectl testops env create --project <project_code> --token <token> --title <title> --slug <slug> --description <description> --host <host> --verbose
 ```
 
 The `create` command has the following options:
@@ -202,7 +202,7 @@ The `create` command has the following options:
 The following example shows how to create an environment in the project with the code `PROJ`:
 
 ```bash
-qli testops env create --title 'New environment' --slug local --description 'This is an environment' --host app.server.com --project 'PRJ' --token 'TOKEN' --output 'env.env' --verbose
+qasectl testops env create --title 'New environment' --slug local --description 'This is an environment' --host app.server.com --project 'PRJ' --token 'TOKEN' --output 'env.env' --verbose
 ``` 
 
 # Create a milestone
@@ -227,7 +227,7 @@ cat qase.env | grep QASE_MILESTONE | cut -d'=' -f2
 ## Example usage:
 
 ```bash
-qli testops milestone create --project <project_code> --token <token> --title <title> --description <description> --status <status> --due-date <due_date> --verbose
+qasectl testops milestone create --project <project_code> --token <token> --title <title> --description <description> --status <status> --due-date <due_date> --verbose
 ```
 
 The `create` command has the following options:
@@ -244,5 +244,5 @@ The `create` command has the following options:
 The following example shows how to create a milestone in the project with the code `PROJ`:
 
 ```bash
-qli testops milestone create --project PROJ --token <token> --title "Milestone 1" --description "This is a milestone" --status active --due-date "2022-12-31" --verbose
+qasectl testops milestone create --project PROJ --token <token> --title "Milestone 1" --description "This is a milestone" --status active --due-date "2022-12-31" --verbose
 ```

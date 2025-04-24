@@ -10,7 +10,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "qli",
+	Use:   "qasectl",
 	Short: "CLI tool for Qase TestOps",
 }
 

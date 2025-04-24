@@ -59,7 +59,7 @@ func (p *Parser) Parse() ([]models.Result, error) {
 			if err != nil {
 				return fmt.Errorf("failed to walk path: %w", err)
 			}
-			if !info.IsDir() {
+			if !info.IsDir() && strings.Contains(path, "-result.json") {
 				files = append(files, path)
 			}
 			return nil
