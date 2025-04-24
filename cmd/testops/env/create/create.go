@@ -34,7 +34,7 @@ func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Create a new environment",
-		Example: "qli testops env create --title 'New environment' --slug local --description 'This is a environment' --host app.server.com --project 'PRJ' --token 'TOKEN'",
+		Example: "qasectl testops env create --title 'New environment' --slug local --description 'This is a environment' --host app.server.com --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if strings.Contains(slug, " ") {
 				return fmt.Errorf("slug can't contain spaces")

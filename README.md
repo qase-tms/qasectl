@@ -1,6 +1,6 @@
 # Qase CLI
 
-`qli` is the command-line interface (CLI) for Qase, enabling users to interact with test runs and import test results
+`qasectl` is the command-line interface (CLI) for Qase, enabling users to interact with test runs and import test results
 directly from the terminal.
 
 Qase CLI is available for both **Qase** and **Qase Enterprise** users.
@@ -53,10 +53,10 @@ You can also use Qase CLI via Docker. Follow these steps:
 
 ## Usage
 
-`qli` is designed to be used directly in your terminal. You can run the following command to view available options:
+`qasectl` is designed to be used directly in your terminal. You can run the following command to view available options:
 
 ```bash
-qli --help
+qasectl --help
 ```
 
 This will show all available commands and their descriptions.

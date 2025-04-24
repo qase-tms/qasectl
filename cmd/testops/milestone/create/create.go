@@ -34,7 +34,7 @@ func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Create a new milestone",
-		Example: "qli testops milestone create --title 'New milestone' --description 'This is a milestone' --status active --due-date 2024-01-30 --project 'PRJ' --token 'TOKEN'",
+		Example: "qasectl testops milestone create --title 'New milestone' --description 'This is a milestone' --status active --due-date 2024-01-30 --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if status != "" && status != "active" && status != "completed" {
 				return fmt.Errorf("invalid status value: %s. allowed values: active, completed", status)

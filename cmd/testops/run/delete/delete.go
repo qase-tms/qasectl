@@ -30,7 +30,7 @@ func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Short:   "Delete test runs",
-		Example: "qli testops run delete --ids 1,2,3 --start 2024-01-02 --end 2024-12-31 --project 'PRJ' --token 'TOKEN'",
+		Example: "qasectl testops run delete --ids 1,2,3 --start 2024-01-02 --end 2024-12-31 --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
