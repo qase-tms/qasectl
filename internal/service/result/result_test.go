@@ -387,8 +387,19 @@ func TestService_Upload(t *testing.T) {
 			}
 
 			if tt.args.isUsed {
-				f.client.EXPECT().UploadData(gomock.Any(), tt.args.p.Project, tt.args.runID, gomock.Any()).Return(tt.args.err).Times(tt.args.count)
+				if tt.name == "failed upload with batch" || tt.name == "failed upload data" {
+					f.client.EXPECT().
+						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
+						Return(tt.args.err).
+						Times(1)
+				} else {
+					f.client.EXPECT().
+						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
+						Return(tt.args.err).
+						Times(tt.args.count)
+				}
 			}
+
 			s := NewService(f.client, f.parser, f.rs)
 
 			err := s.Upload(context.Background(), tt.args.p)
