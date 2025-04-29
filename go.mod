@@ -10,6 +10,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.18.2
 	go.uber.org/mock v0.4.0
+	golang.org/x/sync v0.5.0
 )
 
 require (

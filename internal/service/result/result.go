@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	models "github.com/qase-tms/qasectl/internal/models/result"
+	"golang.org/x/sync/errgroup"
 	"log/slog"
+	"runtime"
 )
 
 //go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
@@ -22,6 +24,11 @@ type runService interface {
 	CreateRun(ctx context.Context, p, t string, d, e string, m, plan int64) (int64, error)
 	CompleteRun(ctx context.Context, projectCode string, runId int64) error
 }
+
+const (
+	// MaxWorkerCount is the maximum number of workers
+	MaxWorkerCount = 5
+)
 
 // Service is a service for importing data
 type Service struct {
@@ -74,24 +81,9 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 		}
 	}
 
-	if int64(len(results)) < p.Batch {
-		err := s.client.UploadData(ctx, p.Project, runID, results)
-		if err != nil {
-			return fmt.Errorf("failed to upload results: %w", err)
-		}
-	} else {
-		for i := int64(0); i < int64(len(results)); i += p.Batch {
-			end := i + p.Batch
-
-			if end > int64(len(results)) {
-				end = int64(len(results))
-			}
-
-			err := s.client.UploadData(ctx, p.Project, runID, results[i:end])
-			if err != nil {
-				return fmt.Errorf("failed to upload results: %w", err)
-			}
-		}
+	err = s.uploadResults(ctx, p.Project, p.Batch, runID, results)
+	if err != nil {
+		return fmt.Errorf("failed to upload results: %w", err)
 	}
 
 	if isTestRunCreated {
@@ -99,6 +91,65 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (s *Service) uploadResults(ctx context.Context, project string, batchSize, runID int64, results []models.Result) error {
+	batchCount := (int64(len(results)) + batchSize - 1) / batchSize
+	batches := make([][]models.Result, 0, batchCount)
+
+	for i := int64(0); i < int64(len(results)); i += batchSize {
+		end := i + batchSize
+		if end > int64(len(results)) {
+			end = int64(len(results))
+		}
+		batches = append(batches, results[i:end])
+	}
+
+	g, ctx := errgroup.WithContext(ctx)
+
+	batchCh := make(chan []models.Result)
+
+	workerCount := runtime.NumCPU()
+	if workerCount > MaxWorkerCount {
+		workerCount = MaxWorkerCount
+	}
+
+	for i := 0; i < workerCount; i++ {
+		g.Go(func() error {
+			for {
+				select {
+				case <-ctx.Done():
+					return ctx.Err()
+				case batch, ok := <-batchCh:
+					if !ok {
+						return nil
+					}
+
+					if err := s.client.UploadData(ctx, project, runID, batch); err != nil {
+						return err
+					}
+				}
+			}
+		})
+	}
+
+	g.Go(func() error {
+		defer close(batchCh)
+		for _, batch := range batches {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case batchCh <- batch:
+			}
+		}
+		return nil
+	})
+
+	if err := g.Wait(); err != nil {
+		return err
 	}
 
 	return nil
