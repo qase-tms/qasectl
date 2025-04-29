@@ -5,8 +5,8 @@ go 1.21
 require (
 	github.com/google/uuid v1.6.0
 	github.com/magiconair/properties v1.8.7
-	github.com/qase-tms/qase-go/qase-api-client v1.1.0
-	github.com/qase-tms/qase-go/qase-api-v2-client v1.1.0
+	github.com/qase-tms/qase-go/qase-api-client v1.1.2
+	github.com/qase-tms/qase-go/qase-api-v2-client v1.1.2
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.18.2
 	go.uber.org/mock v0.4.0
