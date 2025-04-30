@@ -2,9 +2,9 @@ package client
 
 import (
 	"context"
-	"fmt"
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
 	models "github.com/qase-tms/qasectl/internal/models/result"
+	"log/slog"
 	"os"
 	"path/filepath"
 )
@@ -84,6 +84,9 @@ func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode stri
 }
 
 func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, attachments []models.Attachment) []string {
+	const op = "client.converterv1.convertattachments"
+	logger := slog.With("op", op)
+
 	results := make([]string, 0, len(attachments))
 
 	for _, attachment := range attachments {
@@ -91,13 +94,13 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 		if attachment.FilePath == nil {
 			path, err := os.Getwd()
 			if err != nil {
-				fmt.Println("cannot get executable path", err)
+				logger.Warn("cannot get executable path", "error", err)
 			}
 
 			fp := filepath.Join(path, attachment.Name)
 			err = os.WriteFile(fp, *attachment.Content, 0644)
 			if err != nil {
-				fmt.Println("cannot write file", "error", err)
+				logger.Warn("cannot write file", "error", err)
 			}
 
 			attachment.FilePath = &fp
@@ -107,7 +110,7 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 
 		file, err := os.Open(*attachment.FilePath)
 		if err != nil {
-			fmt.Println("failed to open file: %w", err)
+			logger.Warn("failed to open file", "error", err)
 			if rmAttach {
 				removeFile(*attachment.FilePath)
 			}
@@ -116,7 +119,7 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 
 		hash, err := c.uploadAttachment(ctx, projectCode, []*os.File{file})
 		if err != nil {
-			fmt.Println("failed to upload attachment: %w", err)
+			logger.Warn("failed to upload attachment", "error", err)
 			if rmAttach {
 				removeFile(*attachment.FilePath)
 			}
@@ -134,9 +137,11 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 }
 
 func removeFile(path string) {
+	const op = "client.converterv1.removefile"
+	logger := slog.With("op", op)
 	err := os.Remove(path)
 	if err != nil {
-		fmt.Println("cannot remove file", "error", err)
+		logger.Warn("cannot remove file", "error", err)
 	}
 }
 

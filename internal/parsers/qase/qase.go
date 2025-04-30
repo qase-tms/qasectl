@@ -132,7 +132,7 @@ func (p *Parser) convertAttachments(attachments []models.Attachment) []models.At
 }
 
 func (p *Parser) calculateDuration(result models.Result) models.Result {
-	if result.StartTime != nil && result.EndTime != nil {
+	if result.Execution.StartTime != nil && result.Execution.EndTime != nil {
 		duration := *result.Execution.EndTime - *result.Execution.StartTime
 		result.Execution.Duration = &duration
 	}

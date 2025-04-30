@@ -57,7 +57,7 @@ func (c *ClientV1) CreateMilestone(ctx context.Context, projectCode, n, d, s str
 		Execute()
 
 	if err != nil {
-		return run.Milestone{}, NewQaseApiError(err.Error(), r.Body)
+		return run.Milestone{}, NewQaseApiError(err.Error(), extractBody(r))
 	}
 
 	milestone := run.Milestone{
@@ -98,7 +98,7 @@ func (c *ClientV1) CreateEnvironment(ctx context.Context, pc, n, d, s, h string)
 		Execute()
 
 	if err != nil {
-		return run.Environment{}, NewQaseApiError(err.Error(), r.Body)
+		return run.Environment{}, NewQaseApiError(err.Error(), extractBody(r))
 	}
 
 	env := run.Environment{
@@ -132,7 +132,7 @@ func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]r
 			Execute()
 
 		if err != nil {
-			return nil, NewQaseApiError(err.Error(), r.Body)
+			return nil, NewQaseApiError(err.Error(), extractBody(r))
 		}
 
 		for _, env := range resp.Result.Entities {
@@ -170,7 +170,7 @@ func (c *ClientV1) GetMilestones(ctx context.Context, projectCode, milestoneName
 		Execute()
 
 	if err != nil {
-		return nil, NewQaseApiError(err.Error(), r.Body)
+		return nil, NewQaseApiError(err.Error(), extractBody(r))
 	}
 
 	milestones := make([]run.Milestone, 0, len(resp.Result.Entities))
@@ -206,7 +206,7 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 			Execute()
 
 		if err != nil {
-			return nil, NewQaseApiError(err.Error(), r.Body)
+			return nil, NewQaseApiError(err.Error(), extractBody(r))
 		}
 
 		for _, plan := range resp.Result.Entities {
@@ -265,7 +265,7 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 		Execute()
 
 	if err != nil {
-		return 0, NewQaseApiError(err.Error(), r.Body)
+		return 0, NewQaseApiError(err.Error(), extractBody(r))
 	}
 
 	logger.Info("created run", "runID", resp.Result.GetId(), "title", title, "description", description)
@@ -287,7 +287,7 @@ func (c *ClientV1) CompleteRun(ctx context.Context, projectCode string, runId in
 		Execute()
 
 	if err != nil {
-		return NewQaseApiError(err.Error(), r.Body)
+		return NewQaseApiError(err.Error(), extractBody(r))
 	}
 
 	logger.Info("completed run", "runId", runId)
@@ -319,7 +319,7 @@ func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, 
 		Execute()
 
 	if err != nil {
-		return NewQaseApiError(err.Error(), r.Body)
+		return NewQaseApiError(err.Error(), extractBody(r))
 	}
 
 	return nil
@@ -354,7 +354,7 @@ func (c *ClientV1) GetTestRuns(ctx context.Context, projectCode string, start, e
 		resp, r, err := req.Execute()
 
 		if err != nil {
-			return nil, NewQaseApiError(err.Error(), r.Body)
+			return nil, NewQaseApiError(err.Error(), extractBody(r))
 		}
 
 		for _, testRun := range resp.Result.Entities {
@@ -389,7 +389,7 @@ func (c *ClientV1) DeleteTestRun(ctx context.Context, projectCode string, id int
 		Execute()
 
 	if err != nil {
-		return NewQaseApiError(err.Error(), r.Body)
+		return NewQaseApiError(err.Error(), extractBody(r))
 	}
 
 	return nil
@@ -410,7 +410,7 @@ func (c *ClientV1) uploadAttachment(ctx context.Context, projectCode string, fil
 		Execute()
 
 	if err != nil {
-		return "", NewQaseApiError(err.Error(), r.Body)
+		return "", NewQaseApiError(err.Error(), extractBody(r))
 	}
 
 	return *resp.Result[0].Hash, nil

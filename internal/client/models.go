@@ -14,9 +14,13 @@ type QaseApiError struct {
 
 // NewQaseApiError creates a new QaseApiError
 func NewQaseApiError(message string, reason io.ReadCloser) *QaseApiError {
-	bodyBytes, err := io.ReadAll(reason)
-	if err != nil {
-		log.Fatalf("Failed to read body: %v", err)
+	bodyBytes := []byte("")
+	if reason != nil {
+		var err error
+		bodyBytes, err = io.ReadAll(reason)
+		if err != nil {
+			log.Fatalf("Failed to read body: %v", err)
+		}
 	}
 
 	return &QaseApiError{
