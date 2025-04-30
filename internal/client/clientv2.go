@@ -47,7 +47,7 @@ func (c *ClientV2) UploadData(ctx context.Context, project string, runID int64, 
 		Execute()
 
 	if err != nil {
-		return NewQaseApiError(err.Error(), r.Body)
+		return NewQaseApiError(err.Error(), extractBody(r))
 	}
 	return nil
 }

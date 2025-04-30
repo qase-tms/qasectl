@@ -121,7 +121,6 @@ func (p *Parser) convertTest(test Test) models.Result {
 		Steps:       make([]models.Step, 0, len(test.Steps)),
 		Attachments: p.convertAttachments(test.Attachments),
 		StepType:    "text",
-		Duration:    &d,
 		Params:      map[string]string{},
 		ParamGroups: make([][]string, 0),
 		Fields:      map[string]string{},

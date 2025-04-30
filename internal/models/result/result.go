@@ -7,6 +7,7 @@ type Result struct {
 	Title       string            `json:"title"`
 	Signature   *string           `json:"signature"`
 	TestOpsID   *int64            `json:"testops_id"`
+	TestOpsIDs  *[]int64          `json:"testops_ids"`
 	Execution   Execution         `json:"execution"`
 	Fields      map[string]string `json:"fields"`
 	Attachments []Attachment      `json:"attachments"`
@@ -17,7 +18,4 @@ type Result struct {
 	Relations   Relation          `json:"relations"`
 	Muted       bool              `json:"muted"`
 	Message     *string           `json:"message"`
-	StartTime   *float64          `json:"start_time"`
-	EndTime     *float64          `json:"end_time"`
-	Duration    *float64          `json:"duration"`
 }

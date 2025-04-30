@@ -306,8 +306,10 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 			Title:     t.Name,
 			Signature: &t.Signature,
 			Execution: models.Execution{
-				Status:   getStatus(t.Action.TestStatus.Value),
-				Duration: &t.Duration,
+				Status:    getStatus(t.Action.TestStatus.Value),
+				Duration:  &t.Duration,
+				StartTime: t.Metadata.StartTime,
+				EndTime:   t.Metadata.EndTime,
 			},
 			Fields:      map[string]string{},
 			Attachments: make([]models.Attachment, 0),
@@ -315,8 +317,6 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 				"Device":        t.Metadata.Device,
 				"Configuration": t.Metadata.Configuration,
 			},
-			StartTime: t.Metadata.StartTime,
-			EndTime:   t.Metadata.EndTime,
 			Relations: models.Relation{
 				Suite: models.Suite{
 					Data: suites,

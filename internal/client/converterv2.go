@@ -23,6 +23,11 @@ func (c *ClientV2) convertResultToApiModel(ctx context.Context, projectCode stri
 		model.SetTestopsId(*result.TestOpsID)
 	}
 
+	if result.TestOpsIDs != nil {
+		model.SetTestopsIdNil()
+		model.SetTestopsIds(*result.TestOpsIDs)
+	}
+
 	if result.Message != nil {
 		model.SetMessage(*result.Message)
 	}

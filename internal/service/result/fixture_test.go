@@ -46,9 +46,6 @@ func prepareModels() []models.Result {
 			Relations:   models.Relation{},
 			Muted:       false,
 			Message:     nil,
-			StartTime:   nil,
-			EndTime:     nil,
-			Duration:    nil,
 		},
 		{
 			ID:        nil,
@@ -71,9 +68,6 @@ func prepareModels() []models.Result {
 			Relations:   models.Relation{},
 			Muted:       false,
 			Message:     nil,
-			StartTime:   nil,
-			EndTime:     nil,
-			Duration:    nil,
 		},
 	}
 }
