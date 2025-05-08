@@ -142,7 +142,7 @@ The following example shows how to upload test results in the Qase format for a 
 with the code `PROJ`:
 
 ```bash
-qasectl testops result upload --project PROJ --token <token> --id 1 --format qase --path /path/to/results.json --verbose
+qasectl testops result upload --project PROJ --token <token> --id 1 --format qase --path /path/to/results --verbose
 ```
 
 The following example shows how to upload test results in the Allure format for a test run with the ID `1` in the
