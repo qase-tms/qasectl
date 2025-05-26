@@ -3,10 +3,11 @@ package result
 import (
 	"context"
 	"fmt"
-	models "github.com/qase-tms/qasectl/internal/models/result"
-	"golang.org/x/sync/errgroup"
 	"log/slog"
 	"runtime"
+
+	models "github.com/qase-tms/qasectl/internal/models/result"
+	"golang.org/x/sync/errgroup"
 )
 
 //go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
@@ -78,6 +79,14 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 
 		for i := range results {
 			results[i].Relations.Suite.Data = append(s, results[i].Relations.Suite.Data...)
+		}
+	}
+
+	if len(p.Statuses) > 0 {
+		for i := range results {
+			if status, ok := p.Statuses[results[i].Execution.Status]; ok {
+				results[i].Execution.Status = status
+			}
 		}
 	}
 

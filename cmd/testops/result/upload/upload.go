@@ -1,7 +1,10 @@
 package upload
 
 import (
+	"encoding/json"
 	"fmt"
+	"log/slog"
+
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/internal/client"
 	"github.com/qase-tms/qasectl/internal/parsers/allure"
@@ -12,7 +15,6 @@ import (
 	"github.com/qase-tms/qasectl/internal/service/run"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log/slog"
 )
 
 const (
@@ -21,6 +23,7 @@ const (
 	runIDFlag       = "id"
 	titleFlag       = "title"
 	descriptionFlag = "description"
+	statusFlag      = "replace-statuses"
 )
 
 // Command returns a new cobra command for upload
@@ -34,18 +37,27 @@ func Command() *cobra.Command {
 		steps       string
 		batch       int64
 		suite       string
+		status      string
 	)
 
 	cmd := &cobra.Command{
 		Use:     "upload",
 		Short:   "Upload test results",
-		Example: "qasectl testops result upload --path 'path' --format 'junit' --id 123 --project 'PRJ' --token 'TOKEN'",
+		Example: "qasectl testops result upload --path 'path' --format 'junit' --id 123 --replace-statuses '{\"Broken\": \"Failed\"}' --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			const op = "upload"
 			logger := slog.With("op", op)
 
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
+
+			statuses := make(map[string]string)
+			if status != "" {
+				err := json.Unmarshal([]byte(status), &statuses)
+				if err != nil {
+					return fmt.Errorf("failed to parse statuses: %w. pass like '{\"Broken\": \"Failed\", \"Skipped\": \"Failed\"}'", err)
+				}
+			}
 
 			var p result.Parser
 			switch format {
@@ -78,6 +90,7 @@ func Command() *cobra.Command {
 				Batch:       batch,
 				Project:     project,
 				Suite:       suite,
+				Statuses:    statuses,
 			}
 
 			err := s.Upload(cmd.Context(), param)
@@ -112,6 +125,7 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVar(&steps, "steps", "", "Steps show mode in XCTest. Allowed values: all, user")
 	cmd.Flags().Int64VarP(&batch, "batch", "b", 200, "Batch size for uploading results")
 	cmd.Flags().StringVarP(&suite, "suite", "s", "", "Root suite for the results")
+	cmd.Flags().StringVar(&status, statusFlag, "", "Replace statuses of the results. Pass '{\"Passed\": \"Failed\"}' to replace all passed results with failed")
 
 	return cmd
 }
