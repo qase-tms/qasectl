@@ -3,9 +3,10 @@ package result
 import (
 	"context"
 	"errors"
+	"testing"
+
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestService_Upload(t *testing.T) {
@@ -368,6 +369,54 @@ func TestService_Upload(t *testing.T) {
 			},
 			wantErr:    true,
 			errMessage: "failed complete run",
+		},
+		{
+			name: "success with status mapping",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       0,
+					Batch:       20,
+					Suite:       "",
+					Statuses: map[string]string{
+						"passed": "passed",
+						"failed": "failed",
+					},
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: []models.Result{
+					{
+						Execution: models.Execution{
+							Status: "passed",
+						},
+					},
+					{
+						Execution: models.Execution{
+							Status: "failed",
+						},
+					},
+				},
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: true,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: true,
+			},
+			wantErr:    false,
+			errMessage: "",
 		},
 	}
 	for _, tt := range tests {

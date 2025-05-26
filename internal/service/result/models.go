@@ -7,4 +7,5 @@ type UploadParams struct {
 	Batch       int64
 	Project     string
 	Suite       string
+	Statuses    map[string]string
 }
