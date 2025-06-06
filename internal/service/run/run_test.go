@@ -3,10 +3,11 @@ package run
 import (
 	"context"
 	"errors"
+	"testing"
+
 	"github.com/magiconair/properties/assert"
 	"github.com/qase-tms/qasectl/internal/models/run"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestService_CompleteRun(t *testing.T) {
@@ -71,6 +72,7 @@ func TestService_CreateRun(t *testing.T) {
 		e    string
 		m    int64
 		plan int64
+		tags []string
 		args baseArgs
 	}
 	tests := []struct {
@@ -89,6 +91,26 @@ func TestService_CreateRun(t *testing.T) {
 				e:    "test",
 				m:    0,
 				plan: 0,
+				tags: []string{},
+				args: baseArgs{
+					err:    nil,
+					isUsed: true,
+				},
+			},
+			want:       1,
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "success with tags",
+			args: args{
+				pc:   "test",
+				t:    "test",
+				d:    "test",
+				e:    "test",
+				m:    0,
+				plan: 0,
+				tags: []string{"tag1", "tag2"},
 				args: baseArgs{
 					err:    nil,
 					isUsed: true,
@@ -107,6 +129,7 @@ func TestService_CreateRun(t *testing.T) {
 				e:    "test",
 				m:    0,
 				plan: 0,
+				tags: []string{},
 				args: baseArgs{
 					err:    errors.New("error"),
 					isUsed: true,
@@ -129,13 +152,14 @@ func TestService_CreateRun(t *testing.T) {
 					tt.args.e,
 					tt.args.m,
 					tt.args.plan,
+					tt.args.tags,
 				).
 					Return(tt.want, tt.args.args.err)
 			}
 
 			s := NewService(f.client)
 
-			got, err := s.CreateRun(context.Background(), tt.args.pc, tt.args.t, tt.args.d, tt.args.e, tt.args.m, tt.args.plan)
+			got, err := s.CreateRun(context.Background(), tt.args.pc, tt.args.t, tt.args.d, tt.args.e, tt.args.m, tt.args.plan, tt.args.tags)
 			if err != nil {
 				if !tt.wantErr {
 					t.Errorf("CreateRun() error = %v, wantErr %v", err, tt.wantErr)
