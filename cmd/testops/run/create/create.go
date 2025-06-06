@@ -2,14 +2,15 @@ package create
 
 import (
 	"fmt"
+	"log/slog"
+	"os"
+	"path"
+
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/internal/client"
 	"github.com/qase-tms/qasectl/internal/service/run"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log/slog"
-	"os"
-	"path"
 )
 
 const (
@@ -19,6 +20,7 @@ const (
 	milestoneFlag   = "milestone"
 	planFlag        = "plan"
 	outputFlag      = "output"
+	tagsFlag        = "tags"
 )
 
 // Command returns a new cobra command for create runs
@@ -30,6 +32,7 @@ func Command() *cobra.Command {
 		milestone   int64
 		plan        int64
 		output      string
+		tags        []string
 	)
 
 	cmd := &cobra.Command{
@@ -43,7 +46,7 @@ func Command() *cobra.Command {
 			c := client.NewClientV1(token)
 			s := run.NewService(c)
 
-			id, err := s.CreateRun(cmd.Context(), project, title, description, environment, milestone, plan)
+			id, err := s.CreateRun(cmd.Context(), project, title, description, environment, milestone, plan, tags)
 			if err != nil {
 				return fmt.Errorf("failed to create run: %w", err)
 			}
@@ -77,6 +80,7 @@ func Command() *cobra.Command {
 	cmd.Flags().Int64VarP(&milestone, milestoneFlag, "m", 0, "ID of milestone of the test run")
 	cmd.Flags().Int64Var(&plan, planFlag, 0, "ID of plan of the test run")
 	cmd.Flags().StringVarP(&output, outputFlag, "o", "", "output path for the test run ID")
+	cmd.Flags().StringSliceVar(&tags, tagsFlag, []string{}, "tags of the test run")
 
 	return cmd
 }

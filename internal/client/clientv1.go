@@ -229,7 +229,7 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 }
 
 // CreateRun creates a new run
-func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64) (int64, error) {
+func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64, tags []string) (int64, error) {
 	const op = "client.clientv1.createrun"
 	logger := slog.With("op", op)
 
@@ -255,6 +255,10 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 
 	if planID != 0 {
 		m.SetPlanId(planID)
+	}
+
+	if len(tags) > 0 {
+		m.SetTags(tags)
 	}
 
 	logger.Debug("creating run", "projectCode", projectCode, "model", m)

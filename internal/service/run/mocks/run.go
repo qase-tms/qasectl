@@ -55,18 +55,18 @@ func (mr *MockclientMockRecorder) CompleteRun(ctx, projectCode, runId any) *gomo
 }
 
 // CreateRun mocks base method.
-func (m *Mockclient) CreateRun(ctx context.Context, projectCode, title, description, envSlug string, mileID, planID int64) (int64, error) {
+func (m *Mockclient) CreateRun(ctx context.Context, projectCode, title, description, envSlug string, mileID, planID int64, tags []string) (int64, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateRun", ctx, projectCode, title, description, envSlug, mileID, planID)
+	ret := m.ctrl.Call(m, "CreateRun", ctx, projectCode, title, description, envSlug, mileID, planID, tags)
 	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateRun indicates an expected call of CreateRun.
-func (mr *MockclientMockRecorder) CreateRun(ctx, projectCode, title, description, envSlug, mileID, planID any) *gomock.Call {
+func (mr *MockclientMockRecorder) CreateRun(ctx, projectCode, title, description, envSlug, mileID, planID, tags any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRun", reflect.TypeOf((*Mockclient)(nil).CreateRun), ctx, projectCode, title, description, envSlug, mileID, planID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRun", reflect.TypeOf((*Mockclient)(nil).CreateRun), ctx, projectCode, title, description, envSlug, mileID, planID, tags)
 }
 
 // DeleteTestRun mocks base method.

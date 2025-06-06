@@ -32,6 +32,7 @@ The `create` command has the following options:
 - `--environment`, `-e`: The environment where the test run will be executed. Optional.
 - `--milestone`, `-m`: The milestone of the test run. Optional.
 - `--plan`: The test plan of the test run. Optional.
+- `--tags`: The tags of the test run. Optional.
 - `--output`, `-o`: The output path to save the test run ID. Optional. Default is `qase.env` in the current
   directory.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
@@ -39,7 +40,7 @@ The `create` command has the following options:
 The following example shows how to create a test run in the project with the code `PROJ`:
 
 ```bash
-qasectl testops run create --project PROJ --token <token> --title "Test Run 1" --description "This is a test run" --environment "Production" --milestone "Milestone 1" --plan "Test Plan 1" --verbose
+qasectl testops run create --project PROJ --token <token> --title "Test Run 1" --description "This is a test run" --environment "Production" --milestone "Milestone 1" --plan "Test Plan 1" --tags "tag1,tag2" --verbose
 ```
 
 # Complete a test run
