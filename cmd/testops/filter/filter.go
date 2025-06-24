@@ -77,5 +77,7 @@ func Command() *cobra.Command {
 		slog.Error("Error while marking flag as required", "error", err)
 	}
 
+	cmd.Flags().StringVarP(&output, outputFlag, "o", "", "output path for the filtered results")
+
 	return cmd
 }
