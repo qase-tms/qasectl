@@ -2,8 +2,10 @@ package testops
 
 import (
 	"fmt"
+
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/cmd/testops/env"
+	"github.com/qase-tms/qasectl/cmd/testops/filter"
 	"github.com/qase-tms/qasectl/cmd/testops/milestone"
 	"github.com/qase-tms/qasectl/cmd/testops/result"
 	"github.com/qase-tms/qasectl/cmd/testops/run"
@@ -48,6 +50,7 @@ func Command() *cobra.Command {
 	cmd.AddCommand(result.Command())
 	cmd.AddCommand(env.Command())
 	cmd.AddCommand(milestone.Command())
+	cmd.AddCommand(filter.Command())
 
 	return cmd
 }
