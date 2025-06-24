@@ -2,11 +2,13 @@ package client
 
 import (
 	"context"
-	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
-	models "github.com/qase-tms/qasectl/internal/models/result"
-	"github.com/qase-tms/qasectl/internal/models/run"
 	"log/slog"
 	"os"
+
+	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
+	"github.com/qase-tms/qasectl/internal/models/plan"
+	models "github.com/qase-tms/qasectl/internal/models/result"
+	"github.com/qase-tms/qasectl/internal/models/run"
 )
 
 const (
@@ -226,6 +228,34 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 	logger.Debug("got plans", "plans", plans)
 
 	return plans, nil
+}
+
+func (c *ClientV1) GetPlan(ctx context.Context, projectCode string, planID int64) (plan.PlanDetailed, error) {
+	const op = "client.clientv1.getplan"
+	logger := slog.With("op", op)
+
+	logger.Debug("getting plan", "projectCode", projectCode, "planID", planID)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	resp, r, err := client.PlansAPI.
+		GetPlan(ctx, projectCode, int32(planID)).
+		Execute()
+
+	if err != nil {
+		return plan.PlanDetailed{}, NewQaseApiError(err.Error(), extractBody(r))
+	}
+
+	cases := make([]int64, 0, len(resp.Result.GetCases()))
+	for _, c := range resp.Result.GetCases() {
+		cases = append(cases, c.GetCaseId())
+	}
+
+	return plan.PlanDetailed{
+		ID:    resp.Result.GetId(),
+		Title: resp.Result.GetTitle(),
+		Cases: cases,
+	}, nil
 }
 
 // CreateRun creates a new run

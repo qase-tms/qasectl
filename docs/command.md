@@ -17,7 +17,7 @@ For exctract test run ID from file you can use command:
 cat qase.env | grep QASE_TESTOPS_RUN_ID | cut -d'=' -f2
 ```
 
-## Example usage:
+## Example usage
 
 ```bash
 qasectl testops run create --project <project_code> --token <token> --title <title> --description <description> --environment <environment> --milestone <milestone> --plan <plan> --verbose
@@ -48,7 +48,7 @@ qasectl testops run create --project PROJ --token <token> --title "Test Run 1" -
 You can complete a test run by using the `complete` command. The `complete` command is used to complete a test run in
 the specified project.
 
-## Example usage:
+## Example usage
 
 ```bash
 qasectl testops run complete --project <project_code> --token <token> --id <run_id> --verbose
@@ -72,7 +72,7 @@ qasectl testops run complete --project PROJ --token <token> --id 1 --verbose
 You can delete test runs by using the `delete` command. The `delete` command is used to delete test runs in the
 specified project.
 
-## Example usage:
+## Example usage
 
 ```bash
 qasectl testops run delete --project <project_code> --token <token> --ids <run_id> --verbose
@@ -112,7 +112,7 @@ qasectl testops run delete --project PROJ --token <token> --all --start "2022-01
 You can upload test results by using the `upload` command. The `upload` command is used to upload test results for a
 test run in the specified project.
 
-## Example usage:
+## Example usage
 
 ```bash
 qasectl testops result upload --project <project_code> --token <token> --id <run_id> --format <format> --path <results_file> --batch <batch> --verbose
@@ -183,7 +183,7 @@ For exctract environment slug from file you can use command:
 cat qase.env | grep QASE_ENVIRONMENT | cut -d'=' -f2
 ```
 
-## Example usage:
+## Example usage
 
 ```bash
 qasectl testops env create --project <project_code> --token <token> --title <title> --slug <slug> --description <description> --host <host> --verbose
@@ -205,7 +205,7 @@ The following example shows how to create an environment in the project with the
 
 ```bash
 qasectl testops env create --title 'New environment' --slug local --description 'This is an environment' --host app.server.com --project 'PRJ' --token 'TOKEN' --output 'env.env' --verbose
-``` 
+```
 
 # Create a milestone
 
@@ -226,7 +226,7 @@ For exctract milestone ID from file you can use command:
 cat qase.env | grep QASE_MILESTONE | cut -d'=' -f2
 ```
 
-## Example usage:
+## Example usage
 
 ```bash
 qasectl testops milestone create --project <project_code> --token <token> --title <title> --description <description> --status <status> --due-date <due_date> --verbose
@@ -247,4 +247,43 @@ The following example shows how to create a milestone in the project with the co
 
 ```bash
 qasectl testops milestone create --project PROJ --token <token> --title "Milestone 1" --description "This is a milestone" --status active --due-date "2022-12-31" --verbose
+```
+
+# Get filtered results
+
+You can get filtered results by using the `filter` command. The `filter` command is used to get filtered results for the given plan ID and framework. It prepares the filtered string for the given framework. For example, for playwright framework it will prepare the string like this: `(Qase ID: 1|2|3|...)`. You can use this string in your playwright tests to filter the tests by the given plan ID. You can specify the file path using the `--output` option. If the
+file path is not specified, the filtered results will be saved to `qase.env` in the current directory.
+
+The file will contain the filtered results in the following format:
+
+```text
+QASE_FILTERED_RESULTS=(Qase ID: 1|2|3|...)
+```
+
+You can use the filtered results in subsequent steps to filter the tests by the given plan ID.
+For exctract filtered results from file you can use command:
+
+```bash
+cat qase.env | grep QASE_FILTERED_RESULTS | cut -d'=' -f2
+```
+
+## Example usage
+
+```bash
+qasectl testops filter --project <project_code> --token <token> --planID <plan_id> --framework <framework> --output <output_file> --verbose
+```
+
+The `filter` command has the following options:
+
+- `--project`, `-p`: The project code where the filtered results will be saved. Required.
+- `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--planID` : The ID of the test plan. Required.
+- `--framework`, `-f`: The framework of the filtered results. Required. Allow values: `playwright`.
+- `--output`, `-o`: The output path to save the filtered results. Optional. Default is `qase.env` in the current directory.
+- `--verbose`, `-v`: Enable verbose mode. Optional.
+
+The following example shows how to get filtered results for the plan with the ID `1` in the project with the code `PROJ` and save them to the file `qase.env`:
+
+```bash
+qasectl testops filter --project PROJ --token <token> --planID 1 --framework playwright --output qase.env --verbose
 ```
