@@ -3,14 +3,15 @@ package junit
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/google/uuid"
-	models "github.com/qase-tms/qasectl/internal/models/result"
 	"io"
 	"log"
 	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/google/uuid"
+	models "github.com/qase-tms/qasectl/internal/models/result"
 )
 
 // Parser is a parser for Junit XML files
@@ -89,11 +90,24 @@ func (p *Parser) parseFile(path string) ([]models.Result, error) {
 
 	byteValue, _ := io.ReadAll(xmlFile)
 
+	// Try to parse as TestSuites first (multiple test suites)
 	var testSuites TestSuites
 	err = xml.Unmarshal(byteValue, &testSuites)
+	if err == nil {
+		return convertTestSuites(testSuites), nil
+	}
+
+	// If that fails, try to parse as single TestSuite
+	var testSuite TestSuite
+	err = xml.Unmarshal(byteValue, &testSuite)
 	if err != nil {
 		logger.Error("failed to unmarshal xml", "error", err)
 		return nil, err
+	}
+
+	// Convert single TestSuite to TestSuites format for processing
+	testSuites = TestSuites{
+		TestSuites: []TestSuite{testSuite},
 	}
 
 	return convertTestSuites(testSuites), nil
