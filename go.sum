@@ -28,10 +28,10 @@ github.com/pelletier/go-toml/v2 v2.1.0/go.mod h1:tJU2Z3ZkXwnxa4DPO899bsyIoywizdU
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/qase-tms/qase-go/qase-api-client v1.1.2 h1:7w3w8zGZZRShCoO+bNizpHwSna1MdcjgI9QgZLhvP1I=
-github.com/qase-tms/qase-go/qase-api-client v1.1.2/go.mod h1:5w7jTtz8r3ccc8axnK0Sq6Dx5JKJtJnaz8AuysTw7SA=
-github.com/qase-tms/qase-go/qase-api-v2-client v1.1.2 h1:YSUqrwnsGUIzDjsAzsXS2qB86TcxCiOeCLz9787ZPb0=
-github.com/qase-tms/qase-go/qase-api-v2-client v1.1.2/go.mod h1:qyIUXyT9ein6Ii2+IUW3R0eXWAJzVj44II05RRMR+wg=
+github.com/qase-tms/qase-go/qase-api-client v1.1.5 h1:9uJk4udv2gRE4PuoAf5eWHwBzqMGIN7JnDav4c1sqWo=
+github.com/qase-tms/qase-go/qase-api-client v1.1.5/go.mod h1:5w7jTtz8r3ccc8axnK0Sq6Dx5JKJtJnaz8AuysTw7SA=
+github.com/qase-tms/qase-go/qase-api-v2-client v1.1.3 h1:UK3O2HJUb9KydoYekkZFMM+pqmf3qEZHgohdgWWh5FU=
+github.com/qase-tms/qase-go/qase-api-v2-client v1.1.3/go.mod h1:qyIUXyT9ein6Ii2+IUW3R0eXWAJzVj44II05RRMR+wg=
 github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZVejAe8=
 github.com/rogpeppe/go-internal v1.9.0/go.mod h1:WtVeX8xhTBvf0smdhujwtBcq4Qrzq/fJaraNFVN+nFs=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=

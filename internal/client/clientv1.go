@@ -259,7 +259,7 @@ func (c *ClientV1) GetPlan(ctx context.Context, projectCode string, planID int64
 }
 
 // CreateRun creates a new run
-func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64, tags []string) (int64, error) {
+func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64, tags []string, isCloud bool, browser string) (int64, error) {
 	const op = "client.clientv1.createrun"
 	logger := slog.With("op", op)
 
@@ -289,6 +289,18 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 
 	if len(tags) > 0 {
 		m.SetTags(tags)
+	}
+
+	if isCloud {
+		m.SetIsCloud(true)
+	}
+
+	if browser != "" {
+		cloudConfig := apiV1Client.RunCreateCloudRunConfig{
+			Browser: &browser,
+		}
+
+		m.SetCloudRunConfig(cloudConfig)
 	}
 
 	logger.Debug("creating run", "projectCode", projectCode, "model", m)

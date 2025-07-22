@@ -3,6 +3,7 @@ package run
 import (
 	"context"
 	"fmt"
+
 	"github.com/qase-tms/qasectl/internal/models/run"
 )
 
@@ -10,7 +11,7 @@ import (
 //
 //go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
 type client interface {
-	CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64, tags []string) (int64, error)
+	CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64, tags []string, isCloud bool, browser string) (int64, error)
 	CompleteRun(ctx context.Context, projectCode string, runId int64) error
 	GetTestRuns(ctx context.Context, projectCode string, start, end int64) ([]run.Run, error)
 	DeleteTestRun(ctx context.Context, projectCode string, id int64) error
@@ -27,8 +28,8 @@ func NewService(client client) *Service {
 }
 
 // CreateRun creates a new run
-func (s *Service) CreateRun(ctx context.Context, pc, t, d, e string, m, plan int64, tags []string) (int64, error) {
-	return s.client.CreateRun(ctx, pc, t, d, e, m, plan, tags)
+func (s *Service) CreateRun(ctx context.Context, pc, t, d, e string, m, plan int64, tags []string, isCloud bool, browser string) (int64, error) {
+	return s.client.CreateRun(ctx, pc, t, d, e, m, plan, tags, isCloud, browser)
 }
 
 // CompleteRun completes a run
