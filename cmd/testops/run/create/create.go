@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 	"path"
+	"slices"
 
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/internal/client"
@@ -21,6 +22,8 @@ const (
 	planFlag        = "plan"
 	outputFlag      = "output"
 	tagsFlag        = "tags"
+	isCloudFlag     = "cloud"
+	browserFlag     = "browser"
 )
 
 // Command returns a new cobra command for create runs
@@ -33,12 +36,20 @@ func Command() *cobra.Command {
 		plan        int64
 		output      string
 		tags        []string
+		isCloud     bool
+		browser     string
 	)
+
+	var browsers = []string{
+		"chromium",
+		"firefox",
+		"webkit",
+	}
 
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Create a new test run",
-		Example: "qasectl testops run create --title 'My test run' --description 'This is a test run' --environment local --project 'PRJ' --token 'TOKEN'",
+		Example: "qasectl testops run create --title 'My test run' --description 'This is a test run' --environment local --cloud --browser 'chrome' --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
@@ -46,7 +57,13 @@ func Command() *cobra.Command {
 			c := client.NewClientV1(token)
 			s := run.NewService(c)
 
-			id, err := s.CreateRun(cmd.Context(), project, title, description, environment, milestone, plan, tags)
+			if browser != "" {
+				if !slices.Contains(browsers, browser) {
+					return fmt.Errorf("invalid browser: %s. allowed browsers: %v", browser, browsers)
+				}
+			}
+
+			id, err := s.CreateRun(cmd.Context(), project, title, description, environment, milestone, plan, tags, isCloud, browser)
 			if err != nil {
 				return fmt.Errorf("failed to create run: %w", err)
 			}
@@ -81,6 +98,9 @@ func Command() *cobra.Command {
 	cmd.Flags().Int64Var(&plan, planFlag, 0, "ID of plan of the test run")
 	cmd.Flags().StringVarP(&output, outputFlag, "o", "", "output path for the test run ID")
 	cmd.Flags().StringSliceVar(&tags, tagsFlag, []string{}, "tags of the test run")
+	cmd.Flags().BoolVar(&isCloud, isCloudFlag, false, "mark the test run as cloud run")
+	cmd.Flags().StringVar(&browser, browserFlag, "", "browser of the cloud run")
+	cmd.MarkFlagsRequiredTogether(isCloudFlag, browserFlag)
 
 	return cmd
 }

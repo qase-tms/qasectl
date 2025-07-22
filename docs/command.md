@@ -20,7 +20,7 @@ cat qase.env | grep QASE_TESTOPS_RUN_ID | cut -d'=' -f2
 ## Example usage
 
 ```bash
-qasectl testops run create --project <project_code> --token <token> --title <title> --description <description> --environment <environment> --milestone <milestone> --plan <plan> --verbose
+qasectl testops run create --project <project_code> --token <token> --title <title> --description <description> --environment <environment> --milestone <milestone> --plan <plan> --cloud --browser <browser> --verbose
 ```
 
 The `create` command has the following options:
@@ -33,6 +33,8 @@ The `create` command has the following options:
 - `--milestone`, `-m`: The milestone of the test run. Optional.
 - `--plan`: The test plan of the test run. Optional.
 - `--tags`: The tags of the test run. Optional.
+- `--cloud`: Mark the test run as a cloud run. Optional. Must be used together with `--browser`.
+- `--browser`: The browser for the cloud run. Optional. Must be used together with `--cloud`. Allowed values: `chromium`, `firefox`, `webkit`.
 - `--output`, `-o`: The output path to save the test run ID. Optional. Default is `qase.env` in the current
   directory.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
@@ -41,6 +43,12 @@ The following example shows how to create a test run in the project with the cod
 
 ```bash
 qasectl testops run create --project PROJ --token <token> --title "Test Run 1" --description "This is a test run" --environment "Production" --milestone "Milestone 1" --plan "Test Plan 1" --tags "tag1,tag2" --verbose
+```
+
+The following example shows how to create a cloud test run with a specific browser:
+
+```bash
+qasectl testops run create --project PROJ --token <token> --title "Cloud Test Run" --description "This is a cloud test run" --cloud --browser "chromium" --verbose
 ```
 
 # Complete a test run

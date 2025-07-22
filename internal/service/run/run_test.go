@@ -66,14 +66,16 @@ func TestService_CompleteRun(t *testing.T) {
 
 func TestService_CreateRun(t *testing.T) {
 	type args struct {
-		pc   string
-		t    string
-		d    string
-		e    string
-		m    int64
-		plan int64
-		tags []string
-		args baseArgs
+		pc      string
+		t       string
+		d       string
+		e       string
+		m       int64
+		plan    int64
+		tags    []string
+		isCloud bool
+		browser string
+		args    baseArgs
 	}
 	tests := []struct {
 		name       string
@@ -85,13 +87,15 @@ func TestService_CreateRun(t *testing.T) {
 		{
 			name: "success",
 			args: args{
-				pc:   "test",
-				t:    "test",
-				d:    "test",
-				e:    "test",
-				m:    0,
-				plan: 0,
-				tags: []string{},
+				pc:      "test",
+				t:       "test",
+				d:       "test",
+				e:       "test",
+				m:       0,
+				plan:    0,
+				tags:    []string{},
+				isCloud: false,
+				browser: "",
 				args: baseArgs{
 					err:    nil,
 					isUsed: true,
@@ -104,13 +108,36 @@ func TestService_CreateRun(t *testing.T) {
 		{
 			name: "success with tags",
 			args: args{
-				pc:   "test",
-				t:    "test",
-				d:    "test",
-				e:    "test",
-				m:    0,
-				plan: 0,
-				tags: []string{"tag1", "tag2"},
+				pc:      "test",
+				t:       "test",
+				d:       "test",
+				e:       "test",
+				m:       0,
+				plan:    0,
+				tags:    []string{"tag1", "tag2"},
+				isCloud: false,
+				browser: "",
+				args: baseArgs{
+					err:    nil,
+					isUsed: true,
+				},
+			},
+			want:       1,
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "success with cloud and browser",
+			args: args{
+				pc:      "test",
+				t:       "test",
+				d:       "test",
+				e:       "test",
+				m:       0,
+				plan:    0,
+				tags:    []string{},
+				isCloud: true,
+				browser: "chromium",
 				args: baseArgs{
 					err:    nil,
 					isUsed: true,
@@ -123,13 +150,15 @@ func TestService_CreateRun(t *testing.T) {
 		{
 			name: "failed to create run",
 			args: args{
-				pc:   "test",
-				t:    "test",
-				d:    "test",
-				e:    "test",
-				m:    0,
-				plan: 0,
-				tags: []string{},
+				pc:      "test",
+				t:       "test",
+				d:       "test",
+				e:       "test",
+				m:       0,
+				plan:    0,
+				tags:    []string{},
+				isCloud: false,
+				browser: "",
 				args: baseArgs{
 					err:    errors.New("error"),
 					isUsed: true,
@@ -145,7 +174,8 @@ func TestService_CreateRun(t *testing.T) {
 			f := newFixture(t)
 
 			if tt.args.args.isUsed {
-				f.client.EXPECT().CreateRun(gomock.Any(),
+				f.client.EXPECT().CreateRun(
+					gomock.Any(),
 					tt.args.pc,
 					tt.args.t,
 					tt.args.d,
@@ -153,13 +183,26 @@ func TestService_CreateRun(t *testing.T) {
 					tt.args.m,
 					tt.args.plan,
 					tt.args.tags,
+					tt.args.isCloud,
+					tt.args.browser,
 				).
 					Return(tt.want, tt.args.args.err)
 			}
 
 			s := NewService(f.client)
 
-			got, err := s.CreateRun(context.Background(), tt.args.pc, tt.args.t, tt.args.d, tt.args.e, tt.args.m, tt.args.plan, tt.args.tags)
+			got, err := s.CreateRun(
+				context.Background(),
+				tt.args.pc,
+				tt.args.t,
+				tt.args.d,
+				tt.args.e,
+				tt.args.m,
+				tt.args.plan,
+				tt.args.tags,
+				tt.args.isCloud,
+				tt.args.browser,
+			)
 			if err != nil {
 				if !tt.wantErr {
 					t.Errorf("CreateRun() error = %v, wantErr %v", err, tt.wantErr)
