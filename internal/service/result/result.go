@@ -90,6 +90,12 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 		}
 	}
 
+	if p.SkipParams {
+		for i := range results {
+			results[i].Params = nil
+		}
+	}
+
 	err = s.uploadResults(ctx, p.Project, p.Batch, runID, results)
 	if err != nil {
 		return fmt.Errorf("failed to upload results: %w", err)

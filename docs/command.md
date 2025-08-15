@@ -139,6 +139,7 @@ The `upload` command has the following options:
 - `--batch`: The batch number of the test results. Optional. Default is 200.
 - `--suite`, `-s`: The suite name of the test results. Optional.
 - `--replace-statuses`, `-r`: The statuses to replace. Optional. Pass like '{\"Passed\": \"Failed\"}' to replace all passed results with failed. Note: Use slugs of statuses.
+- `--skip-params`: Skip parameters for the results. Optional.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
 
 The following example shows how to upload test results in the JUnit format for a test run with the ID `1` in the project

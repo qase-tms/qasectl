@@ -24,6 +24,7 @@ const (
 	titleFlag       = "title"
 	descriptionFlag = "description"
 	statusFlag      = "replace-statuses"
+	skipParamsFlag  = "skip-params"
 )
 
 // Command returns a new cobra command for upload
@@ -38,6 +39,7 @@ func Command() *cobra.Command {
 		batch       int64
 		suite       string
 		status      string
+		skipParams  bool
 	)
 
 	cmd := &cobra.Command{
@@ -91,6 +93,7 @@ func Command() *cobra.Command {
 				Project:     project,
 				Suite:       suite,
 				Statuses:    statuses,
+				SkipParams:  skipParams,
 			}
 
 			err := s.Upload(cmd.Context(), param)
@@ -126,6 +129,7 @@ func Command() *cobra.Command {
 	cmd.Flags().Int64VarP(&batch, "batch", "b", 200, "Batch size for uploading results")
 	cmd.Flags().StringVarP(&suite, "suite", "s", "", "Root suite for the results")
 	cmd.Flags().StringVar(&status, statusFlag, "", "Replace statuses of the results. Pass '{\"Passed\": \"Failed\"}' to replace all passed results with failed")
+	cmd.Flags().BoolVar(&skipParams, skipParamsFlag, false, "Skip parameters for the results")
 
 	return cmd
 }

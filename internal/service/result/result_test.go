@@ -418,6 +418,280 @@ func TestService_Upload(t *testing.T) {
 			wantErr:    false,
 			errMessage: "",
 		},
+		{
+			name: "success with skip params",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       1,
+					Batch:       20,
+					Suite:       "",
+					SkipParams:  true,
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: []models.Result{
+					{
+						Execution: models.Execution{
+							Status: "passed",
+						},
+						Params: map[string]string{
+							"key1": "value1",
+							"key2": "value2",
+						},
+					},
+				},
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: false,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: false,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "success with suite and skip params",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       0,
+					Batch:       20,
+					Suite:       "test-suite",
+					SkipParams:  true,
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: []models.Result{
+					{
+						Execution: models.Execution{
+							Status: "passed",
+						},
+						Params: map[string]string{
+							"key1": "value1",
+						},
+						Relations: models.Relation{
+							Suite: models.Suite{
+								Data: []models.SuiteData{},
+							},
+						},
+					},
+				},
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: true,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: true,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "success with complex status mapping and skip params",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       0,
+					Batch:       20,
+					Suite:       "complex-suite",
+					Statuses: map[string]string{
+						"passed":  "passed",
+						"failed":  "failed",
+						"skipped": "skipped",
+						"blocked": "blocked",
+					},
+					SkipParams: true,
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: []models.Result{
+					{
+						Execution: models.Execution{
+							Status: "passed",
+						},
+						Params: map[string]string{
+							"key1": "value1",
+						},
+						Relations: models.Relation{
+							Suite: models.Suite{
+								Data: []models.SuiteData{},
+							},
+						},
+					},
+					{
+						Execution: models.Execution{
+							Status: "failed",
+						},
+						Params: map[string]string{
+							"key2": "value2",
+						},
+						Relations: models.Relation{
+							Suite: models.Suite{
+								Data: []models.SuiteData{},
+							},
+						},
+					},
+					{
+						Execution: models.Execution{
+							Status: "skipped",
+						},
+						Params: map[string]string{
+							"key3": "value3",
+						},
+						Relations: models.Relation{
+							Suite: models.Suite{
+								Data: []models.SuiteData{},
+							},
+						},
+					},
+				},
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: true,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: true,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "verify skip params functionality",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       1,
+					Batch:       20,
+					Suite:       "",
+					SkipParams:  true,
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModels(), // Models with params
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: false,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: false,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "verify params are preserved when skip params is false",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       1,
+					Batch:       20,
+					Suite:       "",
+					SkipParams:  false,
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModels(), // Models with params
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: false,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: false,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "skip params with already empty params",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       1,
+					Batch:       20,
+					Suite:       "",
+					SkipParams:  true,
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModelsWithEmptyParams(), // Models without params
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: false,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: false,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
