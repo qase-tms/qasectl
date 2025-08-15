@@ -1,10 +1,11 @@
 package result
 
 import (
+	"testing"
+
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"github.com/qase-tms/qasectl/internal/service/result/mocks"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 type fixture struct {
@@ -42,14 +43,55 @@ func prepareModels() []models.Result {
 			Attachments: []models.Attachment{},
 			Steps:       []models.Step{},
 			StepType:    "text",
-			Params:      make(map[string]string),
-			Relations:   models.Relation{},
-			Muted:       false,
-			Message:     nil,
+			Params: map[string]string{
+				"browser": "chrome",
+				"version": "1.0.0",
+			},
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
 		},
 		{
 			ID:        nil,
 			Title:     "Test 2",
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  nil,
+				EndTime:    nil,
+				Status:     "failed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params: map[string]string{
+				"browser": "firefox",
+				"version": "1.0.0",
+			},
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+	}
+}
+
+func prepareModelsWithEmptyParams() []models.Result {
+	return []models.Result{
+		{
+			ID:        nil,
+			Title:     "Test with Empty Params",
 			Signature: nil,
 			TestOpsID: nil,
 			Execution: models.Execution{
@@ -64,10 +106,14 @@ func prepareModels() []models.Result {
 			Attachments: []models.Attachment{},
 			Steps:       []models.Step{},
 			StepType:    "text",
-			Params:      make(map[string]string),
-			Relations:   models.Relation{},
-			Muted:       false,
-			Message:     nil,
+			Params:      nil, // Empty params for SkipParams testing
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
 		},
 	}
 }

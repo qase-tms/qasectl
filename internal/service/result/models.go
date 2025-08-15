@@ -8,4 +8,5 @@ type UploadParams struct {
 	Project     string
 	Suite       string
 	Statuses    map[string]string
+	SkipParams  bool
 }
