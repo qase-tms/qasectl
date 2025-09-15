@@ -6,6 +6,7 @@ import (
 	"os"
 
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
+	"github.com/qase-tms/qasectl/internal/models/fields/custom"
 	"github.com/qase-tms/qasectl/internal/models/plan"
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"github.com/qase-tms/qasectl/internal/models/run"
@@ -432,6 +433,68 @@ func (c *ClientV1) DeleteTestRun(ctx context.Context, projectCode string, id int
 
 	_, r, err := client.RunsAPI.
 		DeleteRun(ctx, projectCode, int32(id)).
+		Execute()
+
+	if err != nil {
+		return NewQaseApiError(err.Error(), extractBody(r))
+	}
+
+	return nil
+}
+
+// GetCustomFields returns custom fields
+func (c *ClientV1) GetCustomFields(ctx context.Context) ([]custom.CustomField, error) {
+	const op = "client.clientv1.getcustomfields"
+	logger := slog.With("op", op)
+
+	logger.Debug("getting custom fields")
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	customFields := make([]custom.CustomField, 0)
+
+	var offset int32 = 0
+	for {
+		resp, r, err := client.CustomFieldsAPI.
+			GetCustomFields(ctx).
+			Limit(defaultLimit).
+			Offset(offset).
+			Execute()
+
+		if err != nil {
+			return nil, NewQaseApiError(err.Error(), extractBody(r))
+		}
+
+		for _, field := range resp.Result.Entities {
+			customFields = append(customFields, custom.CustomField{
+				ID:    field.GetId(),
+				Title: field.GetTitle(),
+			})
+		}
+
+		if resp.Result.GetTotal() <= offset {
+			break
+		} else {
+			offset += defaultLimit
+		}
+	}
+
+	logger.Debug("got custom fields", "customFields", customFields)
+
+	return customFields, nil
+}
+
+// RemoveCustomFieldByID removes a custom field by ID
+func (c *ClientV1) RemoveCustomFieldByID(ctx context.Context, fieldID int32) error {
+	const op = "client.clientv1.removecustomfield"
+	logger := slog.With("op", op)
+
+	logger.Debug("removing custom field", "fieldID", fieldID)
+
+	ctx, client := c.getApiV1Client(ctx)
+
+	_, r, err := client.CustomFieldsAPI.
+		DeleteCustomField(ctx, fieldID).
 		Execute()
 
 	if err != nil {

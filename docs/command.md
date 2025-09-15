@@ -296,3 +296,33 @@ The following example shows how to get filtered results for the plan with the ID
 ```bash
 qasectl testops filter --project PROJ --token <token> --planID 1 --framework playwright --output qase.env --verbose
 ```
+
+# Remove custom fields
+
+You can remove custom fields by using the `remove` command. The `remove` command is used to remove custom fields in the
+specified project.
+
+## Example usage
+
+```bash
+qasectl testops field custom remove --project <project_code> --token <token> --id <field_id> --all --verbose
+```
+
+The `remove` command has the following options:
+
+- `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--id`, `-i`: The ID of the custom field to remove. Optional if all doesn't set.
+- `--all`: Remove all custom fields in the project. Optional if id doesn't set.
+- `--verbose`, `-v`: Enable verbose mode. Optional.
+
+The following example shows how to remove a custom field with the ID `1` in the project with the code `PROJ`:
+
+```bash
+qasectl testops field custom remove --project PROJ --token <token> --id 1 --verbose
+```
+
+The following example shows how to remove all custom fields in the project with the code `PROJ`:
+
+```bash
+qasectl testops field custom remove --project PROJ --token <token> --all --verbose
+```
