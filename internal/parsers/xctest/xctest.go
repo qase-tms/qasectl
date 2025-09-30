@@ -3,12 +3,13 @@ package xctest
 import (
 	"encoding/json"
 	"fmt"
-	models "github.com/qase-tms/qasectl/internal/models/result"
 	"log/slog"
 	"os/exec"
 	"strconv"
 	"strings"
 	"time"
+
+	models "github.com/qase-tms/qasectl/internal/models/result"
 )
 
 // Parser is a parser for XCTest files
@@ -107,27 +108,41 @@ func (p *Parser) readJson(id *string) ([]byte, error) {
 }
 
 func (p *Parser) readAttachment(id string) ([]byte, error) {
+	const op = "xctest.Parser.readAttachment"
+	logger := slog.With("op", op, "attachmentId", id)
+
+	logger.Debug("starting to read attachment", "path", p.path)
+
 	args := []string{"xcresulttool", "get", "--path", p.path, "--format", "raw", "--id", id}
+	logger.Debug("executing xcresulttool command", "args", args)
 
 	executeCommand := func(args []string) ([]byte, error) {
 		out, err := exec.Command("xcrun", args...).Output()
 		if err != nil {
+			logger.Error("failed to execute xcrun command", "error", err, "args", args)
 			return nil, fmt.Errorf("failed to get XCResult attachment: %w", err)
 		}
+		logger.Debug("successfully executed xcrun command", "outputSize", len(out))
 		return out, nil
 	}
 
 	out, err := executeCommand(args)
 	if err != nil {
 		if strings.Contains(err.Error(), "exit status 64") {
+			logger.Debug("got exit status 64, trying with --legacy flag")
 			args = append(args, "--legacy")
 			out, err = executeCommand(args)
 			if err != nil {
+				logger.Error("failed to get XCResult attachment with --legacy", "error", err)
 				return nil, fmt.Errorf("failed to get XCResult attachment with --legacy: %w", err)
 			}
+			logger.Debug("successfully got attachment with --legacy flag", "size", len(out))
 		} else {
+			logger.Error("failed to get attachment", "error", err)
 			return nil, err
 		}
+	} else {
+		logger.Debug("successfully got attachment", "size", len(out))
 	}
 
 	return out, nil
@@ -193,15 +208,34 @@ func (p *Parser) getTestPlanSums(IDs map[string]TestMeta) (map[TestMeta][]Action
 }
 
 func (p *Parser) getActionTestSummary(ID string) (ActionTestSummary, error) {
+	const op = "xctest.Parser.getActionTestSummary"
+	logger := slog.With("op", op, "testId", ID)
+
+	logger.Debug("getting action test summary")
 	out, err := p.readJson(&ID)
 	if err != nil {
+		logger.Error("failed to read JSON", "error", err)
 		return ActionTestSummary{}, fmt.Errorf("failed to get action test summary: %w", err)
 	}
 
+	logger.Debug("successfully read JSON", "size", len(out))
 	var summary ActionTestSummary
 	err = json.Unmarshal(out, &summary)
 	if err != nil {
+		logger.Error("failed to unmarshal JSON", "error", err)
 		return ActionTestSummary{}, fmt.Errorf("failed to unmarshal action test summary: %w", err)
+	}
+
+	logger.Debug("successfully parsed action test summary", "testStatus", summary.TestStatus.Value, "hasFailureSummaries", summary.FailureSummaries != nil, "activitySummariesCount", len(summary.ActivitySummaries.Values))
+
+	if summary.FailureSummaries != nil {
+		logger.Debug("failure summaries details", "count", len(summary.FailureSummaries.Values))
+		for i, f := range summary.FailureSummaries.Values {
+			logger.Debug("failure summary", "index", i, "uuid", f.UUID.Value, "hasAttachments", f.Attachments != nil)
+			if f.Attachments != nil {
+				logger.Debug("failure attachments", "count", len(f.Attachments.Values))
+			}
+		}
 	}
 
 	return summary, nil
@@ -284,14 +318,15 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 	const op = "xctest.Parser.getResults"
 	logger := slog.With("op", op)
 
+	logger.Debug("starting to process tests", "testCount", len(tests))
 	var results []models.Result
 
-	for _, t := range tests {
+	for i, t := range tests {
 		caseId = nil
 		failures = make(map[string]FailureSummary)
 		processedFailures = make([]string, 0)
 
-		logger := logger.With("testTitle", t.Name)
+		logger := logger.With("testTitle", t.Name, "testIndex", i)
 		logger.Debug("processing test", "test", t)
 
 		suites := make([]models.SuiteData, 0)
@@ -326,18 +361,21 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 
 		if t.Action.FailureSummaries != nil {
 			var message string
-
 			for _, f := range t.Action.FailureSummaries.Values {
 				failures[f.UUID.Value] = f
 				message += f.Message.Value + "\n"
-
 			}
-
 			result.Execution.StackTrace = &message
+		} else {
+			logger.Debug("test has no failure summaries")
 		}
 
 		steps, _, a := p.getSteps(t.Action.ActivitySummaries, 0)
 		result.Attachments = append(result.Attachments, a...)
+
+		// Search for attachments in activitySummaries at test level
+		testLevelAttachments := p.getTestLevelAttachments(t.Action.ActivitySummaries)
+		result.Attachments = append(result.Attachments, testLevelAttachments...)
 
 		result.Steps = steps
 		if caseId != nil {
@@ -346,25 +384,34 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 
 		for k, v := range failures {
 			if isFailureProcessed(k) {
+				logger.Debug("skipping already processed failure", "failureId", k)
 				continue
 			}
 
+			logger.Debug("processing failure attachments", "failureId", k, "hasAttachments", v.Attachments != nil)
 			if v.Attachments != nil {
-				for _, att := range v.Attachments.Values {
+				logger.Debug("found attachments in failure", "attachmentCount", len(v.Attachments.Values))
+				for i, att := range v.Attachments.Values {
+					logger.Debug("processing failure attachment", "index", i, "filename", att.Filename.Value, "name", att.Name.Value)
 					a, err := p.getAttachment(att)
 					if err != nil {
-						logger.Error("failed to get attachments", "error", err)
+						logger.Error("failed to get attachments", "error", err, "attachmentIndex", i)
 						continue
 					}
 
+					logger.Debug("successfully added failure attachment", "attachmentName", a.Name)
 					result.Attachments = append(result.Attachments, a)
 				}
+			} else {
+				logger.Debug("no attachments found in failure", "failureId", k)
 			}
 		}
 
+		logger.Debug("completed test processing", "attachmentCount", len(result.Attachments), "stepCount", len(result.Steps))
 		results = append(results, result)
 	}
 
+	logger.Debug("completed all tests processing", "totalResults", len(results))
 	return results
 }
 
@@ -378,48 +425,180 @@ func isFailureProcessed(f string) bool {
 	return false
 }
 
+// detectFileExtension determines the file extension based on file content
+func (p *Parser) detectFileExtension(data []byte) string {
+	if len(data) < 4 {
+		return ""
+	}
+
+	// Check for common image formats
+	switch {
+	case len(data) >= 8 && string(data[0:8]) == "\x89PNG\r\n\x1a\n":
+		return ".png"
+	case len(data) >= 2 && string(data[0:2]) == "\xff\xd8":
+		return ".jpg"
+	case len(data) >= 6 && string(data[0:6]) == "GIF87a" || string(data[0:6]) == "GIF89a":
+		return ".gif"
+	case len(data) >= 4 && string(data[0:4]) == "RIFF" && len(data) >= 8 && string(data[8:12]) == "WEBP":
+		return ".webp"
+	case len(data) >= 4 && string(data[0:4]) == "\x00\x00\x01\x00":
+		return ".ico"
+	case len(data) >= 4 && string(data[0:4]) == "BM\x00\x00":
+		return ".bmp"
+	case len(data) >= 4 && string(data[0:4]) == "\x00\x00\x00\x20":
+		return ".tiff"
+	case len(data) >= 4 && string(data[0:4]) == "II*\x00":
+		return ".tiff"
+	case len(data) >= 4 && string(data[0:4]) == "MM\x00*":
+		return ".tiff"
+	// Check for HEIC/HEIF
+	case len(data) >= 12 && string(data[4:12]) == "ftypheic":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftypheix":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftypheis":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftyphevc":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftyphevx":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftyphevs":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftyphevm":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftypheis":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftypheix":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftypheic":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftyphevc":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftyphevx":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftyphevs":
+		return ".heic"
+	case len(data) >= 12 && string(data[4:12]) == "ftyphevm":
+		return ".heic"
+	// Check for PDF
+	case len(data) >= 4 && string(data[0:4]) == "%PDF":
+		return ".pdf"
+	// Check for Binary Property List (bplist00)
+	case len(data) >= 8 && string(data[0:8]) == "bplist00":
+		return ".plist"
+	// Check for text files (UTF-8, UTF-16, ASCII)
+	case len(data) >= 3 && string(data[0:3]) == "\xef\xbb\xbf":
+		return ".txt" // UTF-8 BOM
+	case len(data) >= 2 && string(data[0:2]) == "\xff\xfe":
+		return ".txt" // UTF-16 LE BOM
+	case len(data) >= 2 && string(data[0:2]) == "\xfe\xff":
+		return ".txt" // UTF-16 BE BOM
+	// Check for JSON
+	case len(data) > 0 && (data[0] == '{' || data[0] == '['):
+		// Try to parse as JSON to confirm
+		var temp interface{}
+		if json.Unmarshal(data, &temp) == nil {
+			return ".json"
+		}
+	// Check for XML
+	case len(data) >= 5 && string(data[0:5]) == "<?xml":
+		return ".xml"
+	case len(data) >= 1 && data[0] == '<':
+		return ".xml"
+	// Check for plain text (if all bytes are printable ASCII)
+	default:
+		isText := true
+		for _, b := range data {
+			if b < 32 && b != 9 && b != 10 && b != 13 { // tab, newline, carriage return
+				isText = false
+				break
+			}
+		}
+		if isText {
+			return ".txt"
+		}
+	}
+
+	return ""
+}
+
 func (p *Parser) getAttachment(a Attachment) (models.Attachment, error) {
+	const op = "xctest.Parser.getAttachment"
+	logger := slog.With("op", op, "filename", a.Filename.Value, "name", a.Name.Value, "payloadId", a.PayloadRef.ID.Value)
+
+	logger.Debug("processing attachment", "originalFilename", a.Filename.Value)
+
+	// Handle HEIC conversion
 	a.Filename.Value = strings.Replace(a.Filename.Value, heicExt, ".jpeg", 1)
 
 	att, err := p.readAttachment(a.PayloadRef.ID.Value)
 	if err != nil {
+		logger.Error("failed to read attachment content", "error", err)
 		return models.Attachment{}, fmt.Errorf("failed to get attachment: %w", err)
 	}
 
+	// Determine file extension based on content if filename doesn't have one
+	filename := a.Filename.Value
+	if !strings.Contains(filename, ".") || strings.HasSuffix(filename, ".") {
+		extension := p.detectFileExtension(att)
+		if extension != "" {
+			filename = filename + extension
+			logger.Debug("added file extension based on content", "filename", filename, "extension", extension)
+		}
+	}
+
 	return models.Attachment{
-		Name:    a.Filename.Value,
+		Name:    filename,
 		Content: &att,
 	}, nil
 }
 
 func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool, []models.Attachment) {
 	const op = "xctest.Parser.getSteps"
-	logger := slog.With("op", op)
+	logger := slog.With("op", op, "level", level)
 
+	logger.Debug("processing activity summaries", "activityCount", len(as.Values))
 	steps := make([]models.Step, 0, len(as.Values))
 	attachments := make([]models.Attachment, 0)
 	isFailedStep := false
 
-	for _, v := range as.Values {
+	for i, v := range as.Values {
+		logger.Debug("processing activity", "index", i, "activityType", v.ActivityType.Value, "title", v.Title.Value, "hasAttachments", v.Attachments != nil, "hasSubactivities", v.Subactivities != nil, "hasFailureSummaryIDs", v.FailureSummaryIDs != nil)
+
+		if v.Attachments != nil {
+			logger.Debug("activity has attachments", "attachmentCount", len(v.Attachments.Values))
+			for j, att := range v.Attachments.Values {
+				logger.Debug("attachment details", "index", j, "filename", att.Filename.Value, "name", att.Name.Value, "payloadId", att.PayloadRef.ID.Value)
+			}
+		}
+
 		stepAttachments := make([]models.Attachment, 0)
 		stepComment := ""
 		isStepFailed := false
 		childSteps := make([]models.Step, 0)
 		if v.ActivityType.Value == attachmentStep && v.Attachments != nil &&
 			len(v.Attachments.Values) == 1 && v.Attachments.Values[0].Name.Value == qaseConfig {
+			logger.Debug("processing Qase config attachment", "filename", v.Attachments.Values[0].Filename.Value)
 			att, err := p.getAttachment(v.Attachments.Values[0])
 			if err != nil {
-				logger.Error("failed to get attachments", "error", err)
+				logger.Error("failed to get Qase config attachment", "error", err)
+				continue
 			}
 
+			logger.Debug("parsing Qase ID from attachment", "contentSize", len(*att.Content))
 			var ID QaseId
 			err = json.Unmarshal(*att.Content, &ID)
 			if err != nil {
 				logger.Error("failed to unmarshal Qase ID", "error", err)
+				continue
 			}
 
+			logger.Debug("successfully parsed Qase ID", "caseId", ID.ID)
 			if caseId == nil {
 				caseId = &ID.ID
+				logger.Debug("set case ID", "caseId", *caseId)
+			} else {
+				logger.Debug("case ID already set", "existingCaseId", *caseId, "newCaseId", ID.ID)
 			}
 
 			continue
@@ -435,10 +614,9 @@ func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool,
 						for _, a := range fm.Attachments.Values {
 							att, err := p.getAttachment(a)
 							if err != nil {
-								logger.Error("failed to get attachments", "error", err)
+								logger.Error("failed to get failure summary attachment", "error", err, "filename", a.Filename.Value)
 								continue
 							}
-
 							stepAttachments = append(stepAttachments, att)
 						}
 					}
@@ -449,10 +627,9 @@ func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool,
 				for _, a := range v.Attachments.Values {
 					att, err := p.getAttachment(a)
 					if err != nil {
-						logger.Error("failed to get attachments", "error", err)
+						logger.Error("failed to get step attachment", "error", err, "filename", a.Filename.Value)
 						continue
 					}
-
 					stepAttachments = append(stepAttachments, att)
 				}
 			}
@@ -517,7 +694,32 @@ func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool,
 		steps = append(steps, step)
 	}
 
+	logger.Debug("completed steps processing", "stepCount", len(steps), "attachmentCount", len(attachments), "hasFailedStep", isFailedStep)
 	return steps, isFailedStep, attachments
+}
+
+// getTestLevelAttachments searches for attachments in activitySummaries at the test level
+func (p *Parser) getTestLevelAttachments(as ActivitySummaries) []models.Attachment {
+	const op = "xctest.Parser.getTestLevelAttachments"
+	logger := slog.With("op", op)
+
+	attachments := make([]models.Attachment, 0)
+
+	for _, activity := range as.Values {
+		if activity.Attachments != nil {
+			for _, att := range activity.Attachments.Values {
+				attachment, err := p.getAttachment(att)
+				if err != nil {
+					logger.Error("failed to get test-level attachment", "error", err, "filename", att.Filename.Value)
+					continue
+				}
+
+				attachments = append(attachments, attachment)
+			}
+		}
+	}
+
+	return attachments
 }
 
 func getStatus(s string) string {
