@@ -692,6 +692,74 @@ func TestService_Upload(t *testing.T) {
 			wantErr:    false,
 			errMessage: "",
 		},
+		{
+			name: "success with attachment filtering",
+			args: args{
+				p: UploadParams{
+					Project:              "project",
+					Title:                "title",
+					Description:          "description",
+					RunID:                1,
+					Batch:                20,
+					Suite:                "",
+					AttachmentExtensions: "png,jpg",
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModelsWithAttachments(), // Models with various attachments
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: false,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: false,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "success with attachment filtering and steps",
+			args: args{
+				p: UploadParams{
+					Project:              "project",
+					Title:                "title",
+					Description:          "description",
+					RunID:                1,
+					Batch:                20,
+					Suite:                "",
+					AttachmentExtensions: "pdf",
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModelsWithStepAttachments(), // Models with step attachments
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: false,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: false,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -742,6 +810,151 @@ func TestService_Upload(t *testing.T) {
 			}
 			if err != nil && err.Error() != tt.errMessage {
 				t.Errorf("Service.Upload() error = %v, wantErr %v", err, tt.errMessage)
+			}
+		})
+	}
+}
+
+func TestService_filterAttachments(t *testing.T) {
+	tests := []struct {
+		name        string
+		results     []models.Result
+		extensions  string
+		expectedLen int
+	}{
+		{
+			name: "filter png and jpg files",
+			results: []models.Result{
+				{
+					Attachments: []models.Attachment{
+						{Name: "screenshot.png"},
+						{Name: "photo.jpg"},
+						{Name: "document.pdf"},
+						{Name: "log.txt"},
+					},
+				},
+			},
+			extensions:  "png,jpg",
+			expectedLen: 2,
+		},
+		{
+			name: "filter pdf files only",
+			results: []models.Result{
+				{
+					Attachments: []models.Attachment{
+						{Name: "screenshot.png"},
+						{Name: "photo.jpg"},
+						{Name: "document.pdf"},
+						{Name: "report.PDF"},
+					},
+				},
+			},
+			extensions:  "pdf",
+			expectedLen: 2,
+		},
+		{
+			name: "no filtering when extensions empty",
+			results: []models.Result{
+				{
+					Attachments: []models.Attachment{
+						{Name: "screenshot.png"},
+						{Name: "photo.jpg"},
+						{Name: "document.pdf"},
+					},
+				},
+			},
+			extensions:  "",
+			expectedLen: 3,
+		},
+		{
+			name: "filter with steps attachments",
+			results: []models.Result{
+				{
+					Attachments: []models.Attachment{
+						{Name: "main.png"},
+					},
+					Steps: []models.Step{
+						{
+							Execution: models.StepExecution{
+								Attachments: []models.Attachment{
+									{Name: "step1.jpg"},
+									{Name: "step2.pdf"},
+								},
+							},
+						},
+					},
+				},
+			},
+			extensions:  "png,jpg",
+			expectedLen: 2, // 1 main + 1 step attachment
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := &Service{}
+			result := s.filterAttachments(tt.results, tt.extensions)
+
+			totalAttachments := 0
+			for _, r := range result {
+				totalAttachments += len(r.Attachments)
+				for _, step := range r.Steps {
+					totalAttachments += len(step.Execution.Attachments)
+				}
+			}
+
+			if totalAttachments != tt.expectedLen {
+				t.Errorf("filterAttachments() totalAttachments = %v, want %v", totalAttachments, tt.expectedLen)
+			}
+		})
+	}
+}
+
+func TestService_shouldIncludeAttachment(t *testing.T) {
+	tests := []struct {
+		name       string
+		filename   string
+		extensions []string
+		expected   bool
+	}{
+		{
+			name:       "include png file",
+			filename:   "screenshot.png",
+			extensions: []string{".png", ".jpg"},
+			expected:   true,
+		},
+		{
+			name:       "include jpg file",
+			filename:   "photo.jpg",
+			extensions: []string{".png", ".jpg"},
+			expected:   true,
+		},
+		{
+			name:       "exclude pdf file",
+			filename:   "document.pdf",
+			extensions: []string{".png", ".jpg"},
+			expected:   false,
+		},
+		{
+			name:       "case insensitive matching",
+			filename:   "SCREENSHOT.PNG",
+			extensions: []string{".png", ".jpg"},
+			expected:   true,
+		},
+		{
+			name:       "include all when no extensions",
+			filename:   "anyfile.txt",
+			extensions: []string{},
+			expected:   true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := &Service{}
+			result := s.shouldIncludeAttachment(tt.filename, tt.extensions)
+			if result != tt.expected {
+				t.Errorf("shouldIncludeAttachment() = %v, want %v", result, tt.expected)
 			}
 		})
 	}

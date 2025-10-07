@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"runtime"
+	"strings"
 
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"golang.org/x/sync/errgroup"
@@ -96,6 +97,11 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 		}
 	}
 
+	// Filter attachments if extensions are specified
+	if p.AttachmentExtensions != "" {
+		results = s.filterAttachments(results, p.AttachmentExtensions)
+	}
+
 	err = s.uploadResults(ctx, p.Project, p.Batch, runID, results)
 	if err != nil {
 		return fmt.Errorf("failed to upload results: %w", err)
@@ -168,4 +174,80 @@ func (s *Service) uploadResults(ctx context.Context, project string, batchSize, 
 	}
 
 	return nil
+}
+
+// filterAttachments filters attachments based on file extensions
+func (s *Service) filterAttachments(results []models.Result, extensions string) []models.Result {
+	const op = "result.filterAttachments"
+	logger := slog.With("op", op)
+
+	// If no extensions specified, return results as-is
+	if extensions == "" {
+		return results
+	}
+
+	// Parse extensions
+	extList := strings.Split(extensions, ",")
+	for i, ext := range extList {
+		extList[i] = strings.TrimSpace(ext)
+		if !strings.HasPrefix(extList[i], ".") {
+			extList[i] = "." + extList[i]
+		}
+	}
+
+	logger.Debug("filtering attachments", "extensions", extList)
+
+	for i := range results {
+		// Filter main result attachments
+		results[i].Attachments = s.filterAttachmentList(results[i].Attachments, extList)
+
+		// Filter step attachments recursively
+		results[i].Steps = s.filterStepAttachments(results[i].Steps, extList)
+	}
+
+	return results
+}
+
+// filterAttachmentList filters a list of attachments based on extensions
+func (s *Service) filterAttachmentList(attachments []models.Attachment, extensions []string) []models.Attachment {
+	filtered := make([]models.Attachment, 0, len(attachments))
+
+	for _, attachment := range attachments {
+		if s.shouldIncludeAttachment(attachment.Name, extensions) {
+			filtered = append(filtered, attachment)
+		}
+	}
+
+	return filtered
+}
+
+// filterStepAttachments recursively filters attachments in steps
+func (s *Service) filterStepAttachments(steps []models.Step, extensions []string) []models.Step {
+	for i := range steps {
+		// Filter step execution attachments
+		steps[i].Execution.Attachments = s.filterAttachmentList(steps[i].Execution.Attachments, extensions)
+
+		// Recursively filter nested steps
+		if len(steps[i].Steps) > 0 {
+			steps[i].Steps = s.filterStepAttachments(steps[i].Steps, extensions)
+		}
+	}
+
+	return steps
+}
+
+// shouldIncludeAttachment checks if an attachment should be included based on its name and allowed extensions
+func (s *Service) shouldIncludeAttachment(filename string, extensions []string) bool {
+	if len(extensions) == 0 {
+		return true
+	}
+
+	filename = strings.ToLower(filename)
+	for _, ext := range extensions {
+		if strings.HasSuffix(filename, strings.ToLower(ext)) {
+			return true
+		}
+	}
+
+	return false
 }
