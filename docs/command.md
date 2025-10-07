@@ -140,6 +140,7 @@ The `upload` command has the following options:
 - `--suite`, `-s`: The suite name of the test results. Optional.
 - `--replace-statuses`, `-r`: The statuses to replace. Optional. Pass like '{\"Passed\": \"Failed\"}' to replace all passed results with failed. Note: Use slugs of statuses.
 - `--skip-params`: Skip parameters for the results. Optional.
+- `--attachment-extensions`: Comma-separated list of file extensions to filter attachments. If not specified, all attachments will be uploaded. Optional.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
 
 The following example shows how to upload test results in the JUnit format for a test run with the ID `1` in the project
@@ -170,6 +171,13 @@ with the code `PROJ`:
 
 ```bash
 qasectl testops result upload --project PROJ --token <token> --id 1 --format xctest --steps user --path /path/to/xctest-results --verbose
+```
+
+The following example shows how to upload test results with filtered attachments (only PNG and JPG files) for a test run with the ID `1` in the project
+with the code `PROJ`:
+
+```bash
+qasectl testops result upload --project PROJ --token <token> --id 1 --format allure --path /path/to/allure-results --attachment-extensions "png,jpg" --verbose
 ```
 
 # Create an environment

@@ -18,34 +18,36 @@ import (
 )
 
 const (
-	pathFlag        = "path"
-	formatFlag      = "format"
-	runIDFlag       = "id"
-	titleFlag       = "title"
-	descriptionFlag = "description"
-	statusFlag      = "replace-statuses"
-	skipParamsFlag  = "skip-params"
+	pathFlag                 = "path"
+	formatFlag               = "format"
+	runIDFlag                = "id"
+	titleFlag                = "title"
+	descriptionFlag          = "description"
+	statusFlag               = "replace-statuses"
+	skipParamsFlag           = "skip-params"
+	attachmentExtensionsFlag = "attachment-extensions"
 )
 
 // Command returns a new cobra command for upload
 func Command() *cobra.Command {
 	var (
-		path        string
-		format      string
-		runID       int64
-		title       string
-		description string
-		steps       string
-		batch       int64
-		suite       string
-		status      string
-		skipParams  bool
+		path                 string
+		format               string
+		runID                int64
+		title                string
+		description          string
+		steps                string
+		batch                int64
+		suite                string
+		status               string
+		skipParams           bool
+		attachmentExtensions string
 	)
 
 	cmd := &cobra.Command{
 		Use:     "upload",
 		Short:   "Upload test results",
-		Example: "qasectl testops result upload --path 'path' --format 'junit' --id 123 --replace-statuses '{\"Broken\": \"Failed\"}' --project 'PRJ' --token 'TOKEN'",
+		Example: "qasectl testops result upload --path 'path' --format 'junit' --id 123 --replace-statuses '{\"Broken\": \"Failed\"}' --attachment-extensions 'png,jpg,pdf' --project 'PRJ' --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			const op = "upload"
 			logger := slog.With("op", op)
@@ -86,14 +88,15 @@ func Command() *cobra.Command {
 			s := result.NewService(cv2, p, rs)
 
 			param := result.UploadParams{
-				RunID:       runID,
-				Title:       title,
-				Description: description,
-				Batch:       batch,
-				Project:     project,
-				Suite:       suite,
-				Statuses:    statuses,
-				SkipParams:  skipParams,
+				RunID:                runID,
+				Title:                title,
+				Description:          description,
+				Batch:                batch,
+				Project:              project,
+				Suite:                suite,
+				Statuses:             statuses,
+				SkipParams:           skipParams,
+				AttachmentExtensions: attachmentExtensions,
 			}
 
 			err := s.Upload(cmd.Context(), param)
@@ -130,6 +133,7 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVarP(&suite, "suite", "s", "", "Root suite for the results")
 	cmd.Flags().StringVar(&status, statusFlag, "", "Replace statuses of the results. Pass '{\"Passed\": \"Failed\"}' to replace all passed results with failed")
 	cmd.Flags().BoolVar(&skipParams, skipParamsFlag, false, "Skip parameters for the results")
+	cmd.Flags().StringVar(&attachmentExtensions, attachmentExtensionsFlag, "", "Comma-separated list of file extensions to filter attachments. If not specified, all attachments will be uploaded")
 
 	return cmd
 }
