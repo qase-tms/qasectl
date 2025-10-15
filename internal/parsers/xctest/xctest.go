@@ -304,9 +304,12 @@ func (p *Parser) getXCTestsFromSubtest(s Subtests, suites []string) []XCTest {
 		}
 
 		if v.Subtests != nil {
-			suites = append(suites, v.Name.Value)
+			// Create a new slice to avoid suite nesting issues
+			newSuites := make([]string, len(suites))
+			copy(newSuites, suites)
+			newSuites = append(newSuites, v.Name.Value)
 
-			tt := p.getXCTestsFromSubtest(*v.Subtests, suites)
+			tt := p.getXCTestsFromSubtest(*v.Subtests, newSuites)
 			tests = append(tests, tt...)
 		}
 	}
