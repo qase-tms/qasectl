@@ -119,6 +119,7 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 
 	for _, testSuite := range testSuites.TestSuites {
 		for _, testCase := range testSuite.TestCases {
+			testCase := testCase
 			relation := models.Relation{
 				Suite: models.Suite{
 					Data: []models.SuiteData{},
@@ -177,13 +178,13 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 			}
 
 			steps := parseSteps(testCase.Properties)
-
+			duration := testCase.Time * 1000
 			result := models.Result{
 				Title:     testCase.Name,
 				Signature: &signature,
 				Relations: relation,
 				Execution: models.Execution{
-					Duration:   &testCase.Time,
+					Duration:   &duration,
 					Status:     status,
 					StackTrace: stackTrace,
 				},

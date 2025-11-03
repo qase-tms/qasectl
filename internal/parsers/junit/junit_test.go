@@ -161,7 +161,7 @@ func TestParser_parseFile(t *testing.T) {
 					},
 					Execution: models.Execution{
 						Status:     "failed",
-						Duration:   float64Ptr(0.05),
+						Duration:   float64Ptr(50.0),
 						StackTrace: stringPtr("Failure details"),
 					},
 					Message: stringPtr("Test failed"),
@@ -178,7 +178,7 @@ func TestParser_parseFile(t *testing.T) {
 					},
 					Execution: models.Execution{
 						Status:   "passed",
-						Duration: float64Ptr(0.05),
+						Duration: float64Ptr(50.0),
 					},
 				},
 			},
@@ -206,7 +206,7 @@ func TestParser_parseFile(t *testing.T) {
 					},
 					Execution: models.Execution{
 						Status:     "failed",
-						Duration:   float64Ptr(0.05),
+						Duration:   float64Ptr(50.0),
 						StackTrace: stringPtr("Failure details"),
 					},
 					Message: stringPtr("Test failed"),
@@ -222,7 +222,7 @@ func TestParser_parseFile(t *testing.T) {
 					},
 					Execution: models.Execution{
 						Status:   "passed",
-						Duration: float64Ptr(0.05),
+						Duration: float64Ptr(50.0),
 					},
 				},
 			},
@@ -275,6 +275,13 @@ func TestParser_parseFile(t *testing.T) {
 				}
 				if res.Execution.Status != expected.Execution.Status {
 					t.Errorf("Result[%d].Execution.Status = %v, want %v", i, res.Execution.Status, expected.Execution.Status)
+				}
+				if expected.Execution.Duration != nil {
+					if res.Execution.Duration == nil {
+						t.Errorf("Result[%d].Execution.Duration = nil, want %v", i, *expected.Execution.Duration)
+					} else if *res.Execution.Duration != *expected.Execution.Duration {
+						t.Errorf("Result[%d].Execution.Duration = %v, want %v", i, *res.Execution.Duration, *expected.Execution.Duration)
+					}
 				}
 			}
 		})
