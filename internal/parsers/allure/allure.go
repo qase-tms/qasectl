@@ -3,13 +3,14 @@ package allure
 import (
 	"encoding/json"
 	"fmt"
-	models "github.com/qase-tms/qasectl/internal/models/result"
 	"log/slog"
 	"os"
 	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	models "github.com/qase-tms/qasectl/internal/models/result"
 )
 
 // Parser is a parser for Allure files
@@ -39,6 +40,13 @@ var (
 		"skipped": true,
 		"blocked": true,
 		"invalid": true,
+	}
+
+	validLayerValues = map[string]bool{
+		"unknown": true,
+		"e2e":     true,
+		"api":     true,
+		"unit":    true,
 	}
 )
 
@@ -126,6 +134,8 @@ func (p *Parser) convertTest(test Test) models.Result {
 		Fields:      map[string]string{},
 		Execution: models.Execution{
 			Duration:   &d,
+			StartTime:  &test.Start,
+			EndTime:    &test.Stop,
 			Status:     p.convertTestResultStatus(test.Status),
 			StackTrace: test.StatusDetails.Trace,
 		},
@@ -160,7 +170,28 @@ func (p *Parser) convertTest(test Test) models.Result {
 			}
 		}
 
-		result.Fields[v.Name] = v.Value
+		if v.Name == "suite" {
+			suites := strings.Split(v.Value, ".")
+			data := make([]models.SuiteData, 0, len(suites))
+
+			for i := range suites {
+				data = append(data, models.SuiteData{Title: suites[i]})
+			}
+
+			result.Relations = models.Relation{
+				Suite: models.Suite{
+					Data: data,
+				},
+			}
+		}
+
+		// Handle layer field: if value is not in valid list, rename to custom_layer
+		fieldName := v.Name
+		if v.Name == "layer" && !validLayerValues[v.Value] {
+			fieldName = "custom layer"
+		}
+
+		result.Fields[fieldName] = v.Value
 	}
 
 	if test.Description != nil {

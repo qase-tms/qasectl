@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"time"
 
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
 	"github.com/qase-tms/qasectl/internal/models/fields/custom"
@@ -260,7 +261,7 @@ func (c *ClientV1) GetPlan(ctx context.Context, projectCode string, planID int64
 }
 
 // CreateRun creates a new run
-func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64, tags []string, isCloud bool, browser string) (int64, error) {
+func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, description, envSlug string, mileID, planID int64, tags []string, isCloud bool, browser string, startTime *int64) (int64, error) {
 	const op = "client.clientv1.createrun"
 	logger := slog.With("op", op)
 
@@ -302,6 +303,15 @@ func (c *ClientV1) CreateRun(ctx context.Context, projectCode, title string, des
 		}
 
 		m.SetCloudRunConfig(cloudConfig)
+	}
+
+	if startTime != nil {
+		// Convert milliseconds to time.Time and format as "YYYY-MM-DD HH:MM:SS" in UTC
+		startTimeSeconds := *startTime / 1000
+		t := time.Unix(startTimeSeconds, 0).UTC()
+		startTimeStr := t.Format("2006-01-02 15:04:05")
+		m.StartTime = &startTimeStr
+		logger.Debug("setting run start time", "startTime", *startTime, "startTimeSeconds", startTimeSeconds, "formatted", startTimeStr)
 	}
 
 	logger.Debug("creating run", "projectCode", projectCode, "model", m)

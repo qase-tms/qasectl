@@ -781,6 +781,7 @@ func TestService_Upload(t *testing.T) {
 					[]string{}, // tags
 					false,      // isCloud
 					"",         // browser
+					gomock.Any(), // startTime
 				).Return(tt.rArgs.model, tt.rArgs.err)
 			}
 

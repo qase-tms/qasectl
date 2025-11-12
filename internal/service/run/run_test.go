@@ -185,6 +185,7 @@ func TestService_CreateRun(t *testing.T) {
 					tt.args.tags,
 					tt.args.isCloud,
 					tt.args.browser,
+					gomock.Any(), // startTime
 				).
 					Return(tt.want, tt.args.args.err)
 			}
@@ -202,6 +203,7 @@ func TestService_CreateRun(t *testing.T) {
 				tt.args.tags,
 				tt.args.isCloud,
 				tt.args.browser,
+				nil, // startTime
 			)
 			if err != nil {
 				if !tt.wantErr {
