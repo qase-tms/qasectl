@@ -63,7 +63,7 @@ func Command() *cobra.Command {
 				}
 			}
 
-			id, err := s.CreateRun(cmd.Context(), project, title, description, environment, milestone, plan, tags, isCloud, browser)
+			id, err := s.CreateRun(cmd.Context(), project, title, description, environment, milestone, plan, tags, isCloud, browser, nil)
 			if err != nil {
 				return fmt.Errorf("failed to create run: %w", err)
 			}

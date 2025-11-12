@@ -130,16 +130,16 @@ func (mr *MockrunServiceMockRecorder) CompleteRun(ctx, projectCode, runId any) *
 }
 
 // CreateRun mocks base method.
-func (m_2 *MockrunService) CreateRun(ctx context.Context, p, t, d, e string, m, plan int64, tags []string, isCloud bool, browser string) (int64, error) {
+func (m_2 *MockrunService) CreateRun(ctx context.Context, p, t, d, e string, m, plan int64, tags []string, isCloud bool, browser string, startTime *int64) (int64, error) {
 	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "CreateRun", ctx, p, t, d, e, m, plan, tags, isCloud, browser)
+	ret := m_2.ctrl.Call(m_2, "CreateRun", ctx, p, t, d, e, m, plan, tags, isCloud, browser, startTime)
 	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateRun indicates an expected call of CreateRun.
-func (mr *MockrunServiceMockRecorder) CreateRun(ctx, p, t, d, e, m, plan, tags, isCloud, browser any) *gomock.Call {
+func (mr *MockrunServiceMockRecorder) CreateRun(ctx, p, t, d, e, m, plan, tags, isCloud, browser, startTime any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRun", reflect.TypeOf((*MockrunService)(nil).CreateRun), ctx, p, t, d, e, m, plan, tags, isCloud, browser)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRun", reflect.TypeOf((*MockrunService)(nil).CreateRun), ctx, p, t, d, e, m, plan, tags, isCloud, browser, startTime)
 }

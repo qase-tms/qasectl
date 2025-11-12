@@ -23,7 +23,7 @@ type Parser interface {
 
 //go:generate mockgen -source=$GOFILE -destination=$PWD/mocks/${GOFILE} -package=mocks
 type runService interface {
-	CreateRun(ctx context.Context, p, t string, d, e string, m, plan int64, tags []string, isCloud bool, browser string) (int64, error)
+	CreateRun(ctx context.Context, p, t string, d, e string, m, plan int64, tags []string, isCloud bool, browser string, startTime *int64) (int64, error)
 	CompleteRun(ctx context.Context, projectCode string, runId int64) error
 }
 
@@ -63,7 +63,16 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 	runID := p.RunID
 	isTestRunCreated := false
 	if runID == 0 {
-		ID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", 0, 0, []string{}, false, "")
+		// Find the earliest StartTime from all results
+		var startTime *int64
+		if minStartTime := s.findMinStartTime(results); minStartTime != nil {
+			// Subtract 10 seconds (10000 milliseconds) from the earliest start time
+			runStartTime := int64(*minStartTime) - 10000
+			startTime = &runStartTime
+			logger.Debug("calculated run start time", "startTime", runStartTime, "minResultStartTime", *minStartTime)
+		}
+
+		ID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", 0, 0, []string{}, false, "", startTime)
 		if err != nil {
 			return err
 		}
@@ -250,4 +259,19 @@ func (s *Service) shouldIncludeAttachment(filename string, extensions []string) 
 	}
 
 	return false
+}
+
+// findMinStartTime finds the minimum StartTime from all results
+func (s *Service) findMinStartTime(results []models.Result) *float64 {
+	var minStartTime *float64
+
+	for _, result := range results {
+		if result.Execution.StartTime != nil {
+			if minStartTime == nil || *result.Execution.StartTime < *minStartTime {
+				minStartTime = result.Execution.StartTime
+			}
+		}
+	}
+
+	return minStartTime
 }
