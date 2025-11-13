@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"runtime"
+	"sort"
 	"strings"
 
 	models "github.com/qase-tms/qasectl/internal/models/result"
@@ -60,6 +61,14 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 		return fmt.Errorf("no results to upload")
 	}
 
+	for i := range results {
+		if len([]rune(results[i].Title)) > 255 {
+			logger.Warn("result title is too long and will be truncated", "title", results[i].Title)
+			runes := []rune(results[i].Title)
+			results[i].Title = string(runes[:255])
+		}
+	}
+
 	runID := p.RunID
 	isTestRunCreated := false
 	if runID == 0 {
@@ -78,6 +87,21 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 		}
 		runID = ID
 		isTestRunCreated = true
+	} else {
+		sort.Slice(results, func(i, j int) bool {
+			if results[i].Execution.StartTime == nil {
+				return false
+			}
+			if results[j].Execution.StartTime == nil {
+				return true
+			}
+			return *results[i].Execution.StartTime < *results[j].Execution.StartTime
+		})
+
+		for i := range results {
+			results[i].Execution.StartTime = nil
+			results[i].Execution.EndTime = nil
+		}
 	}
 
 	if p.Suite != "" {
