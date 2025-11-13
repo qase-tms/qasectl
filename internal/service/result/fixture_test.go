@@ -1,6 +1,7 @@
 package result
 
 import (
+	"strings"
 	"testing"
 
 	models "github.com/qase-tms/qasectl/internal/models/result"
@@ -210,6 +211,339 @@ func prepareModelsWithStepAttachments() []models.Result {
 				"browser": "chrome",
 				"version": "1.0.0",
 			},
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+	}
+}
+
+// prepareModelsWithStartTime creates models with different StartTime values for sorting tests
+func prepareModelsWithStartTime() []models.Result {
+	startTime1 := float64(1000)
+	endTime1 := float64(2000)
+	startTime2 := float64(500)
+	endTime2 := float64(1500)
+	startTime3 := float64(2000)
+	endTime3 := float64(3000)
+
+	return []models.Result{
+		{
+			ID:        nil,
+			Title:     "Test 3",
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  &startTime3,
+				EndTime:    &endTime3,
+				Status:     "passed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+		{
+			ID:        nil,
+			Title:     "Test 1",
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  &startTime1,
+				EndTime:    &endTime1,
+				Status:     "passed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+		{
+			ID:        nil,
+			Title:     "Test 2",
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  &startTime2,
+				EndTime:    &endTime2,
+				Status:     "failed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+	}
+}
+
+// prepareModelsWithNilStartTime creates models with some nil StartTime values for nil handling tests
+func prepareModelsWithNilStartTime() []models.Result {
+	startTime1 := float64(1000)
+	endTime1 := float64(2000)
+	startTime2 := float64(500)
+	endTime2 := float64(1500)
+
+	return []models.Result{
+		{
+			ID:        nil,
+			Title:     "Test with nil StartTime",
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  nil,
+				EndTime:    nil,
+				Status:     "passed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+		{
+			ID:        nil,
+			Title:     "Test 1",
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  &startTime1,
+				EndTime:    &endTime1,
+				Status:     "passed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+		{
+			ID:        nil,
+			Title:     "Test 2",
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  &startTime2,
+				EndTime:    &endTime2,
+				Status:     "failed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+	}
+}
+
+// prepareModelsWithLongTitles creates models with titles longer than 255 characters for truncation tests
+func prepareModelsWithLongTitles() []models.Result {
+	// Create a title longer than 255 characters
+	longTitle := strings.Repeat("A", 300) // 300 characters
+	exactTitle := strings.Repeat("B", 255) // Exactly 255 characters
+	shortTitle := strings.Repeat("C", 100)  // Less than 255 characters
+
+	return []models.Result{
+		{
+			ID:        nil,
+			Title:     longTitle,
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  nil,
+				EndTime:    nil,
+				Status:     "passed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+		{
+			ID:        nil,
+			Title:     exactTitle,
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  nil,
+				EndTime:    nil,
+				Status:     "passed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+		{
+			ID:        nil,
+			Title:     shortTitle,
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  nil,
+				EndTime:    nil,
+				Status:     "failed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+	}
+}
+
+// prepareModelsWithUTF8Titles creates models with UTF-8 multi-byte characters (emojis) for truncation tests
+func prepareModelsWithUTF8Titles() []models.Result {
+	// Create a title with emojis (each emoji is multiple bytes in UTF-8)
+	// 100 emojis = 100 runes, but more than 100 bytes
+	emojiTitle := strings.Repeat("🚀", 300) // 300 runes, but 1200 bytes (each emoji is 4 bytes)
+	// Mix of ASCII and emojis
+	mixedTitle := strings.Repeat("A🚀", 130) // 260 runes (130 * 2), but more than 260 bytes
+
+	return []models.Result{
+		{
+			ID:        nil,
+			Title:     emojiTitle,
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  nil,
+				EndTime:    nil,
+				Status:     "passed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
+			Relations: models.Relation{
+				Suite: models.Suite{
+					Data: []models.SuiteData{},
+				},
+			},
+			Muted:   false,
+			Message: nil,
+		},
+		{
+			ID:        nil,
+			Title:     mixedTitle,
+			Signature: nil,
+			TestOpsID: nil,
+			Execution: models.Execution{
+				StartTime:  nil,
+				EndTime:    nil,
+				Status:     "passed",
+				Duration:   nil,
+				StackTrace: nil,
+				Thread:     nil,
+			},
+			Fields:      make(map[string]string),
+			Attachments: []models.Attachment{},
+			Steps:       []models.Step{},
+			StepType:    "text",
+			Params:      make(map[string]string),
 			Relations: models.Relation{
 				Suite: models.Suite{
 					Data: []models.SuiteData{},

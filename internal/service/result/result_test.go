@@ -3,6 +3,7 @@ package result
 import (
 	"context"
 	"errors"
+	"strings"
 	"testing"
 
 	models "github.com/qase-tms/qasectl/internal/models/result"
@@ -760,6 +761,138 @@ func TestService_Upload(t *testing.T) {
 			wantErr:    false,
 			errMessage: "",
 		},
+		{
+			name: "sort results by StartTime and remove time when RunID is set",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       1,
+					Batch:       20,
+					Suite:       "",
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModelsWithStartTime(),
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: false,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: false,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "handle nil StartTime values during sorting",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       1,
+					Batch:       20,
+					Suite:       "",
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModelsWithNilStartTime(),
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: false,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: false,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "truncate long test titles to 255 characters",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       0,
+					Batch:       20,
+					Suite:       "",
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModelsWithLongTitles(),
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: true,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: true,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
+		{
+			name: "truncate UTF-8 multi-byte characters (emojis) correctly",
+			args: args{
+				p: UploadParams{
+					Project:     "project",
+					Title:       "title",
+					Description: "description",
+					RunID:       0,
+					Batch:       20,
+					Suite:       "",
+				},
+				err:    nil,
+				isUsed: true,
+				count:  1,
+				runID:  1,
+			},
+			pArgs: pArgs{
+				models: prepareModelsWithUTF8Titles(),
+				err:    nil,
+				isUsed: true,
+			},
+			rArgs: rArgs{
+				model:  1,
+				err:    nil,
+				isUsed: true,
+			},
+			cArgs: cArgs{
+				err:    nil,
+				isUsed: true,
+			},
+			wantErr:    false,
+			errMessage: "",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -795,6 +928,155 @@ func TestService_Upload(t *testing.T) {
 						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
 						Return(tt.args.err).
 						Times(1)
+				} else if tt.name == "sort results by StartTime and remove time when RunID is set" {
+					// Verify sorting and time removal
+					f.client.EXPECT().
+						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
+						Do(func(ctx interface{}, project interface{}, runID interface{}, results interface{}) {
+							resultsSlice := results.([]models.Result)
+							// Verify results are sorted by StartTime (ascending)
+							// Expected order: Test 2 (500), Test 1 (1000), Test 3 (2000)
+							if len(resultsSlice) != 3 {
+								t.Errorf("Expected 3 results, got %d", len(resultsSlice))
+								return
+							}
+							// Verify all StartTime and EndTime are nil after processing
+							for i, result := range resultsSlice {
+								if result.Execution.StartTime != nil {
+									t.Errorf("Result %d: Expected StartTime to be nil, got %v", i, *result.Execution.StartTime)
+								}
+								if result.Execution.EndTime != nil {
+									t.Errorf("Result %d: Expected EndTime to be nil, got %v", i, *result.Execution.EndTime)
+								}
+							}
+							// Verify order by Title (which should reflect StartTime order)
+							// After sorting: Test 2 (500), Test 1 (1000), Test 3 (2000)
+							if resultsSlice[0].Title != "Test 2" {
+								t.Errorf("Expected first result to be 'Test 2', got '%s'", resultsSlice[0].Title)
+							}
+							if resultsSlice[1].Title != "Test 1" {
+								t.Errorf("Expected second result to be 'Test 1', got '%s'", resultsSlice[1].Title)
+							}
+							if resultsSlice[2].Title != "Test 3" {
+								t.Errorf("Expected third result to be 'Test 3', got '%s'", resultsSlice[2].Title)
+							}
+						}).
+						Return(tt.args.err).
+						Times(tt.args.count)
+				} else if tt.name == "handle nil StartTime values during sorting" {
+					// Verify nil StartTime handling and time removal
+					f.client.EXPECT().
+						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
+						Do(func(ctx interface{}, project interface{}, runID interface{}, results interface{}) {
+							resultsSlice := results.([]models.Result)
+							// Verify all StartTime and EndTime are nil after processing
+							for i, result := range resultsSlice {
+								if result.Execution.StartTime != nil {
+									t.Errorf("Result %d: Expected StartTime to be nil, got %v", i, *result.Execution.StartTime)
+								}
+								if result.Execution.EndTime != nil {
+									t.Errorf("Result %d: Expected EndTime to be nil, got %v", i, *result.Execution.EndTime)
+								}
+							}
+							// Verify that results with nil StartTime are at the end
+							// Expected order: Test 2 (500), Test 1 (1000), Test with nil StartTime
+							if len(resultsSlice) != 3 {
+								t.Errorf("Expected 3 results, got %d", len(resultsSlice))
+								return
+							}
+							// Find the result with nil StartTime (should be last)
+							nilIndex := -1
+							for i, result := range resultsSlice {
+								if result.Title == "Test with nil StartTime" {
+									nilIndex = i
+									break
+								}
+							}
+							if nilIndex == -1 {
+								t.Error("Expected to find 'Test with nil StartTime' in results")
+							} else if nilIndex != 2 {
+								t.Errorf("Expected 'Test with nil StartTime' to be at index 2 (last), got index %d", nilIndex)
+							}
+						}).
+						Return(tt.args.err).
+						Times(tt.args.count)
+				} else if tt.name == "truncate long test titles to 255 characters" {
+					// Verify title truncation
+					f.client.EXPECT().
+						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
+						Do(func(ctx interface{}, project interface{}, runID interface{}, results interface{}) {
+							resultsSlice := results.([]models.Result)
+							if len(resultsSlice) != 3 {
+								t.Errorf("Expected 3 results, got %d", len(resultsSlice))
+								return
+							}
+							// Verify first result (long title) is truncated to 255 runes
+							if len([]rune(resultsSlice[0].Title)) != 255 {
+								t.Errorf("Expected first result title to be 255 runes, got %d", len([]rune(resultsSlice[0].Title)))
+							}
+							// Verify it starts with 'A' (original character)
+							runes0 := []rune(resultsSlice[0].Title)
+							if runes0[0] != 'A' {
+								t.Errorf("Expected first result title to start with 'A', got '%c'", runes0[0])
+							}
+							// Verify second result (exact 255 runes) is unchanged
+							if len([]rune(resultsSlice[1].Title)) != 255 {
+								t.Errorf("Expected second result title to be 255 runes, got %d", len([]rune(resultsSlice[1].Title)))
+							}
+							runes1 := []rune(resultsSlice[1].Title)
+							if runes1[0] != 'B' {
+								t.Errorf("Expected second result title to start with 'B', got '%c'", runes1[0])
+							}
+							// Verify third result (short title) is unchanged
+							if len([]rune(resultsSlice[2].Title)) != 100 {
+								t.Errorf("Expected third result title to be 100 runes, got %d", len([]rune(resultsSlice[2].Title)))
+							}
+							runes2 := []rune(resultsSlice[2].Title)
+							if runes2[0] != 'C' {
+								t.Errorf("Expected third result title to start with 'C', got '%c'", runes2[0])
+							}
+						}).
+						Return(tt.args.err).
+						Times(tt.args.count)
+				} else if tt.name == "truncate UTF-8 multi-byte characters (emojis) correctly" {
+					// Verify UTF-8 truncation preserves valid UTF-8 sequences
+					f.client.EXPECT().
+						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
+						Do(func(ctx interface{}, project interface{}, runID interface{}, results interface{}) {
+							resultsSlice := results.([]models.Result)
+							if len(resultsSlice) != 2 {
+								t.Errorf("Expected 2 results, got %d", len(resultsSlice))
+								return
+							}
+							// Verify first result (emoji title) is truncated to 255 runes
+							runes0 := []rune(resultsSlice[0].Title)
+							if len(runes0) != 255 {
+								t.Errorf("Expected first result title to be 255 runes, got %d", len(runes0))
+							}
+							// Verify it starts with emoji (original character)
+							if runes0[0] != '🚀' {
+								t.Errorf("Expected first result title to start with '🚀', got '%c'", runes0[0])
+							}
+							// Verify the string is valid UTF-8 (no corruption)
+							if !strings.ContainsRune(resultsSlice[0].Title, '🚀') {
+								t.Error("Expected first result title to contain emoji '🚀'")
+							}
+							// Verify second result (mixed title) is truncated to 255 runes
+							runes1 := []rune(resultsSlice[1].Title)
+							if len(runes1) != 255 {
+								t.Errorf("Expected second result title to be 255 runes, got %d", len(runes1))
+							}
+							// Verify it starts with 'A' (original character)
+							if runes1[0] != 'A' {
+								t.Errorf("Expected second result title to start with 'A', got '%c'", runes1[0])
+							}
+							// Verify the string is valid UTF-8 and contains emoji
+							if !strings.ContainsRune(resultsSlice[1].Title, '🚀') {
+								t.Error("Expected second result title to contain emoji '🚀'")
+							}
+						}).
+						Return(tt.args.err).
+						Times(tt.args.count)
 				} else {
 					f.client.EXPECT().
 						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
