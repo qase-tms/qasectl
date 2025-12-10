@@ -119,7 +119,6 @@ func (p *Parser) readAttachment(id string) ([]byte, error) {
 	executeCommand := func(args []string) ([]byte, error) {
 		out, err := exec.Command("xcrun", args...).Output()
 		if err != nil {
-			logger.Error("failed to execute xcrun command", "error", err, "args", args)
 			return nil, fmt.Errorf("failed to get XCResult attachment: %w", err)
 		}
 		logger.Debug("successfully executed xcrun command", "outputSize", len(out))
@@ -129,11 +128,9 @@ func (p *Parser) readAttachment(id string) ([]byte, error) {
 	out, err := executeCommand(args)
 	if err != nil {
 		if strings.Contains(err.Error(), "exit status 64") {
-			logger.Debug("got exit status 64, trying with --legacy flag")
 			args = append(args, "--legacy")
 			out, err = executeCommand(args)
 			if err != nil {
-				logger.Error("failed to get XCResult attachment with --legacy", "error", err)
 				return nil, fmt.Errorf("failed to get XCResult attachment with --legacy: %w", err)
 			}
 			logger.Debug("successfully got attachment with --legacy flag", "size", len(out))
