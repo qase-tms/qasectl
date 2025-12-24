@@ -288,7 +288,7 @@ func (p *Parser) getXCTestsFromSubtest(s Subtests, suites []string) []XCTest {
 				Action:    act,
 				Suites:    make([]string, 0),
 				Signature: v.IdentifierURL.Value,
-				Duration:  d,
+				Duration:  d * 1000,
 			}
 
 			if len(suites) > 0 {
