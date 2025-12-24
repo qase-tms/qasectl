@@ -167,11 +167,11 @@ func (p *Parser) getTestPlanSumIDs() (map[string]TestMeta, error) {
 		m := TestMeta{}
 
 		if action.StartedTime != nil {
-			st := float64(parseTime(action.StartedTime.Value).Unix())
+			st := float64(parseTime(action.StartedTime.Value).UnixMilli())
 			m.StartTime = &st
 		}
 		if action.EndedTime != nil {
-			et := float64(parseTime(action.StartedTime.Value).Unix())
+			et := float64(parseTime(action.EndedTime.Value).UnixMilli())
 			m.EndTime = &et
 		}
 		if action.RunDestination != nil {
@@ -337,12 +337,13 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 			})
 		}
 
+		duration := t.Duration
 		result := models.Result{
 			Title:     t.Name,
 			Signature: &t.Signature,
 			Execution: models.Execution{
-				Status:   getStatus(t.Action.TestStatus.Value),
-				Duration: &t.Duration,
+				Status:    getStatus(t.Action.TestStatus.Value),
+				Duration:  &duration,
 			},
 			Fields:      map[string]string{},
 			Attachments: make([]models.Attachment, 0),
@@ -357,6 +358,15 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 			},
 			StepType: "text",
 			Muted:    false,
+		}
+
+		if len(t.Action.ActivitySummaries.Values) > 0 {
+			startTime := t.Action.ActivitySummaries.Values[0].Start.Value
+			endTime := t.Action.ActivitySummaries.Values[len(t.Action.ActivitySummaries.Values)-1].Finish.Value
+			startTimeFloat := float64(parseTime(startTime).UnixMilli())
+			endTimeFloat := float64(parseTime(endTime).UnixMilli())
+			result.Execution.StartTime = &startTimeFloat
+			result.Execution.EndTime = &endTimeFloat
 		}
 
 		if t.Action.FailureSummaries != nil {
