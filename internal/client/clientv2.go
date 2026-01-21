@@ -41,7 +41,7 @@ func (c *ClientV2) UploadData(ctx context.Context, project string, runID int64, 
 	bulkModel := apiV2Client.NewCreateResultsRequestV2()
 	bulkModel.SetResults(resultModels)
 
-	r, err := client.ResultsAPI.
+	_, r, err := client.ResultsAPI.
 		CreateResultsV2(ctx, project, runID).
 		CreateResultsRequestV2(*bulkModel).
 		Execute()
