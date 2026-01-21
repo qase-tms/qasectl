@@ -368,11 +368,11 @@ func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, 
 
 	logger.Debug("converted results", "resultModels", resultModels)
 
-	bulkModel := apiV1Client.NewResultcreateBulk(resultModels)
+	bulkModel := apiV1Client.NewResultCreateBulk(resultModels)
 
 	_, r, err := client.ResultsAPI.
 		CreateResultBulk(ctx, project, int32(runID)).
-		ResultcreateBulk(*bulkModel).
+		ResultCreateBulk(*bulkModel).
 		Execute()
 
 	if err != nil {

@@ -5,8 +5,8 @@ go 1.21
 require (
 	github.com/google/uuid v1.6.0
 	github.com/magiconair/properties v1.8.7
-	github.com/qase-tms/qase-go/qase-api-client v1.1.5
-	github.com/qase-tms/qase-go/qase-api-v2-client v1.1.3
+	github.com/qase-tms/qase-go/qase-api-client v1.2.2
+	github.com/qase-tms/qase-go/qase-api-v2-client v1.1.4
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.18.2
 	go.uber.org/mock v0.4.0
@@ -32,5 +32,6 @@ require (
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/validator.v2 v2.0.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
