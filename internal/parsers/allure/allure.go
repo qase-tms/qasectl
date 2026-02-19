@@ -1,6 +1,7 @@
 package allure
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log/slog"
@@ -111,6 +112,8 @@ func (p *Parser) parseFile(file string) (models.Result, error) {
 	if err != nil {
 		return models.Result{}, fmt.Errorf("failed to read file: %w", err)
 	}
+
+	byteValue = bytes.TrimPrefix(byteValue, []byte("\xef\xbb\xbf"))
 
 	var test Test
 	err = json.Unmarshal(byteValue, &test)

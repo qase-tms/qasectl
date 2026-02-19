@@ -1,6 +1,7 @@
 package qase
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	models "github.com/qase-tms/qasectl/internal/models/result"
@@ -82,6 +83,8 @@ func (p *Parser) parseFile(path string) (models.Result, error) {
 	if err != nil {
 		return models.Result{}, fmt.Errorf("failed to read file: %w", err)
 	}
+
+	byteValue = bytes.TrimPrefix(byteValue, []byte("\xef\xbb\xbf"))
 
 	var result models.Result
 	err = json.Unmarshal(byteValue, &result)
