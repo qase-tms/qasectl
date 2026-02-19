@@ -1,11 +1,49 @@
 package allure
 
 import (
+	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
 	models "github.com/qase-tms/qasectl/internal/models/result"
 )
+
+func TestParseFile_WithBOM(t *testing.T) {
+	content := []byte("\xef\xbb\xbf" + `{
+		"uuid": "abc-123",
+		"name": "BOM Test",
+		"start": 1000,
+		"stop": 2000,
+		"status": "passed",
+		"statusDetails": {},
+		"steps": [],
+		"attachments": [],
+		"links": [],
+		"labels": []
+	}`)
+
+	dir := t.TempDir()
+	filePath := filepath.Join(dir, "bom-result.json")
+
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		t.Fatalf("failed to write test file: %v", err)
+	}
+
+	parser := NewParser(filePath)
+	results, err := parser.Parse()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if len(results) != 1 {
+		t.Fatalf("expected 1 result, got %d", len(results))
+	}
+
+	if results[0].Title != "BOM Test" {
+		t.Errorf("expected title 'BOM Test', got '%s'", results[0].Title)
+	}
+}
 
 func TestParser_extractTestOpsID(t *testing.T) {
 	parser := &Parser{}
