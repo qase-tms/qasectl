@@ -73,3 +73,73 @@ func TestParser_IsFailureProcessed(t *testing.T) {
 		t.Error("isFailureProcessed(ghi) = true, want false")
 	}
 }
+
+// makeHeicData creates a minimal byte slice with the given ftyp signature at bytes 4-12
+func makeHeicData(ftyp string) []byte {
+	data := make([]byte, 16)
+	// bytes 0-3: arbitrary (file size in real HEIC)
+	data[0], data[1], data[2], data[3] = 0x00, 0x00, 0x00, 0x18
+	copy(data[4:12], ftyp)
+	return data
+}
+
+func TestParser_detectFileExtension(t *testing.T) {
+	p, err := NewParser("test.xcresult", "")
+	if err != nil {
+		t.Fatalf("Failed to create parser: %v", err)
+	}
+
+	tests := []struct {
+		name     string
+		data     []byte
+		expected string
+	}{
+		{
+			name:     "PNG signature",
+			data:     []byte("\x89PNG\r\n\x1a\n" + "extra"),
+			expected: ".png",
+		},
+		{
+			name:     "JPG signature",
+			data:     []byte("\xff\xd8\xff\xe0"),
+			expected: ".jpg",
+		},
+		// All 7 HEIC ftyp signatures
+		{name: "HEIC ftypheic", data: makeHeicData("ftypheic"), expected: ".heic"},
+		{name: "HEIC ftypheix", data: makeHeicData("ftypheix"), expected: ".heic"},
+		{name: "HEIC ftypheis", data: makeHeicData("ftypheis"), expected: ".heic"},
+		{name: "HEIC ftyphevc", data: makeHeicData("ftyphevc"), expected: ".heic"},
+		{name: "HEIC ftyphevx", data: makeHeicData("ftyphevx"), expected: ".heic"},
+		{name: "HEIC ftyphevs", data: makeHeicData("ftyphevs"), expected: ".heic"},
+		{name: "HEIC ftyphevm", data: makeHeicData("ftyphevm"), expected: ".heic"},
+		{
+			name:     "PDF signature",
+			data:     []byte("%PDF-1.4"),
+			expected: ".pdf",
+		},
+		{
+			name:     "JSON object",
+			data:     []byte(`{"key": "value"}`),
+			expected: ".json",
+		},
+		{
+			name:     "unknown bytes",
+			data:     []byte{0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D},
+			expected: "",
+		},
+		{
+			name:     "too short",
+			data:     []byte{0x01, 0x02},
+			expected: "",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := p.detectFileExtension(tt.data)
+			if got != tt.expected {
+				t.Errorf("detectFileExtension() = %q, want %q", got, tt.expected)
+			}
+		})
+	}
+}
