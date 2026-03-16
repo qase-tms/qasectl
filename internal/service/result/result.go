@@ -61,76 +61,19 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 		return fmt.Errorf("no results to upload")
 	}
 
-	for i := range results {
-		if len([]rune(results[i].Title)) > 255 {
-			logger.Warn("result title is too long and will be truncated", "title", results[i].Title)
-			runes := []rune(results[i].Title)
-			results[i].Title = string(runes[:255])
-		}
-	}
+	truncateTitles(results)
 
-	runID := p.RunID
-	isTestRunCreated := false
-	if runID == 0 {
-		// Find the earliest StartTime from all results
-		var startTime *int64
-		if minStartTime := s.findMinStartTime(results); minStartTime != nil {
-			// Subtract 10 seconds (10000 milliseconds) from the earliest start time
-			runStartTime := int64(*minStartTime) - 10000
-			startTime = &runStartTime
-			logger.Debug("calculated run start time", "startTime", runStartTime, "minResultStartTime", *minStartTime)
-		}
-
-		ID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", 0, 0, []string{}, false, "", startTime)
-		if err != nil {
-			return err
-		}
-		runID = ID
-		isTestRunCreated = true
-	} else {
-		sort.Slice(results, func(i, j int) bool {
-			if results[i].Execution.StartTime == nil {
-				return false
-			}
-			if results[j].Execution.StartTime == nil {
-				return true
-			}
-			return *results[i].Execution.StartTime < *results[j].Execution.StartTime
-		})
-
-		for i := range results {
-			results[i].Execution.StartTime = nil
-			results[i].Execution.EndTime = nil
-		}
+	runID, isTestRunCreated, results, err := s.prepareRun(ctx, p, results)
+	if err != nil {
+		return err
 	}
 
 	if p.Suite != "" {
-		s := []models.SuiteData{
-			{Title: p.Suite,
-				PublicID: nil,
-			},
-		}
-
-		for i := range results {
-			results[i].Relations.Suite.Data = append(s, results[i].Relations.Suite.Data...)
-		}
+		prependSuite(p.Suite, results)
 	}
 
-	if len(p.Statuses) > 0 {
-		for i := range results {
-			if status, ok := p.Statuses[results[i].Execution.Status]; ok {
-				results[i].Execution.Status = status
-			}
-		}
-	}
+	applyResultTransforms(p, results)
 
-	if p.SkipParams {
-		for i := range results {
-			results[i].Params = nil
-		}
-	}
-
-	// Filter attachments if extensions are specified
 	if p.AttachmentExtensions != "" {
 		results = s.filterAttachments(results, p.AttachmentExtensions)
 	}
@@ -148,6 +91,77 @@ func (s *Service) Upload(ctx context.Context, p UploadParams) error {
 	}
 
 	return nil
+}
+
+// truncateTitles truncates result titles longer than 255 runes
+func truncateTitles(results []models.Result) {
+	for i := range results {
+		if len([]rune(results[i].Title)) > 255 {
+			slog.Warn("result title is too long and will be truncated", "title", results[i].Title)
+			runes := []rune(results[i].Title)
+			results[i].Title = string(runes[:255])
+		}
+	}
+}
+
+// prepareRun creates a run if needed and sorts results for existing runs
+func (s *Service) prepareRun(ctx context.Context, p UploadParams, results []models.Result) (int64, bool, []models.Result, error) {
+	if p.RunID != 0 {
+		sort.Slice(results, func(i, j int) bool {
+			if results[i].Execution.StartTime == nil {
+				return false
+			}
+			if results[j].Execution.StartTime == nil {
+				return true
+			}
+			return *results[i].Execution.StartTime < *results[j].Execution.StartTime
+		})
+		for i := range results {
+			results[i].Execution.StartTime = nil
+			results[i].Execution.EndTime = nil
+		}
+		return p.RunID, false, results, nil
+	}
+
+	var startTime *int64
+	if minStartTime := s.findMinStartTime(results); minStartTime != nil {
+		runStartTime := int64(*minStartTime) - 10000
+		startTime = &runStartTime
+		slog.Debug("calculated run start time", "startTime", runStartTime, "minResultStartTime", *minStartTime)
+	}
+
+	ID, err := s.rs.CreateRun(ctx, p.Project, p.Title, p.Description, "", 0, 0, []string{}, false, "", startTime)
+	if err != nil {
+		return 0, false, nil, err
+	}
+	return ID, true, results, nil
+}
+
+// prependSuite prepends the given suite name to all result relations
+func prependSuite(suite string, results []models.Result) {
+	s := []models.SuiteData{
+		{Title: suite, PublicID: nil},
+	}
+	for i := range results {
+		results[i].Relations.Suite.Data = append(s, results[i].Relations.Suite.Data...)
+	}
+}
+
+// applyResultTransforms applies status mapping and parameter skipping
+func applyResultTransforms(p UploadParams, results []models.Result) {
+	if len(p.Statuses) > 0 {
+		for i := range results {
+			if status, ok := p.Statuses[results[i].Execution.Status]; ok {
+				results[i].Execution.Status = status
+			}
+		}
+	}
+
+	if p.SkipParams {
+		for i := range results {
+			results[i].Params = nil
+		}
+	}
 }
 
 func (s *Service) uploadResults(ctx context.Context, project string, batchSize, runID int64, results []models.Result) error {
