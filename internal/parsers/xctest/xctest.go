@@ -14,8 +14,11 @@ import (
 
 // Parser is a parser for XCTest files
 type Parser struct {
-	path  string
-	level stepLevel
+	path              string
+	level             stepLevel
+	caseId            *int64
+	failures          map[string]FailureSummary
+	processedFailures []string
 }
 
 // NewParser creates a new Parser
@@ -30,12 +33,7 @@ func NewParser(path, level string) (*Parser, error) {
 	}, nil
 }
 
-var (
-	layoutTime        = "2006-01-02T15:04:05.000-0700"
-	caseId            *int64
-	failures          map[string]FailureSummary
-	processedFailures []string
-)
+var layoutTime = "2006-01-02T15:04:05.000-0700"
 
 const (
 	internalStep   = "com.apple.dt.xctest.activity-type.internal"
@@ -322,9 +320,9 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 	var results []models.Result
 
 	for i, t := range tests {
-		caseId = nil
-		failures = make(map[string]FailureSummary)
-		processedFailures = make([]string, 0)
+		p.caseId = nil
+		p.failures = make(map[string]FailureSummary)
+		p.processedFailures = make([]string, 0)
 
 		logger := logger.With("testTitle", t.Name, "testIndex", i)
 		logger.Debug("processing test", "test", t)
@@ -372,7 +370,7 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 		if t.Action.FailureSummaries != nil {
 			var message string
 			for _, f := range t.Action.FailureSummaries.Values {
-				failures[f.UUID.Value] = f
+				p.failures[f.UUID.Value] = f
 				message += f.Message.Value + "\n"
 			}
 			result.Execution.StackTrace = &message
@@ -388,12 +386,12 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 		result.Attachments = append(result.Attachments, testLevelAttachments...)
 
 		result.Steps = steps
-		if caseId != nil {
-			result.TestOpsID = caseId
+		if p.caseId != nil {
+			result.TestOpsID = p.caseId
 		}
 
-		for k, v := range failures {
-			if isFailureProcessed(k) {
+		for k, v := range p.failures {
+			if p.isFailureProcessed(k) {
 				logger.Debug("skipping already processed failure", "failureId", k)
 				continue
 			}
@@ -425,9 +423,9 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 	return results
 }
 
-func isFailureProcessed(f string) bool {
-	for _, p := range processedFailures {
-		if f == p {
+func (p *Parser) isFailureProcessed(f string) bool {
+	for _, proc := range p.processedFailures {
+		if f == proc {
 			return true
 		}
 	}
@@ -604,11 +602,11 @@ func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool,
 			}
 
 			logger.Debug("successfully parsed Qase ID", "caseId", ID.ID)
-			if caseId == nil {
-				caseId = &ID.ID
-				logger.Debug("set case ID", "caseId", *caseId)
+			if p.caseId == nil {
+				p.caseId = &ID.ID
+				logger.Debug("set case ID", "caseId", *p.caseId)
 			} else {
-				logger.Debug("case ID already set", "existingCaseId", *caseId, "newCaseId", ID.ID)
+				logger.Debug("case ID already set", "existingCaseId", *p.caseId, "newCaseId", ID.ID)
 			}
 
 			continue
@@ -616,8 +614,8 @@ func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool,
 
 		if v.FailureSummaryIDs != nil {
 			for _, f := range v.FailureSummaryIDs.Values {
-				if fm, ok := failures[f.Value]; ok {
-					processedFailures = append(processedFailures, f.Value)
+				if fm, ok := p.failures[f.Value]; ok {
+					p.processedFailures = append(p.processedFailures, f.Value)
 					isStepFailed = true
 					stepComment = fmt.Sprintf("Line: %s\n%s", fm.LineNumber.Value, fm.Message.Value)
 					if fm.Attachments != nil {
