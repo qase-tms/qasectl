@@ -2,6 +2,8 @@ package complete
 
 import (
 	"fmt"
+	"log/slog"
+
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/internal/client"
 	"github.com/qase-tms/qasectl/internal/service/run"
@@ -43,7 +45,7 @@ func Command() *cobra.Command {
 	cmd.Flags().Int64Var(&runID, idFlag, 0, "ID of the test run")
 	err := cmd.MarkFlagRequired(idFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to mark id flag required", "error", err)
 	}
 
 	return cmd

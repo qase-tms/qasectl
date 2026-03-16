@@ -1,7 +1,7 @@
 package testops
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/qase-tms/qasectl/cmd/flags"
 	"github.com/qase-tms/qasectl/cmd/testops/env"
@@ -30,21 +30,21 @@ func Command() *cobra.Command {
 	cmd.PersistentFlags().StringP(tokenFlag, "t", "", "token for Qase API access")
 	err := viper.BindPFlag(flags.TokenFlag, cmd.PersistentFlags().Lookup(tokenFlag))
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to bind token flag", "error", err)
 	}
 	err = cmd.MarkPersistentFlagRequired(tokenFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to mark token flag required", "error", err)
 	}
 
 	cmd.PersistentFlags().StringP(projectFlag, "p", "", "project code for Qase API access")
 	err = viper.BindPFlag(flags.ProjectFlag, cmd.PersistentFlags().Lookup(projectFlag))
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to bind project flag", "error", err)
 	}
 	err = cmd.MarkPersistentFlagRequired(projectFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to mark project flag required", "error", err)
 	}
 
 	cmd.AddCommand(run.Command())

@@ -73,13 +73,13 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVar(&title, titleFlag, "", "title of the environment")
 	err := cmd.MarkFlagRequired(titleFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to mark title flag required", "error", err)
 	}
 	cmd.Flags().StringVarP(&description, descriptionFlag, "d", "", "description of the environment")
 	cmd.Flags().StringVarP(&slug, slugFlag, "s", "", "slug of the environment, (string without spaces)")
 	err = cmd.MarkFlagRequired(slugFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to mark slug flag required", "error", err)
 	}
 	cmd.Flags().StringVar(&host, hostFlag, "", "host of the environment")
 	cmd.Flags().StringVarP(&output, outputFlag, "o", "", "output path for the environment ID")

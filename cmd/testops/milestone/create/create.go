@@ -82,7 +82,7 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVar(&title, titleFlag, "", "title of the milestone")
 	err := cmd.MarkFlagRequired(titleFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to mark title flag required", "error", err)
 	}
 	cmd.Flags().StringVarP(&description, descriptionFlag, "d", "", "description of the milestone")
 	cmd.Flags().StringVarP(&status, statusFlag, "s", "", "status of the milestone. Allowed values: active, completed")
