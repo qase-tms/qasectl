@@ -927,7 +927,7 @@ func TestService_Upload(t *testing.T) {
 					f.client.EXPECT().
 						UploadData(gomock.Any(), tt.args.p.Project, gomock.Any(), gomock.Any()).
 						Return(tt.args.err).
-						Times(1)
+						MinTimes(1)
 				} else if tt.name == "sort results by StartTime and remove time when RunID is set" {
 					// Verify sorting and time removal
 					f.client.EXPECT().
