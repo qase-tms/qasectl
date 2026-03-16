@@ -1,6 +1,7 @@
 package junit
 
 import (
+	"bytes"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -91,6 +92,8 @@ func (p *Parser) parseFile(path string) ([]models.Result, error) {
 		logger.Error("failed to read file", "error", err)
 		return nil, err
 	}
+
+	byteValue = bytes.TrimPrefix(byteValue, []byte("\xef\xbb\xbf"))
 
 	// Try to parse as TestSuites first (multiple test suites)
 	var testSuites TestSuites
