@@ -122,60 +122,15 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 	for _, testSuite := range testSuites.TestSuites {
 		for _, testCase := range testSuite.TestCases {
 			testCase := testCase
-			relation := models.Relation{
-				Suite: models.Suite{
-					Data: []models.SuiteData{},
-				},
-			}
-
-			if testSuites.Name != "" {
-				relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
-					Title: testSuites.Name,
-				})
-			}
-
-			parts := strings.Split(testSuite.Name, string(filepath.Separator))
-			if len(parts) > 1 {
-				for _, part := range parts {
-					relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
-						Title: part,
-					})
-				}
-			} else {
-				relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
-					Title: testSuite.Name,
-				})
-			}
-
+			relation := buildSuiteRelation(testSuites, testSuite)
 			signature := fmt.Sprintf("%s::%s::%s::%s", testSuites.Name, testSuite.Name, testCase.ClassName, testCase.Name)
-
-			status := "passed"
-			var stackTrace *string
-			var message *string
-
-			if testCase.Failure != nil {
-				status = "failed"
-				stackTrace = &testCase.Failure.Body
-				message = &testCase.Failure.Message
-			}
-
-			if testCase.Error != nil {
-				status = "invalid"
-				stackTrace = &testCase.Error.Body
-				message = &testCase.Error.Message
-			}
-
-			if testCase.Skipped != nil {
-				status = "skipped"
-				message = &testCase.Skipped.Message
-			}
+			status, stackTrace, message := resolveTestCaseStatus(testCase)
 
 			fields := make(map[string]string)
 			for k := range testCase.Properties.Property {
 				if isStepProperty(testCase.Properties.Property[k].Name) {
 					continue
 				}
-
 				fields[testCase.Properties.Property[k].Name] = testCase.Properties.Property[k].Value
 			}
 
@@ -190,7 +145,7 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 					Status:     status,
 					StackTrace: stackTrace,
 				},
-				Attachments: make([]models.Attachment, 0),
+				Attachments: buildSystemAttachments(testCase),
 				Steps:       steps,
 				StepType:    "text",
 				Params:      make(map[string]string),
@@ -199,33 +154,94 @@ func convertTestSuites(testSuites TestSuites) []models.Result {
 				Message:     message,
 			}
 
-			if testCase.SystemOut != "" {
-				c := []byte(testCase.SystemOut)
-				id := uuid.New()
-				result.Attachments = append(result.Attachments, models.Attachment{
-					ID:          &id,
-					Name:        "system-out.txt",
-					ContentType: "plain/text",
-					Content:     &c,
-				})
-			}
-
-			if testCase.SystemErr != "" {
-				c := []byte(testCase.SystemErr)
-				id := uuid.New()
-				result.Attachments = append(result.Attachments, models.Attachment{
-					ID:          &id,
-					Name:        "system-err.txt",
-					ContentType: "plain/text",
-					Content:     &c,
-				})
-			}
-
 			results = append(results, result)
 		}
 	}
 
 	return results
+}
+
+// buildSuiteRelation constructs the suite hierarchy relation for a test case
+func buildSuiteRelation(testSuites TestSuites, testSuite TestSuite) models.Relation {
+	relation := models.Relation{
+		Suite: models.Suite{
+			Data: []models.SuiteData{},
+		},
+	}
+
+	if testSuites.Name != "" {
+		relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
+			Title: testSuites.Name,
+		})
+	}
+
+	parts := strings.Split(testSuite.Name, string(filepath.Separator))
+	if len(parts) > 1 {
+		for _, part := range parts {
+			relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
+				Title: part,
+			})
+		}
+	} else {
+		relation.Suite.Data = append(relation.Suite.Data, models.SuiteData{
+			Title: testSuite.Name,
+		})
+	}
+
+	return relation
+}
+
+// resolveTestCaseStatus determines the status, stack trace, and message for a test case
+func resolveTestCaseStatus(testCase TestCase) (status string, stackTrace *string, message *string) {
+	status = "passed"
+
+	if testCase.Failure != nil {
+		status = "failed"
+		stackTrace = &testCase.Failure.Body
+		message = &testCase.Failure.Message
+	}
+
+	if testCase.Error != nil {
+		status = "invalid"
+		stackTrace = &testCase.Error.Body
+		message = &testCase.Error.Message
+	}
+
+	if testCase.Skipped != nil {
+		status = "skipped"
+		message = &testCase.Skipped.Message
+	}
+
+	return status, stackTrace, message
+}
+
+// buildSystemAttachments creates attachments for system-out and system-err
+func buildSystemAttachments(testCase TestCase) []models.Attachment {
+	attachments := make([]models.Attachment, 0)
+
+	if testCase.SystemOut != "" {
+		c := []byte(testCase.SystemOut)
+		id := uuid.New()
+		attachments = append(attachments, models.Attachment{
+			ID:          &id,
+			Name:        "system-out.txt",
+			ContentType: "plain/text",
+			Content:     &c,
+		})
+	}
+
+	if testCase.SystemErr != "" {
+		c := []byte(testCase.SystemErr)
+		id := uuid.New()
+		attachments = append(attachments, models.Attachment{
+			ID:          &id,
+			Name:        "system-err.txt",
+			ContentType: "plain/text",
+			Content:     &c,
+		})
+	}
+
+	return attachments
 }
 
 // parseSteps parses the steps from the properties
