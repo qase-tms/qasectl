@@ -7,7 +7,6 @@ import (
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"log/slog"
 	"os"
-	"path"
 	"path/filepath"
 )
 
@@ -127,7 +126,7 @@ func (p *Parser) convertAttachments(attachments []models.Attachment) []models.At
 		if os.IsNotExist(err) {
 			id := filepath.Base(*attachments[i].FilePath)
 			dir := filepath.Dir(p.path)
-			*attachments[i].FilePath = path.Join(dir, "attachments", id)
+			*attachments[i].FilePath = filepath.Join(dir, "attachments", id)
 		}
 	}
 
