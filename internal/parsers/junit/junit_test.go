@@ -297,6 +297,30 @@ func stringPtr(v string) *string {
 	return &v
 }
 
+func TestParser_parseFile_ReadError(t *testing.T) {
+	tmpDir := t.TempDir()
+	tmpFile := filepath.Join(tmpDir, "unreadable.xml")
+	err := os.WriteFile(tmpFile, []byte("<testsuites></testsuites>"), 0644)
+	if err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+	// Make the file unreadable — os.Open (or io.ReadAll) fails on the file descriptor
+	err = os.Chmod(tmpFile, 0000)
+	if err != nil {
+		t.Fatalf("Failed to chmod test file: %v", err)
+	}
+
+	parser := NewParser(tmpFile)
+	result, err := parser.parseFile(tmpFile)
+
+	if err == nil {
+		t.Errorf("parseFile() expected error for unreadable file but got none")
+	}
+	if result != nil {
+		t.Errorf("parseFile() expected nil result for unreadable file, got %v", result)
+	}
+}
+
 func TestParser_Parse(t *testing.T) {
 	tests := []struct {
 		name     string

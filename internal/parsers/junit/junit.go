@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
-	"log"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -84,11 +83,14 @@ func (p *Parser) parseFile(path string) ([]models.Result, error) {
 		err := xmlFile.Close()
 		if err != nil {
 			logger.Error("failed to close file", "error", err)
-			log.Println(err)
 		}
 	}()
 
-	byteValue, _ := io.ReadAll(xmlFile)
+	byteValue, err := io.ReadAll(xmlFile)
+	if err != nil {
+		logger.Error("failed to read file", "error", err)
+		return nil, err
+	}
 
 	// Try to parse as TestSuites first (multiple test suites)
 	var testSuites TestSuites
