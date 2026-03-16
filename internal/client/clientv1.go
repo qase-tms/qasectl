@@ -17,6 +17,25 @@ const (
 	defaultLimit = 50
 )
 
+// paginate fetches all pages from a paginated API endpoint.
+// fetchPage receives an offset and returns (converted entities, total/filtered count, error).
+func paginate[T any](fetchPage func(offset int32) ([]T, int32, error)) ([]T, error) {
+	var result []T
+	var offset int32
+	for {
+		items, total, err := fetchPage(offset)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, items...)
+		offset += defaultLimit
+		if offset >= total {
+			break
+		}
+	}
+	return result, nil
+}
+
 // ClientV1 is a client for Qase API v1
 type ClientV1 struct {
 	// token is a token for Qase API
@@ -125,33 +144,28 @@ func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]r
 
 	ctx, client := c.getApiV1Client(ctx)
 
-	environments := make([]run.Environment, 0)
-
-	var offset int32 = 0
-	for {
+	environments, err := paginate(func(offset int32) ([]run.Environment, int32, error) {
 		resp, r, err := client.EnvironmentsAPI.
 			GetEnvironments(ctx, projectCode).
 			Limit(defaultLimit).
 			Offset(offset).
 			Execute()
-
 		if err != nil {
-			return nil, NewQaseApiError(err.Error(), extractBody(r))
+			return nil, 0, NewQaseApiError(err.Error(), extractBody(r))
 		}
 
+		envs := make([]run.Environment, 0, len(resp.Result.Entities))
 		for _, env := range resp.Result.Entities {
-			environments = append(environments, run.Environment{
+			envs = append(envs, run.Environment{
 				Title: env.GetTitle(),
 				ID:    env.GetId(),
 				Slug:  env.GetSlug(),
 			})
 		}
-
-		if resp.Result.GetTotal() <= offset {
-			break
-		} else {
-			offset += defaultLimit
-		}
+		return envs, resp.Result.GetTotal(), nil
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	logger.Debug("got environments", "environments", environments)
@@ -199,32 +213,27 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 
 	ctx, client := c.getApiV1Client(ctx)
 
-	plans := make([]run.Plan, 0)
-
-	var offset int32 = 0
-	for {
+	plans, err := paginate(func(offset int32) ([]run.Plan, int32, error) {
 		resp, r, err := client.PlansAPI.
 			GetPlans(ctx, projectCode).
 			Limit(defaultLimit).
 			Offset(offset).
 			Execute()
-
 		if err != nil {
-			return nil, NewQaseApiError(err.Error(), extractBody(r))
+			return nil, 0, NewQaseApiError(err.Error(), extractBody(r))
 		}
 
+		p := make([]run.Plan, 0, len(resp.Result.Entities))
 		for _, plan := range resp.Result.Entities {
-			plans = append(plans, run.Plan{
+			p = append(p, run.Plan{
 				Title: plan.GetTitle(),
 				ID:    plan.GetId(),
 			})
 		}
-
-		if resp.Result.GetTotal() <= offset {
-			break
-		} else {
-			offset += defaultLimit
-		}
+		return p, resp.Result.GetTotal(), nil
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	logger.Debug("got plans", "plans", plans)
@@ -391,10 +400,7 @@ func (c *ClientV1) GetTestRuns(ctx context.Context, projectCode string, start, e
 
 	ctx, client := c.getApiV1Client(ctx)
 
-	testRuns := make([]run.Run, 0)
-
-	var offset int32 = 0
-	for {
+	testRuns, err := paginate(func(offset int32) ([]run.Run, int32, error) {
 		req := client.RunsAPI.
 			GetRuns(ctx, projectCode).
 			Limit(defaultLimit).
@@ -409,22 +415,20 @@ func (c *ClientV1) GetTestRuns(ctx context.Context, projectCode string, start, e
 		}
 
 		resp, r, err := req.Execute()
-
 		if err != nil {
-			return nil, NewQaseApiError(err.Error(), extractBody(r))
+			return nil, 0, NewQaseApiError(err.Error(), extractBody(r))
 		}
 
+		runs := make([]run.Run, 0, len(resp.Result.Entities))
 		for _, testRun := range resp.Result.Entities {
-			testRuns = append(testRuns, run.Run{
+			runs = append(runs, run.Run{
 				ID: testRun.GetId(),
 			})
 		}
-
-		if resp.Result.GetFiltered() <= offset {
-			break
-		} else {
-			offset += defaultLimit
-		}
+		return runs, resp.Result.GetFiltered(), nil
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	logger.Debug("got test runs", "testRuns", testRuns)
@@ -461,32 +465,27 @@ func (c *ClientV1) GetCustomFields(ctx context.Context) ([]custom.CustomField, e
 
 	ctx, client := c.getApiV1Client(ctx)
 
-	customFields := make([]custom.CustomField, 0)
-
-	var offset int32 = 0
-	for {
+	customFields, err := paginate(func(offset int32) ([]custom.CustomField, int32, error) {
 		resp, r, err := client.CustomFieldsAPI.
 			GetCustomFields(ctx).
 			Limit(defaultLimit).
 			Offset(offset).
 			Execute()
-
 		if err != nil {
-			return nil, NewQaseApiError(err.Error(), extractBody(r))
+			return nil, 0, NewQaseApiError(err.Error(), extractBody(r))
 		}
 
+		fields := make([]custom.CustomField, 0, len(resp.Result.Entities))
 		for _, field := range resp.Result.Entities {
-			customFields = append(customFields, custom.CustomField{
+			fields = append(fields, custom.CustomField{
 				ID:    field.GetId(),
 				Title: field.GetTitle(),
 			})
 		}
-
-		if resp.Result.GetTotal() <= offset {
-			break
-		} else {
-			offset += defaultLimit
-		}
+		return fields, resp.Result.GetTotal(), nil
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	logger.Debug("got custom fields", "customFields", customFields)
