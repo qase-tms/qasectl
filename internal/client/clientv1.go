@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"strconv"
 	"time"
 
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
@@ -17,9 +18,22 @@ const (
 	defaultLimit = 50
 )
 
+// paginationLimit returns the configured pagination limit.
+// It reads from the QASE_TESTOPS_PAGINATION_LIMIT environment variable.
+// Falls back to defaultLimit (50) when not set or invalid.
+func paginationLimit() int32 {
+	if s := os.Getenv("QASE_TESTOPS_PAGINATION_LIMIT"); s != "" {
+		if v, err := strconv.ParseInt(s, 10, 32); err == nil && v > 0 {
+			return int32(v)
+		}
+	}
+	return defaultLimit
+}
+
 // paginate fetches all pages from a paginated API endpoint.
 // fetchPage receives an offset and returns (converted entities, total/filtered count, error).
 func paginate[T any](fetchPage func(offset int32) ([]T, int32, error)) ([]T, error) {
+	limit := paginationLimit()
 	var result []T
 	var offset int32
 	for {
@@ -28,7 +42,7 @@ func paginate[T any](fetchPage func(offset int32) ([]T, int32, error)) ([]T, err
 			return nil, err
 		}
 		result = append(result, items...)
-		offset += defaultLimit
+		offset += limit
 		if offset >= total {
 			break
 		}
@@ -147,7 +161,7 @@ func (c *ClientV1) GetEnvironments(ctx context.Context, projectCode string) ([]r
 	environments, err := paginate(func(offset int32) ([]run.Environment, int32, error) {
 		resp, r, err := client.EnvironmentsAPI.
 			GetEnvironments(ctx, projectCode).
-			Limit(defaultLimit).
+			Limit(paginationLimit()).
 			Offset(offset).
 			Execute()
 		if err != nil {
@@ -216,7 +230,7 @@ func (c *ClientV1) GetPlans(ctx context.Context, projectCode string) ([]run.Plan
 	plans, err := paginate(func(offset int32) ([]run.Plan, int32, error) {
 		resp, r, err := client.PlansAPI.
 			GetPlans(ctx, projectCode).
-			Limit(defaultLimit).
+			Limit(paginationLimit()).
 			Offset(offset).
 			Execute()
 		if err != nil {
@@ -403,7 +417,7 @@ func (c *ClientV1) GetTestRuns(ctx context.Context, projectCode string, start, e
 	testRuns, err := paginate(func(offset int32) ([]run.Run, int32, error) {
 		req := client.RunsAPI.
 			GetRuns(ctx, projectCode).
-			Limit(defaultLimit).
+			Limit(paginationLimit()).
 			Offset(offset)
 
 		if start != 0 {
@@ -468,7 +482,7 @@ func (c *ClientV1) GetCustomFields(ctx context.Context) ([]custom.CustomField, e
 	customFields, err := paginate(func(offset int32) ([]custom.CustomField, int32, error) {
 		resp, r, err := client.CustomFieldsAPI.
 			GetCustomFields(ctx).
-			Limit(defaultLimit).
+			Limit(paginationLimit()).
 			Offset(offset).
 			Execute()
 		if err != nil {
