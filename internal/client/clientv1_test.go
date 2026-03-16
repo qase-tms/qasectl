@@ -110,6 +110,59 @@ func TestPaginate(t *testing.T) {
 	}
 }
 
+func TestPaginationLimit_Default(t *testing.T) {
+	got := paginationLimit()
+	if got != defaultLimit {
+		t.Errorf("paginationLimit() = %d, want %d", got, defaultLimit)
+	}
+}
+
+func TestPaginationLimit_Custom(t *testing.T) {
+	t.Setenv("QASE_TESTOPS_PAGINATION_LIMIT", "100")
+	got := paginationLimit()
+	if got != 100 {
+		t.Errorf("paginationLimit() = %d, want 100", got)
+	}
+}
+
+func TestPaginationLimit_InvalidValue(t *testing.T) {
+	t.Setenv("QASE_TESTOPS_PAGINATION_LIMIT", "0")
+	got := paginationLimit()
+	if got != defaultLimit {
+		t.Errorf("paginationLimit() with 0 = %d, want %d (default)", got, defaultLimit)
+	}
+}
+
+func TestPaginate_CustomLimit(t *testing.T) {
+	t.Setenv("QASE_TESTOPS_PAGINATION_LIMIT", "10")
+
+	callCount := 0
+	got, err := paginate(func(offset int32) ([]string, int32, error) {
+		callCount++
+		expectedOffset := int32((callCount - 1) * 10)
+		if offset != expectedOffset {
+			t.Errorf("call %d: offset = %d, want %d", callCount, offset, expectedOffset)
+		}
+		if callCount == 1 {
+			return makeStrings(10), 25, nil
+		}
+		if callCount == 2 {
+			return makeStrings(10), 25, nil
+		}
+		return makeStrings(5), 25, nil
+	})
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(got) != 25 {
+		t.Errorf("got %d items, want 25", len(got))
+	}
+	if callCount != 3 {
+		t.Errorf("expected 3 pages with limit=10, got %d calls", callCount)
+	}
+}
+
 // makeStrings creates n sequential string items for testing
 func makeStrings(n int) []string {
 	s := make([]string, n)
