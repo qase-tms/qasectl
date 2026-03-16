@@ -90,7 +90,7 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVarP(&title, titleFlag, "", "", "title of the test run")
 	err := cmd.MarkFlagRequired(titleFlag)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("failed to mark title flag required", "error", err)
 	}
 	cmd.Flags().StringVarP(&description, descriptionFlag, "d", "", "description of the test run")
 	cmd.Flags().StringVarP(&environment, environmentFlag, "e", "", "slug of environment of the test run")
