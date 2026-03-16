@@ -178,12 +178,12 @@ func (s *Service) uploadResults(ctx context.Context, project string, batchSize, 
 
 	g, ctx := errgroup.WithContext(ctx)
 
-	batchCh := make(chan []models.Result)
-
 	workerCount := runtime.NumCPU()
 	if workerCount > MaxWorkerCount {
 		workerCount = MaxWorkerCount
 	}
+
+	batchCh := make(chan []models.Result, workerCount)
 
 	for i := 0; i < workerCount; i++ {
 		g.Go(func() error {
