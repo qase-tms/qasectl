@@ -321,6 +321,67 @@ func TestParser_parseFile_ReadError(t *testing.T) {
 	}
 }
 
+func TestParser_parseFile_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name    string
+		content []byte
+		wantErr bool
+	}{
+		{
+			name:    "empty file",
+			content: []byte{},
+			wantErr: true,
+		},
+		{
+			name:    "malformed XML",
+			content: []byte("<testsuites><broken"),
+			wantErr: true,
+		},
+		{
+			name:    "UTF-8 BOM prefix with valid XML",
+			content: append([]byte("\xef\xbb\xbf"), []byte(`<testsuite name="S"><testcase name="T" time="0.1"/></testsuite>`)...),
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tmpDir := t.TempDir()
+			tmpFile := filepath.Join(tmpDir, "test.xml")
+			if err := os.WriteFile(tmpFile, tt.content, 0644); err != nil {
+				t.Fatalf("failed to write test file: %v", err)
+			}
+			parser := NewParser(tmpFile)
+			result, err := parser.parseFile(tmpFile)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("parseFile() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if !tt.wantErr && len(result) == 0 {
+				t.Error("parseFile() returned 0 results for valid input")
+			}
+		})
+	}
+}
+
+func TestParser_Parse_FilenameWithSpaces(t *testing.T) {
+	tmpDir := t.TempDir()
+	spacedDir := filepath.Join(tmpDir, "dir with spaces")
+	if err := os.MkdirAll(spacedDir, 0755); err != nil {
+		t.Fatalf("failed to create dir: %v", err)
+	}
+	xmlFile := filepath.Join(spacedDir, "test file.xml")
+	if err := os.WriteFile(xmlFile, []byte(`<testsuite name="S"><testcase name="T" time="0.1"/></testsuite>`), 0644); err != nil {
+		t.Fatalf("failed to write: %v", err)
+	}
+	parser := NewParser(spacedDir)
+	results, err := parser.Parse()
+	if err != nil {
+		t.Fatalf("Parse() with spaces in path: %v", err)
+	}
+	if len(results) != 1 {
+		t.Errorf("expected 1 result, got %d", len(results))
+	}
+}
+
 func TestParser_Parse(t *testing.T) {
 	tests := []struct {
 		name     string

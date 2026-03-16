@@ -121,6 +121,72 @@ func TestParser_convertTest_LayerField(t *testing.T) {
 	}
 }
 
+func TestParser_parseFile_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name    string
+		content []byte
+		wantErr bool
+	}{
+		{
+			name:    "empty file",
+			content: []byte{},
+			wantErr: true,
+		},
+		{
+			name:    "malformed JSON",
+			content: []byte("{broken json"),
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tmpDir := t.TempDir()
+			tmpFile := filepath.Join(tmpDir, "abcdef-result.json")
+			if err := os.WriteFile(tmpFile, tt.content, 0644); err != nil {
+				t.Fatalf("failed to write test file: %v", err)
+			}
+			parser := NewParser(tmpDir)
+			results, err := parser.Parse()
+			// Allure parser logs errors and continues, so check results are empty
+			if tt.wantErr {
+				if err != nil {
+					// This is fine - an error was returned
+					return
+				}
+				// Allure parser may not return error but should return empty results
+				if len(results) > 0 {
+					t.Errorf("parseFile() returned %d results for invalid input, want 0", len(results))
+				}
+				return
+			}
+			if err != nil {
+				t.Errorf("parseFile() unexpected error: %v", err)
+			}
+		})
+	}
+}
+
+func TestParser_Parse_FilenameWithSpaces(t *testing.T) {
+	tmpDir := t.TempDir()
+	spacedDir := filepath.Join(tmpDir, "dir with spaces")
+	if err := os.MkdirAll(spacedDir, 0755); err != nil {
+		t.Fatalf("failed to create dir: %v", err)
+	}
+	jsonFile := filepath.Join(spacedDir, "abcdef-result.json")
+	content := []byte(`{"uuid":"abc","name":"T","start":1000,"stop":2000,"status":"passed","statusDetails":{},"steps":[],"attachments":[],"links":[],"labels":[]}`)
+	if err := os.WriteFile(jsonFile, content, 0644); err != nil {
+		t.Fatalf("failed to write: %v", err)
+	}
+	parser := NewParser(spacedDir)
+	results, err := parser.Parse()
+	if err != nil {
+		t.Fatalf("Parse() with spaces in path: %v", err)
+	}
+	if len(results) != 1 {
+		t.Errorf("expected 1 result, got %d", len(results))
+	}
+}
+
 func TestParser_convertTest_SuiteField(t *testing.T) {
 	parser := &Parser{}
 

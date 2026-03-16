@@ -74,6 +74,26 @@ func TestParser_IsFailureProcessed(t *testing.T) {
 	}
 }
 
+func TestNewParser_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name    string
+		path    string
+		wantErr bool
+	}{
+		{name: "non-xcresult extension", path: "test.xml", wantErr: true},
+		{name: "empty string path", path: "", wantErr: true},
+		{name: "valid xcresult extension", path: "test.xcresult", wantErr: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := NewParser(tt.path, "")
+			if (err != nil) != tt.wantErr {
+				t.Errorf("NewParser(%q) error = %v, wantErr %v", tt.path, err, tt.wantErr)
+			}
+		})
+	}
+}
+
 // makeHeicData creates a minimal byte slice with the given ftyp signature at bytes 4-12
 func makeHeicData(ftyp string) []byte {
 	data := make([]byte, 16)
