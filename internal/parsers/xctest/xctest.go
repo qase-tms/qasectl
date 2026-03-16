@@ -43,6 +43,17 @@ const (
 	heicExt        = ".heic"
 )
 
+// heicSignatures contains all known HEIC/HEIF ftyp box identifiers
+var heicSignatures = []string{
+	"ftypheic",
+	"ftypheix",
+	"ftypheis",
+	"ftyphevc",
+	"ftyphevx",
+	"ftyphevs",
+	"ftyphevm",
+}
+
 // Parse parses the XCTest file and returns the results
 func (p *Parser) Parse() ([]models.Result, error) {
 	const op = "xctest.Parser.Parse"
@@ -445,7 +456,7 @@ func (p *Parser) detectFileExtension(data []byte) string {
 		return ".png"
 	case len(data) >= 2 && string(data[0:2]) == "\xff\xd8":
 		return ".jpg"
-	case len(data) >= 6 && string(data[0:6]) == "GIF87a" || string(data[0:6]) == "GIF89a":
+	case len(data) >= 6 && (string(data[0:6]) == "GIF87a" || string(data[0:6]) == "GIF89a"):
 		return ".gif"
 	case len(data) >= 4 && string(data[0:4]) == "RIFF" && len(data) >= 8 && string(data[8:12]) == "WEBP":
 		return ".webp"
@@ -459,35 +470,20 @@ func (p *Parser) detectFileExtension(data []byte) string {
 		return ".tiff"
 	case len(data) >= 4 && string(data[0:4]) == "MM\x00*":
 		return ".tiff"
+	}
+
 	// Check for HEIC/HEIF
-	case len(data) >= 12 && string(data[4:12]) == "ftypheic":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftypheix":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftypheis":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftyphevc":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftyphevx":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftyphevs":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftyphevm":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftypheis":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftypheix":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftypheic":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftyphevc":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftyphevx":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftyphevs":
-		return ".heic"
-	case len(data) >= 12 && string(data[4:12]) == "ftyphevm":
-		return ".heic"
+	if len(data) >= 12 {
+		ftyp := string(data[4:12])
+		for _, sig := range heicSignatures {
+			if ftyp == sig {
+				return ".heic"
+			}
+		}
+	}
+
+	// Check for other formats
+	switch {
 	// Check for PDF
 	case len(data) >= 4 && string(data[0:4]) == "%PDF":
 		return ".pdf"
