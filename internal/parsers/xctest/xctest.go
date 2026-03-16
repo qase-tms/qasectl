@@ -338,53 +338,11 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 		logger := logger.With("testTitle", t.Name, "testIndex", i)
 		logger.Debug("processing test", "test", t)
 
-		suites := make([]models.SuiteData, 0)
-		suites = append(suites, models.SuiteData{Title: t.Metadata.Suite})
-		for _, s := range t.Suites {
-			suites = append(suites, models.SuiteData{
-				Title: s,
-			})
-		}
+		result := buildBaseResult(t)
+		setExecutionTimes(&result, t.Action.ActivitySummaries)
 
-		duration := t.Duration
-		result := models.Result{
-			Title:     t.Name,
-			Signature: &t.Signature,
-			Execution: models.Execution{
-				Status:    getStatus(t.Action.TestStatus.Value),
-				Duration:  &duration,
-			},
-			Fields:      map[string]string{},
-			Attachments: make([]models.Attachment, 0),
-			Params: map[string]string{
-				"Device":        t.Metadata.Device,
-				"Configuration": t.Metadata.Configuration,
-			},
-			Relations: models.Relation{
-				Suite: models.Suite{
-					Data: suites,
-				},
-			},
-			StepType: "text",
-			Muted:    false,
-		}
-
-		if len(t.Action.ActivitySummaries.Values) > 0 {
-			startTime := t.Action.ActivitySummaries.Values[0].Start.Value
-			endTime := t.Action.ActivitySummaries.Values[len(t.Action.ActivitySummaries.Values)-1].Finish.Value
-			startTimeFloat := float64(parseTime(startTime).UnixMilli())
-			endTimeFloat := float64(parseTime(endTime).UnixMilli())
-			result.Execution.StartTime = &startTimeFloat
-			result.Execution.EndTime = &endTimeFloat
-		}
-
-		if t.Action.FailureSummaries != nil {
-			var message string
-			for _, f := range t.Action.FailureSummaries.Values {
-				p.failures[f.UUID.Value] = f
-				message += f.Message.Value + "\n"
-			}
-			result.Execution.StackTrace = &message
+		if stackTrace := p.collectFailureSummaries(t.Action); stackTrace != nil {
+			result.Execution.StackTrace = stackTrace
 		} else {
 			logger.Debug("test has no failure summaries")
 		}
@@ -392,7 +350,6 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 		steps, _, a := p.getSteps(t.Action.ActivitySummaries, 0)
 		result.Attachments = append(result.Attachments, a...)
 
-		// Search for attachments in activitySummaries at test level
 		testLevelAttachments := p.getTestLevelAttachments(t.Action.ActivitySummaries)
 		result.Attachments = append(result.Attachments, testLevelAttachments...)
 
@@ -417,7 +374,6 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 						logger.Error("failed to get attachments", "error", err, "attachmentIndex", i)
 						continue
 					}
-
 					logger.Debug("successfully added failure attachment", "attachmentName", a.Name)
 					result.Attachments = append(result.Attachments, a)
 				}
@@ -432,6 +388,64 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 
 	logger.Debug("completed all tests processing", "totalResults", len(results))
 	return results
+}
+
+// buildBaseResult creates the initial Result from an XCTest entry
+func buildBaseResult(t XCTest) models.Result {
+	suites := make([]models.SuiteData, 0)
+	suites = append(suites, models.SuiteData{Title: t.Metadata.Suite})
+	for _, s := range t.Suites {
+		suites = append(suites, models.SuiteData{Title: s})
+	}
+
+	duration := t.Duration
+	return models.Result{
+		Title:     t.Name,
+		Signature: &t.Signature,
+		Execution: models.Execution{
+			Status:   getStatus(t.Action.TestStatus.Value),
+			Duration: &duration,
+		},
+		Fields:      map[string]string{},
+		Attachments: make([]models.Attachment, 0),
+		Params: map[string]string{
+			"Device":        t.Metadata.Device,
+			"Configuration": t.Metadata.Configuration,
+		},
+		Relations: models.Relation{
+			Suite: models.Suite{
+				Data: suites,
+			},
+		},
+		StepType: "text",
+		Muted:    false,
+	}
+}
+
+// setExecutionTimes sets start and end times from activity summaries
+func setExecutionTimes(result *models.Result, as ActivitySummaries) {
+	if len(as.Values) == 0 {
+		return
+	}
+	startTime := as.Values[0].Start.Value
+	endTime := as.Values[len(as.Values)-1].Finish.Value
+	startTimeFloat := float64(parseTime(startTime).UnixMilli())
+	endTimeFloat := float64(parseTime(endTime).UnixMilli())
+	result.Execution.StartTime = &startTimeFloat
+	result.Execution.EndTime = &endTimeFloat
+}
+
+// collectFailureSummaries extracts failure summaries and returns combined stack trace
+func (p *Parser) collectFailureSummaries(action ActionTestSummary) *string {
+	if action.FailureSummaries == nil {
+		return nil
+	}
+	var message string
+	for _, f := range action.FailureSummaries.Values {
+		p.failures[f.UUID.Value] = f
+		message += f.Message.Value + "\n"
+	}
+	return &message
 }
 
 func (p *Parser) isFailureProcessed(f string) bool {
