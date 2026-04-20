@@ -1,0 +1,27 @@
+.github/workflows/release.yml
+  61eea9ffcce21021 35,37
+Makefile
+  61eea9ffcce21021 6
+build/Dockerfile
+  61eea9ffcce21021 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "2e85077c56ab0f8f11ff98b97e93acf137497ef8",
+  "prompts": {
+    "61eea9ffcce21021": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05032195-b683-49c3-b4a5-f80f7f1f9d52",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dmitrii Gridnev",
+      "messages": [],
+      "total_additions": 75,
+      "total_deletions": 4,
+      "accepted_lines": 75,
+      "overriden_lines": 0
+    }
+  }
+}
