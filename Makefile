@@ -3,7 +3,7 @@ version := $(shell git describe --tags)
 .PHONY: build
 build:
 	@mkdir -p build
-	@go build -a -ldflags="-X github.com/qase-tms/qasectl/internal.Version=$(version)" -o build/qasectl ./main.go
+	@go build -a -ldflags="-s -w -X github.com/qase-tms/qasectl/internal.Version=$(version)" -o build/qasectl ./main.go
 
 clean:
 	@rm -rf ./build/qasectl

@@ -116,7 +116,7 @@ func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, a
 			}
 			continue
 		}
-		defer file.Close()
+		defer func() { _ = file.Close() }()
 
 		hash, err := c.uploadAttachment(ctx, projectCode, []*os.File{file})
 		if err != nil {
