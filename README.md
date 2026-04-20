@@ -7,6 +7,13 @@ Qase CLI is available for both **Qase** and **Qase Enterprise** users.
 
 ## Installation
 
+### Install via Homebrew (macOS/Linux)
+
+```bash
+brew tap qase-tms/tap
+brew install qasectl
+```
+
 ### Install via `go install`
 
 The easiest way to install Qase CLI is using `go install`:
