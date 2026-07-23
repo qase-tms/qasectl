@@ -51,6 +51,109 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  bump-homebrew-tap:
+    runs-on: ubuntu-latest
+    needs: build_and_release
+    permissions:
+      contents: read
+    steps:
+      - name: Define the release version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          echo "TAG=${TAG}" >> "$GITHUB_ENV"
+          echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
+
+      - name: Download release binaries
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh release download "${TAG}" -R "${GITHUB_REPOSITORY}" -D dist \
+            -p 'qasectl-darwin-arm64' \
+            -p 'qasectl-darwin-amd64' \
+            -p 'qasectl-linux-arm64' \
+            -p 'qasectl-linux-amd64'
+
+      - name: Compute checksums
+        run: |
+          set -euo pipefail
+          cd dist
+          {
+            echo "SHA_DARWIN_ARM64=$(sha256sum qasectl-darwin-arm64 | cut -d' ' -f1)"
+            echo "SHA_DARWIN_AMD64=$(sha256sum qasectl-darwin-amd64 | cut -d' ' -f1)"
+            echo "SHA_LINUX_ARM64=$(sha256sum qasectl-linux-arm64 | cut -d' ' -f1)"
+            echo "SHA_LINUX_AMD64=$(sha256sum qasectl-linux-amd64 | cut -d' ' -f1)"
+          } >> "$GITHUB_ENV"
+
+      # The tap's master is ruleset-protected (PR + approval), so the formula
+      # lands via PR, not a direct push. We render Formula/qasectl.rb from the
+      # freshly computed checksums and open the bump PR. Auto-merge is armed
+      # best-effort: it still needs an approving review per the tap ruleset and
+      # falls back to a plain open PR if auto-merge is disabled on the tap.
+      - name: Open tap PR with the formula bump
+        env:
+          # The default GITHUB_TOKEN can only write to this repo; publishing to
+          # the qase-tms/homebrew-tap needs a PAT with write access to the tap.
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          BRANCH="qasectl-${TAG}"
+          git clone --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/qase-tms/homebrew-tap.git" tap
+          cat > tap/Formula/qasectl.rb <<EOF
+          class Qasectl < Formula
+            desc "CLI tool for Qase test management"
+            homepage "https://github.com/qase-tms/qasectl"
+            version "${VERSION}"
+
+            on_macos do
+              on_arm do
+                url "https://github.com/qase-tms/qasectl/releases/download/v#{version}/qasectl-darwin-arm64"
+                sha256 "${SHA_DARWIN_ARM64}"
+              end
+              on_intel do
+                url "https://github.com/qase-tms/qasectl/releases/download/v#{version}/qasectl-darwin-amd64"
+                sha256 "${SHA_DARWIN_AMD64}"
+              end
+            end
+
+            on_linux do
+              on_arm do
+                url "https://github.com/qase-tms/qasectl/releases/download/v#{version}/qasectl-linux-arm64"
+                sha256 "${SHA_LINUX_ARM64}"
+              end
+              on_intel do
+                url "https://github.com/qase-tms/qasectl/releases/download/v#{version}/qasectl-linux-amd64"
+                sha256 "${SHA_LINUX_AMD64}"
+              end
+            end
+
+            def install
+              binary = Dir["qasectl-*"].first
+              mv binary, "qasectl"
+              bin.install "qasectl"
+            end
+
+            test do
+              assert_match "Qase CLI", shell_output("#{bin}/qasectl version")
+            end
+          end
+          EOF
+          cd tap
+          if git diff --quiet; then
+            echo "formula unchanged; nothing to bump"
+            exit 0
+          fi
+          git checkout -b "$BRANCH"
+          git -c user.name=qase-bot -c user.email=noreply@qase.io commit -am "qasectl: bump to ${TAG}"
+          # Force so a re-run of a failed release run stays idempotent.
+          git push -fu origin "$BRANCH"
+          gh pr create -R qase-tms/homebrew-tap --head "$BRANCH" \
+            --title "qasectl: bump to ${TAG}" \
+            --body "Automated formula bump for [${TAG}](https://github.com/qase-tms/qasectl/releases/tag/${TAG}), rendered by the qasectl release workflow. Needs one approving review per the tap ruleset." \
+            || echo "::notice::a PR for ${BRANCH} may already exist; leaving it as is"
+          gh pr merge -R qase-tms/homebrew-tap --auto --squash "$BRANCH" \
+            || echo "::notice::auto-merge not armed (disabled on the tap?); the PR is open and needs a manual merge after approval"
+
   build-docker-n-publish:
     runs-on: ubuntu-latest
     needs: build_and_release
