@@ -1,0 +1,19 @@
+.github/workflows/release.yml
+  s_23a39be407ae0d::t_405447d549900a 54-156
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "d6f05a3419ad8209316d93f65848c5e4c552e4c9",
+  "prompts": {},
+  "sessions": {
+    "s_23a39be407ae0d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "95a1cab0-bf2b-4ad7-8eaa-70bd90b60bbc",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
