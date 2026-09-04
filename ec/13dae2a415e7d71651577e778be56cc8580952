@@ -1,0 +1,63 @@
+cmd/testops/milestone/create/create.go
+  s_00a57614bceda3::t_76eb8a534e9a65 54,56
+cmd/testops/filter/filter.go
+  s_00a57614bceda3::t_76eb8a534e9a65 40,42
+cmd/testops/run/delete/delete.go
+  s_00a57614bceda3::t_76eb8a534e9a65 37,57
+internal/client/utils.go
+  s_00a57614bceda3::t_382f513d1b732e 6,9-28
+  s_00a57614bceda3::t_c1349d4e9cc384 29
+internal/client/clientv1.go
+  s_00a57614bceda3::t_54fa7f91fbaec1 57-58,62,65,562-564
+cmd/testops/env/create/create.go
+  s_00a57614bceda3::t_76eb8a534e9a65 45,47
+cmd/testops/result/upload/upload.go
+  s_00a57614bceda3::t_76eb8a534e9a65 57,86-87
+internal/client/clientv2_test.go
+  s_00a57614bceda3::t_2e0b484055e2e5 1-33
+cmd/root_test.go
+  s_00a57614bceda3::t_51ce56ab30e2c0 92,94-98,100,102-104,106-108,133-134
+  s_00a57614bceda3::t_5ff4579c7dc914 93,99,101,105,109-132
+internal/client/utils_test.go
+  s_00a57614bceda3::t_051b962a7c1bb8 1-70
+cmd/testops/testops.go
+  s_00a57614bceda3::t_e89e3286048f6b 21-22,54-56
+  s_00a57614bceda3::t_76eb8a534e9a65 20,53
+  s_00a57614bceda3::t_6351714003ea81 57-58
+internal/client/clientv1_test.go
+  s_00a57614bceda3::t_2e0b484055e2e5 175-201
+  s_00a57614bceda3::t_e8e86f0b803baa 4
+cmd/flags/flags.go
+  s_00a57614bceda3::t_e89e3286048f6b 6
+internal/client/clientv2.go
+  s_00a57614bceda3::t_54fa7f91fbaec1 13-15,19-20,23,66-68
+cmd/testops/field/custom/delete/delete.go
+  s_00a57614bceda3::t_76eb8a534e9a65 32,34
+cmd/testops/run/create/create.go
+  s_00a57614bceda3::t_76eb8a534e9a65 56,58
+CHANGELOG.md
+  s_00a57614bceda3::t_f924d7c75594fa 5-9
+README.md
+  s_00a57614bceda3::t_f924d7c75594fa 71-82
+docs/command.md
+  s_00a57614bceda3::t_14c866f5979d5c 30,71,97,139,221,266,309,336
+  s_00a57614bceda3::t_0a47ae37e33ac3 31,72,98,140,222,267,310,337
+cmd/testops/run/complete/complete.go
+  s_00a57614bceda3::t_76eb8a534e9a65 31,33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "ec13dae2a415e7d71651577e778be56cc8580952",
+  "prompts": {},
+  "sessions": {
+    "s_00a57614bceda3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "61309aae-c9cb-49dd-a3ed-6673fb1b0751",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
