@@ -2,10 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [v0.5.0] - 2026-09-04
 
 - feat: add `--api-host` option (and `QASE_TESTOPS_API_HOST` environment variable) to send requests to a custom Qase
-  API host, e.g. a Qase Enterprise instance. Defaults to `api.qase.io`
+  API host, e.g. a Qase Enterprise instance. Defaults to `api.qase.io` ([#98](https://github.com/qase-tms/qasectl/pull/98))
 - chore: update Qase API clients (qase-api-client v1.2.13, qase-api-v2-client v1.1.8)
 - chore: update indirect dependencies (fsnotify v1.10.1, mapstructure v2.5.0, go-toml v2.4.3, locafero v0.12.0,
   yaml v3.0.5, sync v0.22.0, sys v0.47.0, text v0.41.0)
