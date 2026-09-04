@@ -54,12 +54,15 @@ func paginate[T any](fetchPage func(offset int32) ([]T, int32, error)) ([]T, err
 type ClientV1 struct {
 	// token is a token for Qase API
 	token string
+	// host is a host of Qase API
+	host string
 }
 
 // NewClientV1 creates a new client for Qase API v1
-func NewClientV1(token string) *ClientV1 {
+func NewClientV1(token, host string) *ClientV1 {
 	return &ClientV1{
 		token: token,
+		host:  host,
 	}
 }
 
@@ -556,6 +559,9 @@ func (c *ClientV1) getApiV1Client(ctx context.Context) (context.Context, *apiV1C
 		})
 
 	cfg := apiV1Client.NewConfiguration()
+	cfg.Servers = apiV1Client.ServerConfigurations{
+		{URL: apiURL(c.host, "v1")},
+	}
 	client := apiV1Client.NewAPIClient(cfg)
 
 	return ctx, client

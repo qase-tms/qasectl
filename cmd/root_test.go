@@ -89,3 +89,46 @@ func TestTestopsCommand_RequiredFlags(t *testing.T) {
 		t.Error("project flag is not marked as required")
 	}
 }
+
+func TestTestopsCommand_APIHostFlag(t *testing.T) {
+	testopsCmd, _, err := rootCmd.Find([]string{"testops"})
+	if err != nil {
+		t.Fatalf("failed to find testops command: %v", err)
+	}
+
+	hostFlag := testopsCmd.PersistentFlags().Lookup("api-host")
+	if hostFlag == nil {
+		t.Fatal("testops missing persistent flag 'api-host'")
+	}
+
+	if hostFlag.DefValue != "api.qase.io" {
+		t.Errorf("api-host flag default = %q, want %q", hostFlag.DefValue, "api.qase.io")
+	}
+
+	if _, ok := hostFlag.Annotations["cobra_annotation_bash_completion_one_required_flag"]; ok {
+		t.Error("api-host flag must be optional, but it is marked as required")
+	}
+}
+
+// TestEnvCreateCommand_KeepsOwnHostFlag guards the name clash: 'testops env create'
+// has its own --host flag for the environment host, which must not be shadowed by
+// the API host flag.
+func TestEnvCreateCommand_KeepsOwnHostFlag(t *testing.T) {
+	createCmd, _, err := rootCmd.Find([]string{"testops", "env", "create"})
+	if err != nil {
+		t.Fatalf("failed to find env create command: %v", err)
+	}
+
+	hostFlag := createCmd.Flags().Lookup("host")
+	if hostFlag == nil {
+		t.Fatal("env create missing its own 'host' flag")
+	}
+
+	if hostFlag.Usage != "host of the environment" {
+		t.Errorf("env create host flag usage = %q, want %q", hostFlag.Usage, "host of the environment")
+	}
+
+	if hostFlag.DefValue != "" {
+		t.Errorf("env create host flag default = %q, want empty", hostFlag.DefValue)
+	}
+}

@@ -37,8 +37,9 @@ func Command() *cobra.Command {
 
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
+			apiHost := viper.GetString(flags.HostFlag)
 
-			cv1 := client.NewClientV1(token)
+			cv1 := client.NewClientV1(token, apiHost)
 			s := filter.NewService(cv1)
 
 			filteredResults, err := s.GetFilteredResults(cmd.Context(), project, planID, framework)

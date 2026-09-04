@@ -34,6 +34,7 @@ func Command() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
+			apiHost := viper.GetString(flags.HostFlag)
 
 			var start, end int64 = 0, 0
 
@@ -53,7 +54,7 @@ func Command() *cobra.Command {
 				end = t.Unix()
 			}
 
-			c := client.NewClientV1(token)
+			c := client.NewClientV1(token, apiHost)
 			s := run.NewService(c)
 
 			err := s.DeleteRun(cmd.Context(), project, ids, all, start, end)

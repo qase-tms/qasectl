@@ -17,6 +17,9 @@ import (
 const (
 	tokenFlag   = "token"
 	projectFlag = "project"
+	hostFlag    = "api-host"
+
+	defaultHost = "api.qase.io"
 )
 
 // Command returns a new cobra command for testops
@@ -45,6 +48,12 @@ func Command() *cobra.Command {
 	err = cmd.MarkPersistentFlagRequired(projectFlag)
 	if err != nil {
 		slog.Error("failed to mark project flag required", "error", err)
+	}
+
+	cmd.PersistentFlags().String(hostFlag, defaultHost, "host of Qase API, e.g. api.qase.example.com for Qase Enterprise")
+	err = viper.BindPFlag(flags.HostFlag, cmd.PersistentFlags().Lookup(hostFlag))
+	if err != nil {
+		slog.Error("failed to bind host flag", "error", err)
 	}
 
 	cmd.AddCommand(run.Command())

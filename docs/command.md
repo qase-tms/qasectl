@@ -27,6 +27,8 @@ The `create` command has the following options:
 
 - `--project`, `-p`: The project code where the test run will be created. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--api-host`: The Qase API host. Optional. Default is `api.qase.io`. Use it to point the CLI at a Qase Enterprise
+  instance, for example `api.qase.example.com`. Can also be set via the `QASE_TESTOPS_API_HOST` environment variable.
 - `--title`: The name of the test run. Required.
 - `--description`, `-d`: The description of the test run. Optional.
 - `--environment`, `-e`: The environment where the test run will be executed. Optional.
@@ -66,6 +68,8 @@ The `complete` command has the following options:
 
 - `--project`, `-p`: The project code where the test run will be completed. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--api-host`: The Qase API host. Optional. Default is `api.qase.io`. Use it to point the CLI at a Qase Enterprise
+  instance, for example `api.qase.example.com`. Can also be set via the `QASE_TESTOPS_API_HOST` environment variable.
 - `--id`: The ID of the test run to complete. Required.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
 
@@ -90,6 +94,8 @@ The `delete` command has the following options:
 
 - `--project`, `-p`: The project code where the test runs will be deleted. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--api-host`: The Qase API host. Optional. Default is `api.qase.io`. Use it to point the CLI at a Qase Enterprise
+  instance, for example `api.qase.example.com`. Can also be set via the `QASE_TESTOPS_API_HOST` environment variable.
 - `--ids`: The IDs of the test runs to delete. Optional if all doesn't set.
 - `--all`: Delete all test runs in the project. Optional if ids doesn't set.
 - `--start`, `-s`: The start date of the test runs to delete. Optional.
@@ -130,6 +136,8 @@ The `upload` command has the following options:
 
 - `--project`, `-p`: The project code where the test results will be uploaded. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--api-host`: The Qase API host. Optional. Default is `api.qase.io`. Use it to point the CLI at a Qase Enterprise
+  instance, for example `api.qase.example.com`. Can also be set via the `QASE_TESTOPS_API_HOST` environment variable.
 - `--id`: The ID of the test run to upload results for. Required if title doesn't set.
 - `--title`: The title of the test results. Required if id doesn't set.
 - `--description`, `-d`: The description of the test results. Optional.
@@ -210,6 +218,8 @@ The `create` command has the following options:
 
 - `--project`, `-p`: The project code where the environment will be created. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--api-host`: The Qase API host. Optional. Default is `api.qase.io`. Use it to point the CLI at a Qase Enterprise
+  instance, for example `api.qase.example.com`. Can also be set via the `QASE_TESTOPS_API_HOST` environment variable.
 - `--title` : The name of the environment. Required.
 - `--slug`, `-s`: The slug of the environment. Required.
 - `--description`, `-d`: The description of the environment. Optional.
@@ -253,6 +263,8 @@ The `create` command has the following options:
 
 - `--project`, `-p`: The project code where the milestone will be created. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--api-host`: The Qase API host. Optional. Default is `api.qase.io`. Use it to point the CLI at a Qase Enterprise
+  instance, for example `api.qase.example.com`. Can also be set via the `QASE_TESTOPS_API_HOST` environment variable.
 - `--title` : The name of the milestone. Required.
 - `--description`, `-d`: The description of the milestone. Optional.
 - `--status`, `-s`: The status of the milestone. Optional. Allow values: `active`, `completed`.
@@ -294,6 +306,8 @@ The `filter` command has the following options:
 
 - `--project`, `-p`: The project code where the filtered results will be saved. Required.
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--api-host`: The Qase API host. Optional. Default is `api.qase.io`. Use it to point the CLI at a Qase Enterprise
+  instance, for example `api.qase.example.com`. Can also be set via the `QASE_TESTOPS_API_HOST` environment variable.
 - `--planID` : The ID of the test plan. Required.
 - `--framework`, `-f`: The framework of the filtered results. Required. Allow values: `playwright`.
 - `--output`, `-o`: The output path to save the filtered results. Optional. Default is `qase.env` in the current directory.
@@ -319,6 +333,8 @@ qasectl testops field custom remove --project <project_code> --token <token> --i
 The `remove` command has the following options:
 
 - `--token`, `-t`: The API token to authenticate with the TestOps API. Required.
+- `--api-host`: The Qase API host. Optional. Default is `api.qase.io`. Use it to point the CLI at a Qase Enterprise
+  instance, for example `api.qase.example.com`. Can also be set via the `QASE_TESTOPS_API_HOST` environment variable.
 - `--id`, `-i`: The ID of the custom field to remove. Optional if all doesn't set.
 - `--all`: Remove all custom fields in the project. Optional if id doesn't set.
 - `--verbose`, `-v`: Enable verbose mode. Optional.
