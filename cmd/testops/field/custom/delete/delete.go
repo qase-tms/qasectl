@@ -29,8 +29,9 @@ func Command() *cobra.Command {
 		Example: "qasectl testops field custom delete --id 1 --token 'TOKEN'",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			token := viper.GetString(flags.TokenFlag)
+			apiHost := viper.GetString(flags.HostFlag)
 
-			c := client.NewClientV1(token)
+			c := client.NewClientV1(token, apiHost)
 			s := fields.NewService(c)
 
 			var params fields.RemoveCustomFieldsParams

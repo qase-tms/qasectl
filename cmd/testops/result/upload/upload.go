@@ -54,6 +54,7 @@ func Command() *cobra.Command {
 
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
+			apiHost := viper.GetString(flags.HostFlag)
 
 			statuses := make(map[string]string)
 			if status != "" {
@@ -82,8 +83,8 @@ func Command() *cobra.Command {
 				return fmt.Errorf("unknown format: %s. allowed formats: junit, qase, allure, xctest", format)
 			}
 
-			cv1 := client.NewClientV1(token)
-			cv2 := client.NewClientV2(token, cv1)
+			cv1 := client.NewClientV1(token, apiHost)
+			cv2 := client.NewClientV2(token, apiHost, cv1)
 			rs := run.NewService(cv1)
 			s := result.NewService(cv2, p, rs)
 

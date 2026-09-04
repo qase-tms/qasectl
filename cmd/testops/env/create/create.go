@@ -42,8 +42,9 @@ func Command() *cobra.Command {
 
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
+			apiHost := viper.GetString(flags.HostFlag)
 
-			c := client.NewClientV1(token)
+			c := client.NewClientV1(token, apiHost)
 			s := env.NewService(c)
 
 			e, err := s.CreateEnvironment(cmd.Context(), project, title, description, slug, host)

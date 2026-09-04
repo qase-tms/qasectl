@@ -28,8 +28,9 @@ func Command() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
+			apiHost := viper.GetString(flags.HostFlag)
 
-			c := client.NewClientV1(token)
+			c := client.NewClientV1(token, apiHost)
 			s := run.NewService(c)
 
 			err := s.CompleteRun(cmd.Context(), project, runID)

@@ -51,8 +51,9 @@ func Command() *cobra.Command {
 
 			token := viper.GetString(flags.TokenFlag)
 			project := viper.GetString(flags.ProjectFlag)
+			apiHost := viper.GetString(flags.HostFlag)
 
-			c := client.NewClientV1(token)
+			c := client.NewClientV1(token, apiHost)
 			s := milestone.NewService(c)
 
 			e, err := s.CreateMilestone(cmd.Context(), project, title, description, status, t)

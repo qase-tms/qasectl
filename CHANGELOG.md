@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+- feat: add `--api-host` option (and `QASE_TESTOPS_API_HOST` environment variable) to send requests to a custom Qase
+  API host, e.g. a Qase Enterprise instance. Defaults to `api.qase.io`
+
 ## [v0.4.0] - 2026-04-20
 
 - feat: add Homebrew installation support via `brew tap qase-tms/tap && brew install qasectl`

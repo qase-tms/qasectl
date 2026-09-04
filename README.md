@@ -68,4 +68,16 @@ qasectl --help
 
 This will show all available commands and their descriptions.
 
+### Qase Enterprise
+
+By default the CLI talks to `api.qase.io`. Qase Enterprise users can point it at their own instance with the
+`--api-host` option, or with the `QASE_TESTOPS_API_HOST` environment variable:
+
+```bash
+qasectl testops run create --api-host api.qase.example.com --project PRJ --token <token> --title "Test Run 1"
+
+# or
+export QASE_TESTOPS_API_HOST=api.qase.example.com
+```
+
 For more detailed information about each command and option, refer to the [full documentation](docs/command.md).

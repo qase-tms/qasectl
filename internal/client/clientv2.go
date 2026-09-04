@@ -10,14 +10,17 @@ import (
 // ClientV2 is a client for Qase API v2
 type ClientV2 struct {
 	// token is a token for Qase API
-	token    string
+	token string
+	// host is a host of Qase API
+	host     string
 	clientV1 *ClientV1
 }
 
-// NewClientV2 creates a new client for Qase API v1
-func NewClientV2(token string, clientV1 *ClientV1) *ClientV2 {
+// NewClientV2 creates a new client for Qase API v2
+func NewClientV2(token, host string, clientV1 *ClientV1) *ClientV2 {
 	return &ClientV2{
 		token:    token,
+		host:     host,
 		clientV1: clientV1,
 	}
 }
@@ -60,6 +63,9 @@ func (c *ClientV2) getApiV2Client(ctx context.Context) (context.Context, *apiV2C
 		})
 
 	cfg := apiV2Client.NewConfiguration()
+	cfg.Servers = apiV2Client.ServerConfigurations{
+		{URL: apiURL(c.host, "v2")},
+	}
 	client := apiV2Client.NewAPIClient(cfg)
 
 	return ctx, client
