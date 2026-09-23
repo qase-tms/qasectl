@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
-	"os/exec"
 	"strconv"
 	"strings"
 	"time"
@@ -19,6 +18,10 @@ type Parser struct {
 	caseId            *int64
 	failures          map[string]FailureSummary
 	processedFailures []string
+	// xcrun overrides the executable that runs xcresulttool; empty means "xcrun".
+	xcrun string
+	// legacy is set once xcresulttool has required --legacy.
+	legacy bool
 }
 
 // NewParser creates a new Parser
@@ -87,30 +90,14 @@ func (p *Parser) Parse() ([]models.Result, error) {
 }
 
 func (p *Parser) readJson(id *string) ([]byte, error) {
-	args := []string{"xcresulttool", "get", "--path", p.path, "--format", "json"}
+	args := []string{"get", "--path", p.path, "--format", "json"}
 	if id != nil {
 		args = append(args, "--id", *id)
 	}
 
-	executeCommand := func(args []string) ([]byte, error) {
-		out, err := exec.Command("xcrun", args...).Output()
-		if err != nil {
-			return nil, fmt.Errorf("failed to get XCResult: %w", err)
-		}
-		return out, nil
-	}
-
-	out, err := executeCommand(args)
+	out, err := p.xcresulttool(args...)
 	if err != nil {
-		if strings.Contains(err.Error(), "exit status 64") {
-			args = append(args, "--legacy")
-			out, err = executeCommand(args)
-			if err != nil {
-				return nil, fmt.Errorf("failed to get XCResult with --legacy: %w", err)
-			}
-			return out, nil
-		}
-		return nil, err
+		return nil, fmt.Errorf("failed to get XCResult: %w", err)
 	}
 
 	return out, nil
@@ -122,34 +109,13 @@ func (p *Parser) readAttachment(id string) ([]byte, error) {
 
 	logger.Debug("starting to read attachment", "path", p.path)
 
-	args := []string{"xcresulttool", "get", "--path", p.path, "--format", "raw", "--id", id}
-	logger.Debug("executing xcresulttool command", "args", args)
-
-	executeCommand := func(args []string) ([]byte, error) {
-		out, err := exec.Command("xcrun", args...).Output()
-		if err != nil {
-			return nil, fmt.Errorf("failed to get XCResult attachment: %w", err)
-		}
-		logger.Debug("successfully executed xcrun command", "outputSize", len(out))
-		return out, nil
-	}
-
-	out, err := executeCommand(args)
+	out, err := p.xcresulttool("get", "--path", p.path, "--format", "raw", "--id", id)
 	if err != nil {
-		if strings.Contains(err.Error(), "exit status 64") {
-			args = append(args, "--legacy")
-			out, err = executeCommand(args)
-			if err != nil {
-				return nil, fmt.Errorf("failed to get XCResult attachment with --legacy: %w", err)
-			}
-			logger.Debug("successfully got attachment with --legacy flag", "size", len(out))
-		} else {
-			logger.Error("failed to get attachment", "error", err)
-			return nil, err
-		}
-	} else {
-		logger.Debug("successfully got attachment", "size", len(out))
+		logger.Error("failed to get attachment", "error", err)
+		return nil, fmt.Errorf("failed to get XCResult attachment: %w", err)
 	}
+
+	logger.Debug("successfully got attachment", "size", len(out))
 
 	return out, nil
 }
