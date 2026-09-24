@@ -1,0 +1,19 @@
+CHANGELOG.md
+  s_cbc55e42fe2810::t_5faae32422777d 5-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1009457c876fcedf4758c5ede0b777595af96a7b",
+  "prompts": {},
+  "sessions": {
+    "s_cbc55e42fe2810": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2a463297-47c0-484b-ae54-a3e2cfbbb5c9",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
