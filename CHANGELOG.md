@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v0.5.1] - 2026-09-24
+
+- perf: pass `--legacy` to `xcresulttool` up front once a retry has shown it is needed, instead of paying for a
+  rejected `xcrun` run before every read; roughly halves the processes an XCTest parse starts
+  ([#100](https://github.com/qase-tms/qasectl/pull/100))
+- fix: keep `xcresulttool`'s stderr in XCTest parser errors, so a wrong `--path` no longer surfaces as a bare
+  `exit status 64` ([#100](https://github.com/qase-tms/qasectl/pull/100))
+
 ## [v0.5.0] - 2026-09-04
 
 - feat: add `--api-host` option (and `QASE_TESTOPS_API_HOST` environment variable) to send requests to a custom Qase
