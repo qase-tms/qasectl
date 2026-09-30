@@ -1,0 +1,44 @@
+internal/version_test.go
+  s_2403905382eb48::t_3fb5e609ff8c43 1-12,16,71-72
+  s_2403905382eb48::t_abe4d6f92241e5 13-15,17-70
+cmd/version/version_test.go
+  s_2403905382eb48::t_f826e850f66613 1-35
+cmd/version/version.go
+  s_2403905382eb48::t_7bc0b3153381ce 5,16,22-29
+  s_2403905382eb48::t_a9def1eb48075a 30
+internal/client/clientv1.go
+  s_2403905382eb48::t_adbff585f56a38 11,566
+internal/client/utils_test.go
+  s_2403905382eb48::t_c8bc2b60c710ac 71-113
+internal/client/clientv2.go
+  s_2403905382eb48::t_adbff585f56a38 6,70
+internal/version.go
+  s_2403905382eb48::t_b059c0bc94f8a7 1-7,10-37,39
+  s_2403905382eb48::t_753555ef728b68 8-9
+  s_2403905382eb48::t_5420abee7ff254 38
+internal/client/utils.go
+  s_2403905382eb48::t_753555ef728b68 7-8,14-16,35-51
+  s_2403905382eb48::t_dce3d99f82361c 52-53
+internal/client/clientv1_test.go
+  s_2403905382eb48::t_e11370e4d293e6 7,203-215
+  s_2403905382eb48::t_8a97af18e8a738 216
+internal/client/clientv2_test.go
+  s_2403905382eb48::t_e11370e4d293e6 5,35-47
+  s_2403905382eb48::t_9f3d5e8e7726ea 48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e4110b41499929c6b4b5da63da03e3f665b53f7b",
+  "prompts": {},
+  "sessions": {
+    "s_2403905382eb48": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "da52271c-c007-4d6f-bc77-d3b3a77a2dcc",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
