@@ -68,3 +68,46 @@ func TestApiURL(t *testing.T) {
 		})
 	}
 }
+
+func TestUserAgent(t *testing.T) {
+	tests := []struct {
+		name    string
+		version string
+		base    string
+		want    string
+	}{
+		{
+			name:    "cli identifies itself ahead of the generated client",
+			version: "0.5.1",
+			base:    "qase-api-client-go/1.2.13",
+			want:    "qasectl/0.5.1 qase-api-client-go/1.2.13",
+		},
+		{
+			name:    "empty base leaves no trailing space",
+			version: "0.5.1",
+			base:    "",
+			want:    "qasectl/0.5.1",
+		},
+		{
+			name:    "missing version is reported as unknown",
+			version: "",
+			base:    "qase-api-client-go/1.2.13",
+			want:    "qasectl/unknown qase-api-client-go/1.2.13",
+		},
+		{
+			name:    "surrounding whitespace is trimmed",
+			version: "0.5.1",
+			base:    "  qase-api-client-go/1.2.13  ",
+			want:    "qasectl/0.5.1 qase-api-client-go/1.2.13",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := userAgent(tt.version, tt.base)
+			if got != tt.want {
+				t.Errorf("userAgent(%q, %q) = %q, want %q", tt.version, tt.base, got, tt.want)
+			}
+		})
+	}
+}
