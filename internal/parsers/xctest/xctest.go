@@ -4,6 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"mime"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -15,24 +19,35 @@ import (
 type Parser struct {
 	path              string
 	level             stepLevel
+	stepAttachments   stepAttachmentMode
 	caseId            *int64
 	failures          map[string]FailureSummary
 	processedFailures []string
+	// stepPayloads holds the payload IDs already attached to a step of the current test.
+	stepPayloads map[string]struct{}
 	// xcrun overrides the executable that runs xcresulttool; empty means "xcrun".
 	xcrun string
+	// sips overrides the executable that converts HEIC screenshots; empty means "sips".
+	sips string
 	// legacy is set once xcresulttool has required --legacy.
 	legacy bool
 }
 
 // NewParser creates a new Parser
-func NewParser(path, level string) (*Parser, error) {
+func NewParser(path, level, stepAttachments string) (*Parser, error) {
 	if !strings.HasSuffix(path, ".xcresult") {
 		return nil, fmt.Errorf("unsupported format: %s", path)
 	}
 
+	mode, err := parseStepAttachmentMode(stepAttachments)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Parser{
-		path:  path,
-		level: parseStepLevel(level),
+		path:            path,
+		level:           parseStepLevel(level),
+		stepAttachments: mode,
 	}, nil
 }
 
@@ -44,7 +59,27 @@ const (
 	attachmentStep = "com.apple.dt.xctest.activity-type.attachmentContainer"
 	qaseConfig     = "Qase config"
 	heicExt        = ".heic"
+	jpegUTI        = "public.jpeg"
+	heicUTI        = "public.heic"
 )
+
+// utiExtensions maps the uniform type identifiers XCTest records for attachments to
+// extensions; unknown types fall back to sniffing the content.
+var utiExtensions = map[string]string{
+	"public.plain-text":         ".txt",
+	"public.utf8-plain-text":    ".txt",
+	"public.text":               ".txt",
+	"public.json":               ".json",
+	"public.xml":                ".xml",
+	"public.html":               ".html",
+	"public.png":                ".png",
+	jpegUTI:                     ".jpeg",
+	heicUTI:                     heicExt,
+	"com.compuserve.gif":        ".gif",
+	"com.adobe.pdf":             ".pdf",
+	"public.mpeg-4":             ".mp4",
+	"com.apple.quicktime-movie": ".mov",
+}
 
 // heicSignatures contains all known HEIC/HEIF ftyp box identifiers
 var heicSignatures = []string{
@@ -300,6 +335,7 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 		p.caseId = nil
 		p.failures = make(map[string]FailureSummary)
 		p.processedFailures = make([]string, 0)
+		p.stepPayloads = make(map[string]struct{})
 
 		logger := logger.With("testTitle", t.Name, "testIndex", i)
 		logger.Debug("processing test", "test", t)
@@ -512,29 +548,100 @@ func (p *Parser) getAttachment(a Attachment) (models.Attachment, error) {
 
 	logger.Debug("processing attachment", "originalFilename", a.Filename.Value)
 
-	// Handle HEIC conversion
-	a.Filename.Value = strings.Replace(a.Filename.Value, heicExt, ".jpeg", 1)
-
 	att, err := p.readAttachment(a.PayloadRef.ID.Value)
 	if err != nil {
 		logger.Error("failed to read attachment content", "error", err)
 		return models.Attachment{}, fmt.Errorf("failed to get attachment: %w", err)
 	}
 
-	// Determine file extension based on content if filename doesn't have one
 	filename := a.Filename.Value
-	if !strings.Contains(filename, ".") || strings.HasSuffix(filename, ".") {
-		extension := p.detectFileExtension(att)
-		if extension != "" {
-			filename = filename + extension
-			logger.Debug("added file extension based on content", "filename", filename, "extension", extension)
+	uti := a.UniformTypeIdentifier.Value
+
+	// Browsers other than Safari cannot render HEIC, so screenshots are sent as JPEG.
+	if uti == heicUTI || p.detectFileExtension(att) == heicExt {
+		jpeg, err := p.convertHEICToJPEG(att)
+		if err != nil {
+			logger.Warn("failed to convert HEIC screenshot to JPEG, uploading it as HEIC", "error", err)
+		} else {
+			att = jpeg
+			if ext := strings.ToLower(filepath.Ext(filename)); ext == heicExt || ext == ".heif" {
+				filename = strings.TrimSuffix(filename, filepath.Ext(filename))
+			}
+			uti = jpegUTI
 		}
 	}
+
+	filename = p.withExtension(filename, uti, att)
+	logger.Debug("resolved attachment filename", "filename", filename)
 
 	return models.Attachment{
 		Name:    filename,
 		Content: &att,
 	}, nil
+}
+
+// withExtension makes sure the filename ends with an extension the upload maps to a
+// MIME type: XCTest names like "App UI hierarchy for com.example_0_<uuid>" contain a dot
+// but no real extension.
+func (p *Parser) withExtension(filename, uti string, content []byte) string {
+	filename = strings.TrimSuffix(filename, ".")
+
+	ext, ok := utiExtensions[uti]
+	if !ok {
+		if mime.TypeByExtension(filepath.Ext(filename)) != "" {
+			return filename
+		}
+		ext = p.detectFileExtension(content)
+	}
+
+	if ext == "" || sameExtension(filepath.Ext(filename), ext) {
+		return filename
+	}
+
+	return filename + ext
+}
+
+func sameExtension(a, b string) bool {
+	normalize := func(ext string) string {
+		ext = strings.ToLower(ext)
+		if ext == ".jpg" {
+			return ".jpeg"
+		}
+		return ext
+	}
+
+	return normalize(a) == normalize(b)
+}
+
+// convertHEICToJPEG converts with sips, which ships with every macOS that runs xcresulttool.
+func (p *Parser) convertHEICToJPEG(data []byte) ([]byte, error) {
+	dir, err := os.MkdirTemp("", "qasectl-heic-*")
+	if err != nil {
+		return nil, fmt.Errorf("failed to create temp dir: %w", err)
+	}
+	defer func() { _ = os.RemoveAll(dir) }()
+
+	in := filepath.Join(dir, "screenshot.heic")
+	out := filepath.Join(dir, "screenshot.jpeg")
+	if err := os.WriteFile(in, data, 0o600); err != nil {
+		return nil, fmt.Errorf("failed to write HEIC file: %w", err)
+	}
+
+	sips := p.sips
+	if sips == "" {
+		sips = "sips"
+	}
+
+	if output, err := exec.Command(sips, "-s", "format", "jpeg", in, "--out", out).CombinedOutput(); err != nil {
+		return nil, fmt.Errorf("sips: %w: %s", err, strings.TrimSpace(string(output)))
+	}
+
+	jpeg, err := os.ReadFile(out)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read converted JPEG: %w", err)
+	}
+
+	return jpeg, nil
 }
 
 func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool, []models.Attachment) {
@@ -606,16 +713,19 @@ func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool,
 					}
 				}
 			}
+		}
 
-			if v.Attachments != nil {
-				for _, a := range v.Attachments.Values {
-					att, err := p.getAttachment(a)
-					if err != nil {
-						logger.Error("failed to get step attachment", "error", err, "filename", a.Filename.Value)
-						continue
-					}
-					stepAttachments = append(stepAttachments, att)
+		// XCTest gives every activity of a failed test a failureSummaryIDs list, empty for the
+		// steps that passed, so only a matched failure marks the step as failed.
+		if v.Attachments != nil && p.stepAttachments.includes(isStepFailed) {
+			for _, a := range v.Attachments.Values {
+				att, err := p.getAttachment(a)
+				if err != nil {
+					logger.Error("failed to get step attachment", "error", err, "filename", a.Filename.Value)
+					continue
 				}
+				p.stepPayloads[a.PayloadRef.ID.Value] = struct{}{}
+				stepAttachments = append(stepAttachments, att)
 			}
 		}
 
@@ -692,6 +802,10 @@ func (p *Parser) getTestLevelAttachments(as ActivitySummaries) []models.Attachme
 	for _, activity := range as.Values {
 		if activity.Attachments != nil {
 			for _, att := range activity.Attachments.Values {
+				if _, ok := p.stepPayloads[att.PayloadRef.ID.Value]; ok || att.Name.Value == qaseConfig {
+					continue
+				}
+
 				attachment, err := p.getAttachment(att)
 				if err != nil {
 					logger.Error("failed to get test-level attachment", "error", err, "filename", att.Filename.Value)

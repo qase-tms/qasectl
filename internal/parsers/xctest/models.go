@@ -152,6 +152,9 @@ type Attachment struct {
 			Value string `json:"_value"`
 		} `json:"id"`
 	} `json:"payloadRef"`
+	UniformTypeIdentifier struct {
+		Value string `json:"_value"`
+	} `json:"uniformTypeIdentifier"`
 }
 
 type QaseId struct {

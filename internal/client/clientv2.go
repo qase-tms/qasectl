@@ -32,6 +32,8 @@ func (c *ClientV2) UploadData(ctx context.Context, project string, runID int64, 
 
 	logger.Debug("uploading data", "project", project, "runID", runID, "results", results)
 
+	c.clientV1.uploadAttachments(ctx, project, results)
+
 	ctx, client := c.getApiV2Client(ctx)
 
 	resultModels := make([]apiV2Client.ResultCreate, 0, len(results))

@@ -8,11 +8,11 @@ import (
 // are instance-scoped, not shared across instances.
 func TestParser_InstanceIsolation(t *testing.T) {
 	// Create two parser instances (use invalid paths — we won't call Parse)
-	p1, err := NewParser("test1.xcresult", "")
+	p1, err := NewParser("test1.xcresult", "", "")
 	if err != nil {
 		t.Fatalf("Failed to create parser 1: %v", err)
 	}
-	p2, err := NewParser("test2.xcresult", "")
+	p2, err := NewParser("test2.xcresult", "", "")
 	if err != nil {
 		t.Fatalf("Failed to create parser 2: %v", err)
 	}
@@ -57,7 +57,7 @@ func TestParser_InstanceIsolation(t *testing.T) {
 
 // TestParser_IsFailureProcessed verifies the method works on instance state
 func TestParser_IsFailureProcessed(t *testing.T) {
-	p, err := NewParser("test.xcresult", "")
+	p, err := NewParser("test.xcresult", "", "")
 	if err != nil {
 		t.Fatalf("Failed to create parser: %v", err)
 	}
@@ -86,7 +86,7 @@ func TestNewParser_EdgeCases(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := NewParser(tt.path, "")
+			_, err := NewParser(tt.path, "", "")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewParser(%q) error = %v, wantErr %v", tt.path, err, tt.wantErr)
 			}
@@ -104,7 +104,7 @@ func makeHeicData(ftyp string) []byte {
 }
 
 func TestParser_detectFileExtension(t *testing.T) {
-	p, err := NewParser("test.xcresult", "")
+	p, err := NewParser("test.xcresult", "", "")
 	if err != nil {
 		t.Fatalf("Failed to create parser: %v", err)
 	}

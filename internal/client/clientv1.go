@@ -56,13 +56,17 @@ type ClientV1 struct {
 	token string
 	// host is a host of Qase API
 	host string
+	// uploads is shared by every batch of a run, so it caps the total number of
+	// concurrent attachment uploads.
+	uploads chan struct{}
 }
 
 // NewClientV1 creates a new client for Qase API v1
 func NewClientV1(token, host string) *ClientV1 {
 	return &ClientV1{
-		token: token,
-		host:  host,
+		token:   token,
+		host:    host,
+		uploads: make(chan struct{}, maxConcurrentAttachmentUploads),
 	}
 }
 
@@ -384,6 +388,8 @@ func (c *ClientV1) UploadData(ctx context.Context, project string, runID int64, 
 	logger := slog.With("op", op)
 
 	logger.Debug("uploading data", "project", project, "runID", runID, "results", results)
+
+	c.uploadAttachments(ctx, project, results)
 
 	ctx, client := c.getApiV1Client(ctx)
 
