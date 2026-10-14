@@ -1,0 +1,60 @@
+internal/parsers/xctest/xctest_test.go
+  s_27004921e441d5::t_8768e9156d4586 89
+  s_27004921e441d5::t_bc3f917032060d 11,15,60,107
+internal/parsers/xctest/stepattachments_test.go
+  s_27004921e441d5::t_9cc23172e81af0 108,115
+  s_27004921e441d5::t_076a0fc17f5783 239-283
+  s_27004921e441d5::t_bd35b0eb391cc5 1-96,102-107,109-114,116-238,284-313
+  s_27004921e441d5::t_7a11554f52eab5 97-101
+CHANGELOG.md
+  s_27004921e441d5::t_cd4fbfcc3c628b 5-10,12-18
+  s_27004921e441d5::t_9529c33ad06ba2 11
+internal/parsers/xctest/xcresulttool_test.go
+  s_27004921e441d5::t_bc3f917032060d 47,80,106,124
+internal/client/attachments_test.go
+  s_27004921e441d5::t_7c309121f2e33f 50
+  s_27004921e441d5::t_c08aab16f96b0a 1-49,51-233
+cmd/testops/result/upload/upload.go
+  s_27004921e441d5::t_68c9875b50599f 29,46,78,139
+internal/service/result/batch_test.go
+  s_27004921e441d5::t_7a11554f52eab5 1-81
+docs/command.md
+  s_27004921e441d5::t_cd4fbfcc3c628b 146-153
+internal/parsers/xctest/xctest.go
+  s_27004921e441d5::t_0764a6cf78b131 63,66-83,338,558-561,805
+  s_27004921e441d5::t_076a0fc17f5783 567-569
+  s_27004921e441d5::t_95092994632809 7-10,22,26-27,30-31,37,42-46,48-50,62,562-566,570,574-576,583-646,716,718-725,727-728,806-808
+internal/parsers/xctest/stepattachments.go
+  s_27004921e441d5::t_140eb94b4c2130 1-40
+internal/service/result/result.go
+  s_27004921e441d5::t_8f8b78b98c5705 34-35,170,219-253
+  s_27004921e441d5::t_e2c040fbfc2983 254
+internal/client/attachments.go
+  s_27004921e441d5::t_e77e3e8811ab36 1-122
+internal/client/clientv1.go
+  s_27004921e441d5::t_525eef5e80f019 59-61,67-69,392-393
+internal/client/clientv2.go
+  s_27004921e441d5::t_6bb7f552b40b95 35-36
+internal/client/converterv1.go
+  s_27004921e441d5::t_aec17570819150 83-85,88-89
+internal/models/result/attachment.go
+  s_27004921e441d5::t_ae5edf01f8a9b2 11-12
+internal/parsers/xctest/models.go
+  s_27004921e441d5::t_faaf90d2873d34 155-157
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "68cde64453599e9e059f902ac233ac8988dd5451",
+  "prompts": {},
+  "sessions": {
+    "s_27004921e441d5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "85958363-f6ae-421a-8ca8-e6c031a05a48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
