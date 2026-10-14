@@ -2,19 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [v0.5.2] - 2026-10-14
 
 - fix: upload XCTest step attachments only for failed steps; every step of a failed test was treated as failed, so the
   screenshot and debug files of each passed step were uploaded too. The new `--step-attachments` option (`failed`,
-  `all`, `none`) controls this
+  `all`, `none`) controls this ([#103](https://github.com/qase-tms/qasectl/pull/103))
 - fix: convert XCTest HEIC screenshots to JPEG instead of only renaming them, so they open in the browser
+  ([#103](https://github.com/qase-tms/qasectl/pull/103))
 - fix: stop uploading the `Qase config` attachment that links an XCTest to a test case as a result attachment
+  ([#103](https://github.com/qase-tms/qasectl/pull/103))
 - fix: give XCTest text attachments such as `App UI hierarchy for com.example` a `.txt` extension so they get a text
-  MIME type
+  MIME type ([#103](https://github.com/qase-tms/qasectl/pull/103))
 - fix: split result batches so a request stays under the Qase API limit of 50,000 steps instead of failing with
   `413 Request Entity Too Large` after the attachments were uploaded
+  ([#103](https://github.com/qase-tms/qasectl/pull/103))
 - perf: upload attachments concurrently (up to 8 at a time) instead of one by one
+  ([#103](https://github.com/qase-tms/qasectl/pull/103))
 - fix: write in-memory attachments to a temporary directory instead of the working directory before uploading them
+  ([#103](https://github.com/qase-tms/qasectl/pull/103))
 
 ## [v0.5.1] - 2026-09-24
 
