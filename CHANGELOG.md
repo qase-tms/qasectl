@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+- fix: upload XCTest step attachments only for failed steps; every step of a failed test was treated as failed, so the
+  screenshot and debug files of each passed step were uploaded too. The new `--step-attachments` option (`failed`,
+  `all`, `none`) controls this
+- fix: convert XCTest HEIC screenshots to JPEG instead of only renaming them, so they open in the browser
+- fix: stop uploading the `Qase config` attachment that links an XCTest to a test case as a result attachment
+- fix: give XCTest text attachments such as `App UI hierarchy for com.example` a `.txt` extension so they get a text
+  MIME type
+- fix: split result batches so a request stays under the Qase API limit of 50,000 steps instead of failing with
+  `413 Request Entity Too Large` after the attachments were uploaded
+- perf: upload attachments concurrently (up to 8 at a time) instead of one by one
+- fix: write in-memory attachments to a temporary directory instead of the working directory before uploading them
+
 ## [v0.5.1] - 2026-09-24
 
 - perf: pass `--legacy` to `xcresulttool` up front once a retry has shown it is needed, instead of paying for a

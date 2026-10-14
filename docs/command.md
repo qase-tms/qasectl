@@ -143,8 +143,14 @@ The `upload` command has the following options:
 - `--description`, `-d`: The description of the test results. Optional.
 - `--format`: The format of the test results file. Required. Allow values: `junit`, `qase`, `allure`, `xctest`.
 - `--path`: The path to the test results file or folder. Required.
-- `--steps`: The mode of upload steps for XCTest. Optional. Allow values: `all`, `user`.
-- `--batch`: The batch number of the test results. Optional. Default is 200.
+- `--steps`: The mode of upload steps for XCTest. Optional. Allow values: `all`, `user`. `user` keeps only the steps
+  written in the test code and drops the internal steps XCUITest records for every action, which makes large UI test
+  runs much smaller.
+- `--step-attachments`: Which XCTest steps keep their attachments. Optional. Allow values: `failed`, `all`, `none`.
+  Default is `failed`. XCUITest takes a screenshot and records several debug files for every action, so `all` can
+  add thousands of files to a run. The attachments of the failure itself are always uploaded.
+- `--batch`: The batch number of the test results. Optional. Default is 200. A batch is also split when its results
+  hold more than 50,000 steps in total, nested steps included: the Qase API rejects a larger request.
 - `--suite`, `-s`: The suite name of the test results. Optional.
 - `--replace-statuses`, `-r`: The statuses to replace. Optional. Pass like '{\"Passed\": \"Failed\"}' to replace all passed results with failed. Note: Use slugs of statuses.
 - `--skip-params`: Skip parameters for the results. Optional.

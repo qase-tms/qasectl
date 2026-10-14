@@ -4,9 +4,6 @@ import (
 	"context"
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
 	models "github.com/qase-tms/qasectl/internal/models/result"
-	"log/slog"
-	"os"
-	"path/filepath"
 )
 
 func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode string, result models.Result) apiV1Client.ResultCreate {
@@ -83,67 +80,17 @@ func (c *ClientV1) convertResultToApiModel(ctx context.Context, projectCode stri
 	return model
 }
 
-func (c *ClientV1) convertAttachments(ctx context.Context, projectCode string, attachments []models.Attachment) []string {
-	const op = "client.converterv1.convertattachments"
-	logger := slog.With("op", op)
-
+// convertAttachments returns the hashes of attachments already sent by uploadAttachments;
+// attachments that failed to upload are left out.
+func (c *ClientV1) convertAttachments(_ context.Context, _ string, attachments []models.Attachment) []string {
 	results := make([]string, 0, len(attachments))
-
 	for _, attachment := range attachments {
-		rmAttach := false
-		if attachment.FilePath == nil {
-			path, err := os.Getwd()
-			if err != nil {
-				logger.Warn("cannot get executable path", "error", err)
-			}
-
-			fp := filepath.Join(path, attachment.Name)
-			err = os.WriteFile(fp, *attachment.Content, 0644)
-			if err != nil {
-				logger.Warn("cannot write file", "error", err)
-			}
-
-			attachment.FilePath = &fp
-
-			rmAttach = true
-		}
-
-		file, err := os.Open(*attachment.FilePath)
-		if err != nil {
-			logger.Warn("failed to open file", "error", err)
-			if rmAttach {
-				removeFile(*attachment.FilePath)
-			}
-			continue
-		}
-		defer func() { _ = file.Close() }()
-
-		hash, err := c.uploadAttachment(ctx, projectCode, []*os.File{file})
-		if err != nil {
-			logger.Warn("failed to upload attachment", "error", err)
-			if rmAttach {
-				removeFile(*attachment.FilePath)
-			}
-			continue
-		}
-
-		results = append(results, hash)
-
-		if rmAttach {
-			removeFile(*attachment.FilePath)
+		if attachment.Hash != nil {
+			results = append(results, *attachment.Hash)
 		}
 	}
 
 	return results
-}
-
-func removeFile(path string) {
-	const op = "client.converterv1.removefile"
-	logger := slog.With("op", op)
-	err := os.Remove(path)
-	if err != nil {
-		logger.Warn("cannot remove file", "error", err)
-	}
 }
 
 func (c *ClientV1) convertStepToApiModel(ctx context.Context, projectCode string, steps []models.Step) []apiV1Client.TestStepResultCreate {

@@ -8,4 +8,6 @@ type Attachment struct {
 	FilePath    *string    `json:"file_path"`
 	ContentType string     `json:"mime_type"`
 	Content     *[]byte    `json:"content"`
+	// Hash is set once the attachment is uploaded to Qase.
+	Hash *string `json:"-"`
 }

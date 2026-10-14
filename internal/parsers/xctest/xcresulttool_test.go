@@ -44,7 +44,7 @@ func stubXcrun(t *testing.T, p *Parser, body string) func() []string {
 // TestParser_xcresulttool_RemembersLegacyFlag verifies that only the first call pays for
 // the invocation xcresulttool rejects without --legacy.
 func TestParser_xcresulttool_RemembersLegacyFlag(t *testing.T) {
-	p, err := NewParser("test.xcresult", "")
+	p, err := NewParser("test.xcresult", "", "")
 	if err != nil {
 		t.Fatalf("Failed to create parser: %v", err)
 	}
@@ -77,7 +77,7 @@ func TestParser_xcresulttool_RemembersLegacyFlag(t *testing.T) {
 // TestParser_xcresulttool_OmitsLegacyWhenNotRequired verifies that an xcresulttool which
 // accepts plain calls (Xcode 15 and earlier) never receives --legacy.
 func TestParser_xcresulttool_OmitsLegacyWhenNotRequired(t *testing.T) {
-	p, err := NewParser("test.xcresult", "")
+	p, err := NewParser("test.xcresult", "", "")
 	if err != nil {
 		t.Fatalf("Failed to create parser: %v", err)
 	}
@@ -103,7 +103,7 @@ func TestParser_xcresulttool_OmitsLegacyWhenNotRequired(t *testing.T) {
 // TestParser_xcresulttool_DoesNotRetryOtherFailures verifies that only exit status 64
 // triggers the --legacy retry.
 func TestParser_xcresulttool_DoesNotRetryOtherFailures(t *testing.T) {
-	p, err := NewParser("test.xcresult", "")
+	p, err := NewParser("test.xcresult", "", "")
 	if err != nil {
 		t.Fatalf("Failed to create parser: %v", err)
 	}
@@ -121,7 +121,7 @@ func TestParser_xcresulttool_DoesNotRetryOtherFailures(t *testing.T) {
 // TestParser_xcresulttool_ErrorIncludesStderr verifies that a failed --legacy retry reports
 // xcresulttool's message rather than a bare exit status, and is not remembered.
 func TestParser_xcresulttool_ErrorIncludesStderr(t *testing.T) {
-	p, err := NewParser("test.xcresult", "")
+	p, err := NewParser("test.xcresult", "", "")
 	if err != nil {
 		t.Fatalf("Failed to create parser: %v", err)
 	}

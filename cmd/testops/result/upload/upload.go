@@ -26,6 +26,7 @@ const (
 	statusFlag               = "replace-statuses"
 	skipParamsFlag           = "skip-params"
 	attachmentExtensionsFlag = "attachment-extensions"
+	stepAttachmentsFlag      = "step-attachments"
 )
 
 // Command returns a new cobra command for upload
@@ -42,6 +43,7 @@ func Command() *cobra.Command {
 		status               string
 		skipParams           bool
 		attachmentExtensions string
+		stepAttachments      string
 	)
 
 	cmd := &cobra.Command{
@@ -73,7 +75,7 @@ func Command() *cobra.Command {
 			case "allure":
 				p = allure.NewParser(path)
 			case "xctest":
-				prs, err := xctest.NewParser(path, steps)
+				prs, err := xctest.NewParser(path, steps, stepAttachments)
 				if err != nil {
 					return err
 				}
@@ -134,6 +136,7 @@ func Command() *cobra.Command {
 	cmd.Flags().StringVarP(&suite, "suite", "s", "", "Root suite for the results")
 	cmd.Flags().StringVar(&status, statusFlag, "", "Replace statuses of the results. Pass '{\"Passed\": \"Failed\"}' to replace all passed results with failed")
 	cmd.Flags().BoolVar(&skipParams, skipParamsFlag, false, "Skip parameters for the results")
+	cmd.Flags().StringVar(&stepAttachments, stepAttachmentsFlag, "failed", "Steps whose attachments are uploaded in XCTest. Allowed values: failed, all, none")
 	cmd.Flags().StringVar(&attachmentExtensions, attachmentExtensionsFlag, "", "Comma-separated list of file extensions to filter attachments. If not specified, all attachments will be uploaded")
 
 	return cmd

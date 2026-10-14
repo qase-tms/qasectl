@@ -31,6 +31,8 @@ type runService interface {
 const (
 	// MaxWorkerCount is the maximum number of workers
 	MaxWorkerCount = 5
+	// MaxStepsPerRequest is the Qase API limit on steps in one bulk request, nested steps included.
+	MaxStepsPerRequest = 50000
 )
 
 // Service is a service for importing data
@@ -165,16 +167,7 @@ func applyResultTransforms(p UploadParams, results []models.Result) {
 }
 
 func (s *Service) uploadResults(ctx context.Context, project string, batchSize, runID int64, results []models.Result) error {
-	batchCount := (int64(len(results)) + batchSize - 1) / batchSize
-	batches := make([][]models.Result, 0, batchCount)
-
-	for i := int64(0); i < int64(len(results)); i += batchSize {
-		end := i + batchSize
-		if end > int64(len(results)) {
-			end = int64(len(results))
-		}
-		batches = append(batches, results[i:end])
-	}
+	batches := splitBatches(results, batchSize, MaxStepsPerRequest)
 
 	g, ctx := errgroup.WithContext(ctx)
 
@@ -221,6 +214,42 @@ func (s *Service) uploadResults(ctx context.Context, project string, batchSize, 
 	}
 
 	return nil
+}
+
+// splitBatches cuts results into batches of at most batchSize results and maxSteps steps.
+// A single result above maxSteps still goes alone, and the API rejects it.
+func splitBatches(results []models.Result, batchSize int64, maxSteps int) [][]models.Result {
+	var batches [][]models.Result
+	start, steps := 0, 0
+
+	for i := range results {
+		n := countSteps(results[i].Steps)
+		if n > maxSteps {
+			slog.Warn("result has more steps than one request may carry", "title", results[i].Title, "steps", n, "limit", maxSteps)
+		}
+
+		size := int64(i - start)
+		if size > 0 && (size >= batchSize || steps+n > maxSteps) {
+			batches = append(batches, results[start:i])
+			start, steps = i, 0
+		}
+		steps += n
+	}
+
+	if start < len(results) {
+		batches = append(batches, results[start:])
+	}
+
+	return batches
+}
+
+func countSteps(steps []models.Step) int {
+	n := len(steps)
+	for i := range steps {
+		n += countSteps(steps[i].Steps)
+	}
+
+	return n
 }
 
 // filterAttachments filters attachments based on file extensions
