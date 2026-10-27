@@ -1,0 +1,65 @@
+test/integration/generators/junit-pytest/tests/test_checkout.py
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-34
+test/integration/testdata/junit/jest/expected.json
+  s_ee1c14af4af76e::t_21b9faa0280efa 1-103
+test/integration/testdata/junit/maven/expected.json
+  s_ee1c14af4af76e::t_21b9faa0280efa 1-117
+.gitignore
+  s_ee1c14af4af76e::t_09c990220fa2bf 23-28
+test/integration/generators/junit-pytest/requirements.txt
+  s_ee1c14af4af76e::t_09c990220fa2bf 1
+test/integration/testdata/junit/jest/input/junit.xml
+  s_ee1c14af4af76e::t_09c990220fa2bf 1,4-30
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 2-3
+test/integration/generators/junit-pytest/generate.sh
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-14,20-21
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 15-19
+test/integration/generators/junit-maven/src/test/java/com/example/CartTest.java
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-25
+test/integration/upload_test.go
+  s_ee1c14af4af76e::t_21b9faa0280efa 1-28
+test/integration/testdata/junit/maven/input/TEST-com.example.PaymentTest.xml
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 2-3
+  s_ee1c14af4af76e::t_09c990220fa2bf 1,4
+test/integration/testdata/junit/pytest/input/report.xml
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 1-7,12-17,19,23-59,61
+  s_ee1c14af4af76e::t_09c990220fa2bf 8-11,18,20-22,60
+test/integration/generators/junit-jest/cart.test.js
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-15
+test/integration/generators/junit-jest/generate.sh
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-14
+test/integration/generators/junit-maven/pom.xml
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-35
+test/integration/testdata/junit/pytest/expected.json
+  s_ee1c14af4af76e::t_21b9faa0280efa 1-384
+test/integration/testdata/junit/maven/input/TEST-com.example.CartTest.xml
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 19
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-18,20
+test/integration/generators/junit-jest/jest.config.js
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-4
+test/integration/generators/junit-maven/src/test/java/com/example/PaymentTest.java
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-13
+test/integration/generators/junit-jest/package.json
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-9
+test/integration/generators/junit-maven/generate.sh
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 14-18
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-13,19
+test/integration/generators/junit-jest/package-lock.json
+  s_ee1c14af4af76e::t_c2d6701eb43e29 1-3713
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bfc35f18005f12020799b04df62849fe6f7ea485",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
