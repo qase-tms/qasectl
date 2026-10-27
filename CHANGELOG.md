@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+- fix: take the Allure result suite from the `suite` label even when a `package` label follows it; the `package` label
+  is now used only when there is no `suite` ([#108](https://github.com/qase-tms/qasectl/pull/108))
+- fix: send the Allure `thread` label as the result thread; it was never set
+  ([#108](https://github.com/qase-tms/qasectl/pull/108))
+
 ## [v0.6.0] - 2026-10-27
 
 - feat: add the `maestro` format to `testops result upload`; it reads the debug output of a Maestro 2.x run and
