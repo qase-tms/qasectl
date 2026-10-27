@@ -1,0 +1,45 @@
+test/integration/testdata/allure/pytest/input/ec963556-be83-4315-8345-9e30554f260b-attachment.txt
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/upload_test.go
+  s_ee1c14af4af76e::t_6eae30ab081aad 18
+test/integration/testdata/allure/pytest/expected.json
+  s_ee1c14af4af76e::t_3f52bb42df1e79 1-368
+test/integration/testdata/allure/pytest/input/347dbd9e-cb42-4c6c-b035-e8075f0e0bab-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/generators/allure-pytest/requirements.txt
+  s_ee1c14af4af76e::t_f285deae89cc7b 1-2
+test/integration/generators/allure-pytest/tests/test_profile.py
+  s_ee1c14af4af76e::t_f285deae89cc7b 1-45
+test/integration/testdata/allure/pytest/input/73f9d0ff-2936-449b-bf9c-3c0a7b5b5080-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/testdata/allure/pytest/input/74bb961f-48a9-4a7c-a1d5-9bd089d9fd46-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/testdata/allure/pytest/input/c7511499-aa6f-4bf9-8422-9c623fdbb7fc-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/testdata/allure/pytest/input/7f30e2ba-ad3e-4040-8b16-6a40b7450a44-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/testdata/allure/pytest/input/8cdc5c2b-ebcb-4c4a-8b87-7f1ae4e4f79f-container.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/generators/allure-pytest/generate.sh
+  s_ee1c14af4af76e::t_f285deae89cc7b 1-26
+test/integration/testdata/allure/pytest/input/6f3c4c1f-9a17-43a1-a09b-705d04136ad2-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/testdata/allure/pytest/input/e464cbf6-6c83-4402-85ff-375bb51fa5b2-container.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "27dbe7eb9eeadb940b725c08173d5ae2ca349071",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
