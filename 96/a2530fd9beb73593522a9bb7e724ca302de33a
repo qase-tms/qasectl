@@ -1,0 +1,21 @@
+internal/models/result/signature_test.go
+  s_ee1c14af4af76e::t_bf337f5adc33fe 1-52
+internal/models/result/signature.go
+  s_ee1c14af4af76e::t_bf337f5adc33fe 1-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "96a2530fd9beb73593522a9bb7e724ca302de33a",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
