@@ -1,0 +1,27 @@
+test/integration/generators/.gitignore
+  s_ee1c14af4af76e::t_5d1ed6557841ed 1-4
+Makefile
+  s_ee1c14af4af76e::t_d37b2be8de1e80 45-48
+test/integration/generators/shrink.sh
+  s_ee1c14af4af76e::t_2a46805162ba2a 1-33
+test/integration/generators/generate.sh
+  s_ee1c14af4af76e::t_5d1ed6557841ed 1-74
+test/integration/generators/README.md
+  s_ee1c14af4af76e::t_5d1ed6557841ed 1-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "afb6feef331cd2a82d61d277744791615d8a4c4c",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
