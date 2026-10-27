@@ -1,0 +1,397 @@
+"test/integration/testdata/maestro/run/input/02 - Skip onboarding and land on Explore/logs/maestro.log"
+  s_ee1c14af4af76e::t_b6397dc6072072 1-5
+"test/integration/testdata/maestro/run/input/22 - qase.id with project prefix/logs/maestro.log"
+  s_ee1c14af4af76e::t_c4af9898ef4535 1-5
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-2/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_b58cc762777d4b 1-5
+.gitignore
+  s_ee1c14af4af76e::t_09c990220fa2bf 23-27,29
+  s_ee1c14af4af76e::t_02d61429172784 28
+test/integration/upload_test.go
+  s_ee1c14af4af76e::t_21b9faa0280efa 1-11,13-18,27-33,39-41
+  s_ee1c14af4af76e::t_6d1c815823d7d5 12,20-26,34-38
+  s_ee1c14af4af76e::t_6eae30ab081aad 19
+"test/integration/testdata/maestro/run/input/91 - FAIL - failure inside nested subflow/commands.json"
+  s_ee1c14af4af76e::t_13092c97de345f 1-666
+"test/integration/testdata/maestro/run/input/01 - Launch app and see onboarding/logs/maestro.log"
+  s_ee1c14af4af76e::t_2e7fa02085e933 1-5
+test/integration/testdata/allure/pytest/input/73f9d0ff-2936-449b-bf9c-3c0a7b5b5080-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+"test/integration/testdata/maestro/run/input/20 - qase.id single + suite + custom property/logs/maestro.log"
+  s_ee1c14af4af76e::t_a6dd3a911e8b5a 1-5
+test/integration/generators/junit-jest/jest.config.js
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-4
+test/integration/testdata/junit/maven/input/TEST-com.example.CartTest.xml
+  s_ee1c14af4af76e::t_09c990220fa2bf 1,9-23
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 24
+  s_ee1c14af4af76e::t_105a5c083ebe01 2-8,25
+"test/integration/testdata/maestro/run/input/92 - FAIL - tap on non-existent element/commands.json"
+  s_ee1c14af4af76e::t_d9e529f805621f 1-540
+"test/integration/testdata/maestro/run/input/12 - Conditional, optional and repeated steps/commands.json"
+  s_ee1c14af4af76e::t_11c014d64ab2a4 1-884
+test/integration/generators/generate.sh
+  s_ee1c14af4af76e::t_5d1ed6557841ed 1-74
+test/integration/generators/maestro/.maestro/subflows/nested-level-1.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-10
+"test/integration/testdata/maestro/run/input/03 - Search for an article/manifest.json"
+  s_ee1c14af4af76e::t_7843ea4f313850 1-35
+"test/integration/testdata/maestro/run/input/12 - Conditional, optional and repeated steps/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_ade0b78c518a43 1-5
+"test/integration/testdata/maestro/run/input/21 - qase.id list/manifest.json"
+  s_ee1c14af4af76e::t_aa758e599a72e4 1-22
+test/integration/generators/maestro/.maestro/subflows/nested-level-3.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-10
+"test/integration/testdata/maestro/run/input/11 - Data from JS via runScript output/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_f397c36ae95d68 1-5
+"test/integration/testdata/maestro/run/input/14 - Navigation with varied step durations/commands.json"
+  s_ee1c14af4af76e::t_bafd7ee54b1279 1-737
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-2/logs/maestro.log"
+  s_ee1c14af4af76e::t_b4bc2bcdb26752 1-5
+"test/integration/testdata/maestro/run/input/03 - Search for an article/logs/maestro.log"
+  s_ee1c14af4af76e::t_3f70280af0c6b3 1-5
+test/integration/testdata/maestro/run/input/24-no-name/commands.json
+  s_ee1c14af4af76e::t_9570019e194e46 1-87
+"test/integration/testdata/maestro/run/input/13 - Flaky step recovered by retry/logs/maestro.log"
+  s_ee1c14af4af76e::t_976a68beb9ca2d 1-5
+"test/integration/testdata/maestro/run/input/03 - Search for an article/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_008a0f0b88cb44 1-5
+"test/integration/testdata/maestro/run/input/23 - qase.id with a bad element/logs/maestro.log"
+  s_ee1c14af4af76e::t_e0e8b0c6b6e29b 1-5
+"test/integration/testdata/maestro/run/input/11 - Data from JS via runScript output/manifest.json"
+  s_ee1c14af4af76e::t_3e3e5864ad8966 1-30
+test/integration/testdata/maestro/shards/input/report.xml
+  s_ee1c14af4af76e::t_9c18f108f3a3db 1-17
+test/integration/generators/maestro/.maestro/flows/regression/10-nested-subflows.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-14
+test/integration/generators/maestro/.maestro/flows/qase/24-no-name.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-7
+"test/integration/testdata/maestro/run/input/01 - Launch app and see onboarding/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_a440ec637804ee 1-5
+test/integration/testdata/junit/maven/expected.json
+  s_ee1c14af4af76e::t_21b9faa0280efa 1-16,18-88,90-117
+  s_ee1c14af4af76e::t_105a5c083ebe01 17,89
+"test/integration/testdata/maestro/run/input/91 - FAIL - failure inside nested subflow/manifest.json"
+  s_ee1c14af4af76e::t_bc5f88207b80c6 1-40
+"test/integration/testdata/maestro/run/input/11 - Data from JS via runScript output/commands.json"
+  s_ee1c14af4af76e::t_093ee570d342fe 1-805
+test/integration/generators/junit-jest/package.json
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-9
+test/integration/generators/.gitignore
+  s_ee1c14af4af76e::t_5ac178931a43ed 5
+  s_ee1c14af4af76e::t_5d1ed6557841ed 1-4
+test/integration/generators/maestro/.maestro/flows/negative/90-assert-missing-element.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-18
+"test/integration/testdata/maestro/run/input/02 - Skip onboarding and land on Explore/commands.json"
+  s_ee1c14af4af76e::t_b758abae45ec61 1-703
+test/integration/generators/maestro/.maestro/flows/regression/14-navigation-and-timings.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-41
+"test/integration/testdata/maestro/run/input/14 - Navigation with varied step durations/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_7c3bb17e30ac32 1-5
+test/integration/generators/shrink.sh
+  s_ee1c14af4af76e::t_2a46805162ba2a 1-33
+"test/integration/testdata/maestro/run/input/91 - FAIL - failure inside nested subflow/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_afe8bde6b5868c 1-5
+test/integration/testdata/allure/pytest/input/7f30e2ba-ad3e-4040-8b16-6a40b7450a44-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/testdata/junit/pytest/input/report.xml
+  s_ee1c14af4af76e::t_09c990220fa2bf 8-11,18,20-22,60
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 1-7,12-17,19,23-59,61
+test/integration/testdata/junit/pytest/expected.json
+  s_ee1c14af4af76e::t_21b9faa0280efa 1-384
+test/integration/testdata/junit/jest/input/junit.xml
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 2-3
+  s_ee1c14af4af76e::t_09c990220fa2bf 1,4-30
+test/integration/testdata/allure/pytest/input/8cdc5c2b-ebcb-4c4a-8b87-7f1ae4e4f79f-container.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+"test/integration/testdata/maestro/run/input/93 - FAIL - retry exhausted/commands.json"
+  s_ee1c14af4af76e::t_0923792267fabf 1-731
+"test/integration/testdata/maestro/run/input/12 - Conditional, optional and repeated steps/logs/maestro.log"
+  s_ee1c14af4af76e::t_16476948eac283 1-5
+"test/integration/testdata/maestro/run/input/23 - qase.id with a bad element/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_5f5f4cc0993382 1-5
+test/integration/main_test.go
+  s_ee1c14af4af76e::t_4738e79d0a6c70 34
+  s_ee1c14af4af76e::t_5fd94f7588518d 1-33,35-76
+"test/integration/testdata/maestro/run/input/12 - Conditional, optional and repeated steps/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_8794f860cb6ff4 1-5
+test/integration/testdata/maestro/run/input/maestro.log
+  s_ee1c14af4af76e::t_21ca9ad76ea3d2 1-5
+"test/integration/testdata/maestro/run/input/91 - FAIL - failure inside nested subflow/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_f5c875ea53584f 1-5
+"test/integration/testdata/maestro/run/input/13 - Flaky step recovered by retry/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_9bb914c7273492 1-5
+test/integration/testdata/allure/pytest/expected.json
+  s_ee1c14af4af76e::t_3f52bb42df1e79 1-368
+"test/integration/testdata/maestro/run/input/22 - qase.id with project prefix/commands.json"
+  s_ee1c14af4af76e::t_f5967d97b602ec 1-91
+"test/integration/testdata/maestro/run/input/10 - Nested subflows three levels deep/manifest.json"
+  s_ee1c14af4af76e::t_834f98566d2968 1-30
+"test/integration/testdata/maestro/run/input/11 - Data from JS via runScript output/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_6d9c1f5adf35ef 1-5
+"test/integration/testdata/maestro/run/input/91 - FAIL - failure inside nested subflow/logs/maestro.log"
+  s_ee1c14af4af76e::t_20a71a5c875f22 1-5
+"test/integration/testdata/maestro/run/input/11 - Data from JS via runScript output/logs/maestro.log"
+  s_ee1c14af4af76e::t_c9ed0f47735b8e 1-5
+"test/integration/testdata/maestro/run/input/20 - qase.id single + suite + custom property/manifest.json"
+  s_ee1c14af4af76e::t_d3b078eb209846 1-27
+"test/integration/testdata/maestro/run/input/02 - Skip onboarding and land on Explore/manifest.json"
+  s_ee1c14af4af76e::t_51d991189e65aa 1-35
+test/integration/generators/maestro/setup.sh
+  s_ee1c14af4af76e::t_d149857dbe4ca7 1-11,19-20,23,25-42
+  s_ee1c14af4af76e::t_d7cd84f42f3cf4 14-15
+  s_ee1c14af4af76e::t_c0e6fb68297c66 12-13,17-18,24
+  s_ee1c14af4af76e::t_3cbe65cd7ec445 16,21-22
+"test/integration/testdata/maestro/run/input/10 - Nested subflows three levels deep/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_fb3a6ac6ce0804 1-5
+test/integration/testdata/allure/pytest/input/c7511499-aa6f-4bf9-8422-9c623fdbb7fc-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/generators/maestro/.maestro/flows/regression/12-conditional-and-optional.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-42
+test/integration/testdata/maestro/run/input/24-no-name/logs/maestro.log
+  s_ee1c14af4af76e::t_4eb5849a9a4d92 1-5
+test/integration/testdata/maestro/run/expected-steps-all.json
+  s_89eecbdbcfe170::t_2dcf8b65975612 1-3245
+test/integration/fakeqase_test.go
+  s_ee1c14af4af76e::t_4e7794cf14b75b 1-11,13-18,20-56,58-63,80-145,147-148,150-151,153-158
+  s_ee1c14af4af76e::t_284286819ec034 12
+  s_ee1c14af4af76e::t_8095df6bbf12ac 19,57,64-79,146,149,152
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-2/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_b308e39842168b 1-5
+test/integration/golden_test.go
+  s_ee1c14af4af76e::t_f747c159ba6924 1-60,62-63,68,73-138
+  s_ee1c14af4af76e::t_99a705a136d2fc 61,64-67,69-72
+test/integration/generators/junit-maven/generate.sh
+  s_ee1c14af4af76e::t_2953cfd25f743b 14
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-13,30
+  s_ee1c14af4af76e::t_105a5c083ebe01 16-27
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 15,28-29
+test/integration/generators/maestro/.maestro/scripts/search-term.js
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-12
+"test/integration/testdata/maestro/run/input/12 - Conditional, optional and repeated steps/manifest.json"
+  s_ee1c14af4af76e::t_7bf1af9aaf31f7 1-40
+test/integration/testdata/maestro/shards/input/maestro.log
+  s_ee1c14af4af76e::t_447aa2283c81ce 1-5
+"test/integration/testdata/maestro/run/input/14 - Navigation with varied step durations/manifest.json"
+  s_ee1c14af4af76e::t_3f9ad3771519c2 1-30
+test/integration/generators/maestro/.maestro/flows/excluded/99-work-in-progress.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-8
+test/integration/generators/junit-jest/cart.test.js
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-15
+"test/integration/testdata/maestro/run/input/01 - Launch app and see onboarding/commands.json"
+  s_ee1c14af4af76e::t_2647ddcae2624e 1-183
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-1/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_4656ba5f99aecc 1-5
+test/integration/generators/maestro/.maestro/config.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-16
+test/integration/testdata/maestro/shards/expected.json
+  s_89eecbdbcfe170::t_705249c00d9955 1-173
+"test/integration/testdata/maestro/run/input/90 - FAIL - assert on missing element/logs/maestro.log"
+  s_ee1c14af4af76e::t_5c43a84847540d 1-5
+test/integration/generators/maestro/.maestro/flows/qase/21-qase-id-list.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-9
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-2/manifest.json"
+  s_ee1c14af4af76e::t_58d9f66f2cb8c9 1-30
+"test/integration/testdata/maestro/run/input/03 - Search for an article/commands.json"
+  s_ee1c14af4af76e::t_05359f15d29350 1-817
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-2/commands.json"
+  s_ee1c14af4af76e::t_345940aca1e115 1-183
+test/integration/generators/maestro/.maestro/subflows/failing-inner.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-11
+test/integration/testdata/maestro/run/input/24-no-name/manifest.json
+  s_ee1c14af4af76e::t_e1ebd35f1d4a38 1-22
+test/integration/generators/junit-maven/src/test/java/com/example/CartTest.java
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-25
+"test/integration/testdata/maestro/run/input/14 - Navigation with varied step durations/logs/maestro.log"
+  s_ee1c14af4af76e::t_58830e96b396dc 1-5
+"test/integration/testdata/maestro/run/input/21 - qase.id list/commands.json"
+  s_ee1c14af4af76e::t_eeddfe151fbb13 1-91
+test/integration/generators/maestro/.maestro/subflows/nested-level-2.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-10
+test/integration/generators/junit-pytest/generate.sh
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-14,20-21
+  s_ee1c14af4af76e::t_ac1c2d8d729c5a 15-19
+"test/integration/testdata/maestro/run/input/02 - Skip onboarding and land on Explore/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_e18c3e1ff18850 1-5
+"test/integration/testdata/maestro/run/input/92 - FAIL - tap on non-existent element/logs/maestro.log"
+  s_ee1c14af4af76e::t_e7933524d8d70f 1-5
+"test/integration/testdata/maestro/run/input/13 - Flaky step recovered by retry/manifest.json"
+  s_ee1c14af4af76e::t_a5501b4e499fca 1-40
+test/integration/generators/maestro/.maestro/flows/regression/13-flaky-recovered-by-retry.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-25
+test/integration/generators/maestro/.maestro/flows/negative/92-tap-nonexistent.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-14
+test/integration/generators/maestro/.maestro/flows/qase/20-qase-id-single.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-11
+"test/integration/testdata/maestro/run/input/02 - Skip onboarding and land on Explore/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_4897e80d83ee46 1-5
+test/integration/generators/maestro/.maestro/flows/negative/91-fail-inside-subflow.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-19
+test/integration/testdata/allure/pytest/input/e464cbf6-6c83-4402-85ff-375bb51fa5b2-container.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/generators/maestro/.maestro/subflows/launch-and-skip-onboarding.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-30
+test/integration/testdata/junit/maestro/expected.json
+  s_ee1c14af4af76e::t_dd8be4bf525d35 1-465
+"test/integration/testdata/maestro/run/input/20 - qase.id single + suite + custom property/commands.json"
+  s_ee1c14af4af76e::t_e4cb47faa6fcce 1-117
+Makefile
+  s_ee1c14af4af76e::t_f804cbf611f6a2 41-44
+  s_ee1c14af4af76e::t_d37b2be8de1e80 45-48
+test/integration/generators/maestro/.maestro/flows/qase/22-qase-id-prefix.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-9
+"test/integration/testdata/maestro/run/input/21 - qase.id list/logs/maestro.log"
+  s_ee1c14af4af76e::t_8c7b590e670ad1 1-5
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-1/commands.json"
+  s_ee1c14af4af76e::t_5134944675b092 1-183
+"test/integration/testdata/maestro/run/input/01 - Launch app and see onboarding/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_5260c5527a74d6 1-5
+"test/integration/testdata/maestro/run/input/90 - FAIL - assert on missing element/manifest.json"
+  s_ee1c14af4af76e::t_c446677d54d70a 1-40
+test/integration/testdata/allure/pytest/input/347dbd9e-cb42-4c6c-b035-e8075f0e0bab-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-1/logs/maestro.log"
+  s_ee1c14af4af76e::t_4703dcce9199b0 1-5
+test/integration/generators/maestro/.maestro/flows/qase/23-qase-id-bad.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-9
+test/integration/generators/README.md
+  s_ee1c14af4af76e::t_5d1ed6557841ed 1-14,17-34
+  s_ee1c14af4af76e::t_d4f5c7782f76a4 15-16
+"test/integration/testdata/maestro/run/input/92 - FAIL - tap on non-existent element/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_c3b4b9da6f8630 1-5
+test/integration/generators/junit-maven/pom.xml
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-35
+"test/integration/testdata/maestro/run/input/90 - FAIL - assert on missing element/commands.json"
+  s_ee1c14af4af76e::t_5c90b7b5af044b 1-538
+test/integration/generators/maestro/.maestro/flows/negative/93-retry-exhausted.yaml
+  s_ee1c14af4af76e::t_5ac178931a43ed 1-21
+test/integration/generators/junit-pytest/tests/test_checkout.py
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-34
+test/integration/generators/allure-pytest/tests/test_profile.py
+  s_ee1c14af4af76e::t_f285deae89cc7b 1-45
+test/integration/generators/maestro/.maestro/flows/smoke/02-onboarding-skip.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-17
+"test/integration/testdata/maestro/run/input/90 - FAIL - assert on missing element/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_fc98d6f8dc6dfc 1-5
+"test/integration/testdata/maestro/run/input/93 - FAIL - retry exhausted/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_c3a498558e29f7 1-5
+test/integration/testdata/maestro/run/input/24-no-name/logs/device-xctest.log
+  s_ee1c14af4af76e::t_66a60e312fbe21 1-5
+"test/integration/testdata/maestro/run/input/20 - qase.id single + suite + custom property/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_5688bd1430186c 1-5
+test/integration/generators/maestro/.maestro/flows/regression/11-runscript-output.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-28
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-1/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_f8b10ec7e1d132 1-5
+test/integration/testdata/junit/jest/expected.json
+  s_ee1c14af4af76e::t_21b9faa0280efa 1-103
+test/integration/generators/maestro/.maestro/flows/smoke/01-launch.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-21
+test/integration/testdata/allure/pytest/input/ec963556-be83-4315-8345-9e30554f260b-attachment.txt
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+test/integration/generators/maestro/.maestro/flows/smoke/03-search-article.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-30
+test/integration/testdata/allure/pytest/input/74bb961f-48a9-4a7c-a1d5-9bd089d9fd46-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+"test/integration/testdata/maestro/run/input/22 - qase.id with project prefix/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_0417b42845c21f 1-5
+"test/integration/testdata/maestro/run/input/92 - FAIL - tap on non-existent element/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_6aff6743428eb8 1-5
+"test/integration/testdata/maestro/run/input/23 - qase.id with a bad element/commands.json"
+  s_ee1c14af4af76e::t_736100df3ca045 1-91
+"test/integration/testdata/maestro/run/input/13 - Flaky step recovered by retry/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_ac8097e38a13ed 1-5
+"test/integration/testdata/maestro/run/input/93 - FAIL - retry exhausted/logs/maestro.log"
+  s_ee1c14af4af76e::t_051e74aeacbe94 1-5
+"test/integration/testdata/maestro/run/input/13 - Flaky step recovered by retry/commands.json"
+  s_ee1c14af4af76e::t_d57491f38ddaf2 1-740
+test/integration/generators/junit-jest/generate.sh
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-14
+"test/integration/testdata/maestro/run/input/10 - Nested subflows three levels deep/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_2c08936847c77d 1-5
+"test/integration/testdata/maestro/run/input/93 - FAIL - retry exhausted/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_eefb375cf18da1 1-5
+test/integration/generators/junit-pytest/requirements.txt
+  s_ee1c14af4af76e::t_09c990220fa2bf 1
+"test/integration/testdata/maestro/run/input/14 - Navigation with varied step durations/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_f82f2067ca02fb 1-5
+test/integration/generators/maestro/.maestro/subflows/open-search.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-10
+"test/integration/testdata/maestro/run/input/22 - qase.id with project prefix/manifest.json"
+  s_ee1c14af4af76e::t_0a2b0d0c1863d6 1-22
+"test/integration/testdata/maestro/run/input/21 - qase.id list/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_cb5b588b9c46eb 1-5
+test/integration/generators/junit-jest/package-lock.json
+  s_ee1c14af4af76e::t_c2d6701eb43e29 1-3713
+test/integration/testdata/junit/maestro/input/report.xml
+  s_ee1c14af4af76e::t_f19664868015b0 1-104
+test/integration/generators/allure-pytest/generate.sh
+  s_ee1c14af4af76e::t_f285deae89cc7b 1-26
+test/integration/framework_test.go
+  s_ee1c14af4af76e::t_45ccf9ef65ca02 5,20-25
+  s_ee1c14af4af76e::t_8095df6bbf12ac 80,133,137-149
+  s_ee1c14af4af76e::t_7ede63d5b7d552 1-4,6-7,9-19,26-30,35-79,81-132,134-136
+  s_ee1c14af4af76e::t_99a705a136d2fc 151-186
+  s_ee1c14af4af76e::t_f804cbf611f6a2 8,31-34
+  s_ee1c14af4af76e::t_b6319e61b50a0c 150
+"test/integration/testdata/maestro/run/input/10 - Nested subflows three levels deep/commands.json"
+  s_ee1c14af4af76e::t_ca76f0bca54d52 1-1171
+test/integration/generators/maestro/generate.sh
+  s_ee1c14af4af76e::t_dd32f675e97873 1-22,24-34,44
+  s_ee1c14af4af76e::t_5dbe2d6fce4549 23,35
+  s_ee1c14af4af76e::t_0f3656a28b4985 36-43
+test/integration/generators/junit-maven/src/test/java/com/example/PaymentTest.java
+  s_ee1c14af4af76e::t_09c990220fa2bf 1-13
+"test/integration/testdata/maestro/run/input/93 - FAIL - retry exhausted/manifest.json"
+  s_ee1c14af4af76e::t_f556572a576959 1-40
+"test/integration/testdata/maestro/shards/input/01 - Launch app and see onboarding-shard-1/manifest.json"
+  s_ee1c14af4af76e::t_2e7f90c3c67550 1-30
+"test/integration/testdata/maestro/run/input/90 - FAIL - assert on missing element/logs/device-xctest.log"
+  s_ee1c14af4af76e::t_40089bc05ef763 1-5
+"test/integration/testdata/maestro/run/input/10 - Nested subflows three levels deep/logs/maestro.log"
+  s_ee1c14af4af76e::t_7faf6a42c1a4aa 1-5
+test/integration/testdata/junit/maven/input/TEST-com.example.PaymentTest.xml
+  s_ee1c14af4af76e::t_09c990220fa2bf 1
+  s_ee1c14af4af76e::t_105a5c083ebe01 2-9
+"test/integration/testdata/maestro/run/input/01 - Launch app and see onboarding/manifest.json"
+  s_ee1c14af4af76e::t_51ea9c9edab953 1-30
+test/integration/testdata/maestro/run/expected.json
+  s_89eecbdbcfe170::t_0ac7a40b687234 1-2609
+test/integration/testdata/allure/pytest/input/6f3c4c1f-9a17-43a1-a09b-705d04136ad2-result.json
+  s_ee1c14af4af76e::t_f285deae89cc7b 1
+"test/integration/testdata/maestro/run/input/03 - Search for an article/logs/device-simulator.log"
+  s_ee1c14af4af76e::t_85968f1a796f9c 1-5
+test/integration/testdata/maestro/run/input/report.xml
+  s_ee1c14af4af76e::t_78ed49204390d4 1-104
+"test/integration/testdata/maestro/run/input/23 - qase.id with a bad element/manifest.json"
+  s_ee1c14af4af76e::t_a202bd3fd443db 1-22
+"test/integration/testdata/maestro/run/input/92 - FAIL - tap on non-existent element/manifest.json"
+  s_ee1c14af4af76e::t_f7530c185ea3b7 1-40
+test/integration/generators/allure-pytest/requirements.txt
+  s_ee1c14af4af76e::t_f285deae89cc7b 1-2
+test/integration/generators/maestro/.maestro/subflows/assert-main-screen.yaml
+  s_ee1c14af4af76e::t_ceb0345ea7a082 1-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0a7bd78bfd5595644e1291c9befdbd4e171ab0f0",
+  "prompts": {},
+  "sessions": {
+    "s_89eecbdbcfe170": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "agent-a3f473a105db45fa3",
+        "model": "unknown"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    },
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
