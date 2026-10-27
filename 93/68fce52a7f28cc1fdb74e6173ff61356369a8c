@@ -1,0 +1,27 @@
+internal/parsers/maestro/steps_test.go
+  s_ee1c14af4af76e::t_098d09c2af1961 219
+  s_ee1c14af4af76e::t_8e36fed72bb55d 1-218,220-288
+internal/parsers/maestro/steps.go
+  s_ee1c14af4af76e::t_6e8e234f06f7a6 1-324
+internal/parsers/maestro/maestro.go
+  s_ee1c14af4af76e::t_fdac82843bd960 12,168-175,179-180
+  s_ee1c14af4af76e::t_6eda906e8ddc5c 181
+internal/parsers/maestro/helpers_test.go
+  s_ee1c14af4af76e::t_28d1773547d14c 47-68,98
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9368fce52a7f28cc1fdb74e6173ff61356369a8c",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
