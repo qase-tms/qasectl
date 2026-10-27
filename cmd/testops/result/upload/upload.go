@@ -9,6 +9,7 @@ import (
 	"github.com/qase-tms/qasectl/internal/client"
 	"github.com/qase-tms/qasectl/internal/parsers/allure"
 	"github.com/qase-tms/qasectl/internal/parsers/junit"
+	"github.com/qase-tms/qasectl/internal/parsers/maestro"
 	"github.com/qase-tms/qasectl/internal/parsers/qase"
 	"github.com/qase-tms/qasectl/internal/parsers/xctest"
 	"github.com/qase-tms/qasectl/internal/service/result"
@@ -81,8 +82,10 @@ func Command() *cobra.Command {
 				}
 
 				p = prs
+			case "maestro":
+				p = maestro.NewParser(path, steps)
 			default:
-				return fmt.Errorf("unknown format: %s. allowed formats: junit, qase, allure, xctest", format)
+				return fmt.Errorf("unknown format: %s. allowed formats: junit, qase, allure, xctest, maestro", format)
 			}
 
 			cv1 := client.NewClientV1(token, apiHost)
@@ -119,7 +122,7 @@ func Command() *cobra.Command {
 		slog.Error("Error while marking flag as required", "error", err)
 	}
 
-	cmd.Flags().StringVar(&format, formatFlag, "", "format of the results file: junit, qase, allure, xctest")
+	cmd.Flags().StringVar(&format, formatFlag, "", "format of the results file: junit, qase, allure, xctest, maestro")
 	err = cmd.MarkFlagRequired(formatFlag)
 	if err != nil {
 		slog.Error("Error while marking flag as required", "error", err)
@@ -131,7 +134,7 @@ func Command() *cobra.Command {
 	cmd.MarkFlagsOneRequired(runIDFlag, titleFlag)
 	cmd.MarkFlagsMutuallyExclusive(runIDFlag, titleFlag)
 
-	cmd.Flags().StringVar(&steps, "steps", "", "Steps show mode in XCTest. Allowed values: all, user")
+	cmd.Flags().StringVar(&steps, "steps", "", "Steps show mode in XCTest and Maestro. Allowed values: all, user")
 	cmd.Flags().Int64VarP(&batch, "batch", "b", 200, "Batch size for uploading results")
 	cmd.Flags().StringVarP(&suite, "suite", "s", "", "Root suite for the results")
 	cmd.Flags().StringVar(&status, statusFlag, "", "Replace statuses of the results. Pass '{\"Passed\": \"Failed\"}' to replace all passed results with failed")

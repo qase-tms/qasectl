@@ -141,11 +141,12 @@ The `upload` command has the following options:
 - `--id`: The ID of the test run to upload results for. Required if title doesn't set.
 - `--title`: The title of the test results. Required if id doesn't set.
 - `--description`, `-d`: The description of the test results. Optional.
-- `--format`: The format of the test results file. Required. Allow values: `junit`, `qase`, `allure`, `xctest`.
-- `--path`: The path to the test results file or folder. Required.
-- `--steps`: The mode of upload steps for XCTest. Optional. Allow values: `all`, `user`. `user` keeps only the steps
+- `--format`: The format of the test results file. Required. Allow values: `junit`, `qase`, `allure`, `xctest`, `maestro`.
+- `--path`: The path to the test results file or folder. Required. For `maestro` it is the folder of one run.
+- `--steps`: The mode of upload steps for XCTest and Maestro. Optional. Allow values: `all`, `user`. `user` keeps only the steps
   written in the test code and drops the internal steps XCUITest records for every action, which makes large UI test
-  runs much smaller.
+  runs much smaller. For Maestro, `all` also shows the service commands (`defineVariables`, `applyConfiguration`),
+  while `user` (default) hides them.
 - `--step-attachments`: Which XCTest steps keep their attachments. Optional. Allow values: `failed`, `all`, `none`.
   Default is `failed`. XCUITest takes a screenshot and records several debug files for every action, so `all` can
   add thousands of files to a run. The attachments of the failure itself are always uploaded.
@@ -193,6 +194,48 @@ with the code `PROJ`:
 ```bash
 qasectl testops result upload --project PROJ --token <token> --id 1 --format allure --path /path/to/allure-results --attachment-extensions "png,jpg" --verbose
 ```
+
+## Maestro
+
+The `maestro` format reads the debug output of a Maestro 2.x run; Maestro 1.x is not supported. Run the flows with
+the debug output and the JUnit report in one folder:
+
+```bash
+maestro test --debug-output <run-dir> --flatten-debug-output --format junit --output <run-dir>/report.xml <flows>
+qasectl testops result upload --project PROJ --token <token> --id 1 --format maestro --path <run-dir> --verbose
+```
+
+`--path` is the folder of ONE run. If it holds several runs, the command fails with an error. Without the JUnit
+report the device names are not set. The report is searched only inside `--path`, so pass the run folder (not a
+single flow folder) to get the `device` parameter.
+
+Each flow becomes one test result, and its commands become steps. Set the Qase attributes in the flow `properties`.
+Maestro accepts only string values, so several IDs are a comma-separated string:
+
+```yaml
+appId: com.example.app
+name: Search products
+tags:
+  - smoke
+properties:
+  qase.id: "123, 456"
+  qase.suite: "Search.Smoke"
+  team: mobile
+---
+- launchApp
+```
+
+- `qase.id`: the IDs of the Qase test cases the result belongs to. The `PRJ-123` form is accepted too (the number
+  after the last `-` is used). Elements that cannot be parsed are skipped with a warning.
+- `qase.suite`: the suite of the test case. Levels are separated by a dot.
+- Any other key becomes a result field with the same name; `qase.*` keys are not sent as fields. The flow `tags` are written to the `tags` field.
+- A retried command is shown as `Attempt N` steps. The result gets the `is_flaky` field only when the flow finally
+  passes after a failed retry attempt.
+- With shards, the shard number is written as the thread `shard-N`. The device name is written to the `device`
+  parameter; `--skip-params` drops it.
+- Screenshots are attached to the steps they were taken on.
+- `maestro.log` and the device logs are attached only to failed results. Files over 32 MB are gzipped; a file that is
+  still over 32 MB after gzip is skipped with a warning. `--attachment-extensions` matches the gzipped log as `gz`.
 
 # Create an environment
 
