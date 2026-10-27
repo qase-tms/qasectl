@@ -220,20 +220,35 @@ tags:
 properties:
   qase.id: "123, 456"
   qase.suite: "Search.Smoke"
-  team: mobile
+  severity: critical
 ---
 - launchApp
 ```
 
 - `qase.id`: the IDs of the Qase test cases the result belongs to. The `PRJ-123` form is accepted too (the number
-  after the last `-` is used). Elements that cannot be parsed are skipped with a warning.
+  after the last `-` is used). Elements that cannot be parsed are skipped with a warning. With several IDs, Qase
+  records a result for each case.
 - `qase.suite`: the suite of the test case. Levels are separated by a dot.
-- Any other key becomes a result field with the same name; `qase.*` keys are not sent as fields. The flow `tags` are written to the `tags` field.
-- A retried command is shown as `Attempt N` steps. The result gets the `is_flaky` field only when the flow finally
-  passes after a failed retry attempt.
-- With shards, the shard number is written as the thread `shard-N`. The device name is written to the `device`
-  parameter; `--skip-params` drops it.
-- Screenshots are attached to the steps they were taken on.
+- Any other key becomes a result field with the same name; Qase applies it only if the project has a system or custom
+  field with that name. `qase.*` keys are not sent as fields. The flow `tags` become the tags of the test case.
+
+Without `qase.id`, Qase matches the result to a test case by its signature: `qase.suite`, the flow file name, the flow
+name and the `device` parameter. Renaming the flow or running it on another device creates a new test case.
+
+How a flow is reported:
+
+- The result title is the flow `name`, or the flow file name when `name` is not set.
+- Steps keep the nesting of `runFlow`, so a failure inside a subflow is shown on the step where it happened, and its
+  error becomes the result message.
+- A retried command is shown as `Attempt N` steps, a repeated one as `Iteration N` steps. The result gets the
+  `is_flaky` field only when the flow finally passes after a failed retry attempt.
+- A failed `optional: true` command is a passed step with the comment `Optional command failed`.
+- A flow that did not finish (Maestro or the device stopped mid-run) is failed with the message `Flow did not finish`.
+  A flow with an empty or broken `commands.json` is skipped with a warning.
+- With several shards, the shard number is written as the thread `shard-N`. The device name from the JUnit report is
+  written to the `device` parameter; `--skip-params` drops it.
+- Screenshots Maestro takes on failure and with `takeScreenshot` are attached to their steps. Screen hierarchy dumps
+  are not uploaded.
 - `maestro.log` and the device logs are attached only to failed results. Files over 32 MB are gzipped; a file that is
   still over 32 MB after gzip is skipped with a warning. `--attachment-extensions` matches the gzipped log as `gz`.
 
