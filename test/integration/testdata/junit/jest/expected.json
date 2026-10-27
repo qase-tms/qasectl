@@ -1,0 +1,103 @@
+[
+  {
+    "body": {
+      "is_autotest": true,
+      "title": "Integration"
+    },
+    "method": "POST",
+    "path": "/v1/run/TEST"
+  },
+  {
+    "body": {
+      "results": [
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 1,
+            "status": "passed"
+          },
+          "fields": {},
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "jest tests"
+                },
+                {
+                  "title": "Cart"
+                }
+              ]
+            }
+          },
+          "signature": "jest tests::Cart::Cart Totals adds item prices::Cart Totals adds item prices",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "Cart Totals adds item prices"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 1,
+            "stacktrace": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 80\nReceived: 90\n    at Object.toBe (/workspace/test/integration/generators/junit-jest/cart.test.js:8:24)\n    at Promise.then.completed (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/utils.js:298:28)\n    at new Promise (<anonymous>)\n    at callAsyncCircusFn (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/utils.js:231:10)\n    at _callCircusTest (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:316:40)\n    at _runTest (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:252:3)\n    at _runTestsForDescribeBlock (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:126:9)\n    at _runTestsForDescribeBlock (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:121:9)\n    at _runTestsForDescribeBlock (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:121:9)\n    at run (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:71:3)\n    at runAndTransformResultsToJestFormat (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)\n    at jestAdapter (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)\n    at runTestInternal (/workspace/test/integration/generators/junit-jest/node_modules/jest-runner/build/runTest.js:367:16)\n    at runTest (/workspace/test/integration/generators/junit-jest/node_modules/jest-runner/build/runTest.js:444:34)",
+            "status": "failed"
+          },
+          "fields": {},
+          "message": "",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "jest tests"
+                },
+                {
+                  "title": "Cart"
+                }
+              ]
+            }
+          },
+          "signature": "jest tests::Cart::Cart Totals applies discount::Cart Totals applies discount",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "Cart Totals applies discount"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "status": "skipped"
+          },
+          "fields": {},
+          "message": "",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "jest tests"
+                },
+                {
+                  "title": "Cart"
+                }
+              ]
+            }
+          },
+          "signature": "jest tests::Cart::Cart Totals rounds to cents::Cart Totals rounds to cents",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "Cart Totals rounds to cents"
+        }
+      ]
+    },
+    "method": "POST",
+    "path": "/v2/TEST/run/1/results"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/run/TEST/1/complete"
+  }
+]

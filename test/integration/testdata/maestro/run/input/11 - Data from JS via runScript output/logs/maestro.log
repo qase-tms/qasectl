@@ -1,0 +1,5 @@
+15:06:56.674 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Define variables RUNNING
+15:06:56.677 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Define variables COMPLETED
+15:06:56.677 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Apply configuration RUNNING
+15:06:56.677 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Apply configuration COMPLETED
+15:06:56.677 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Build a search query in JS RUNNING

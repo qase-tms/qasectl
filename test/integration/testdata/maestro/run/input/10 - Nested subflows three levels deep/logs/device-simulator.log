@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:06:22.324141+0300  localhost backboardd[2290]: (QuartzCore) [com.apple.coreanimation:Utilities] IQCollectable client message err=0x10000004 : (ipc/send) timed out
+2026-10-27 15:06:22.358844+0300  localhost SpringBoard[2269]: (PaperBoardUI) [com.apple.PaperBoardUI:Snapshot] [lock]	Snapshot attempt failed because preconditions failed:
+2026-10-27 15:06:22.358878+0300  localhost SpringBoard[2269]: (PaperBoardUI) [com.apple.PaperBoardUI:Snapshot] [lock]	--> 'Lock variant needs to be fully locked ((null)/(null))'

@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:04:17.627648+0300  localhost log[37937]: (LoggingSupport) Sending stream request to diagnosticd
+2026-10-27 15:04:17.655678+0300  localhost contactsd[11441]: (TelephonyUtilities) [com.apple.calls.telephonyutilities:Default] Found iPad DefaultAppRelayTelephonySetting == 0
+2026-10-27 15:04:17.661520+0300  localhost biomed[2282]: (BiomeFoundation) [com.apple.Biome:BiomeAccessService] BMResourceContainerManager received container request for resource: <BMResource: set/App.Shortcut.Entity> with access mode: read-only

@@ -1,0 +1,10 @@
+appId: org.wikimedia.wikipedia
+name: subflow - nested level 1
+---
+- assertVisible:
+    text: "Search Wikipedia"
+    label: "[level 1] main screen is present"
+
+- runFlow:
+    file: nested-level-2.yaml
+    label: "[level 1] descend to level 2"

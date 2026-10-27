@@ -1,0 +1,5 @@
+15:03:35.225 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Define variables RUNNING
+15:03:35.226 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Define variables COMPLETED
+15:03:35.227 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Apply configuration RUNNING
+15:03:35.227 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Apply configuration COMPLETED
+15:03:35.227 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Launch and skip onboarding RUNNING

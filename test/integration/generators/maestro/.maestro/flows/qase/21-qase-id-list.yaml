@@ -1,0 +1,9 @@
+appId: org.wikimedia.wikipedia
+name: "21 - qase.id list"
+tags:
+  - qase
+properties:
+  qase.id: "2, 4"
+  qase.suite: "Maestro.Linking"
+---
+- evalScript: ${output.x = 1}

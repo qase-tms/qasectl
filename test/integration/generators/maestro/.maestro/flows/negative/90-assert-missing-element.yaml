@@ -1,0 +1,18 @@
+appId: org.wikimedia.wikipedia
+name: 90 - FAIL - assert on missing element
+tags:
+  - negative
+  - expected-failure
+---
+# Expected failure: a top-level assertion fails.
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- assertVisible:
+    text: "Button that does not exist"
+    label: Expected assertion failure
+
+- assertVisible:
+    text: "Search Wikipedia"
+    label: Step after the failure - never runs

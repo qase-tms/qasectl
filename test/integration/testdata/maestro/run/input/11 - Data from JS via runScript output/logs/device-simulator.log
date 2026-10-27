@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:06:57.189402+0300  localhost lsd[2329]: (libxpc.dylib) [com.apple.xpc:connection] [0x103a079c0] invalidated because the client process (pid 63218) either cancelled the connection or exited
+2026-10-27 15:06:57.347157+0300  localhost backboardd[2290]: (QuartzCore) [com.apple.coreanimation:Utilities] IQCollectable client message err=0x10000004 : (ipc/send) timed out
+2026-10-27 15:06:57.394615+0300  localhost SpringBoard[2269]: (PaperBoardUI) [com.apple.PaperBoardUI:Snapshot] [lock]	Snapshot attempt failed because preconditions failed:

@@ -20,3 +20,10 @@
 .DS_Store
 
 qasectl
+
+# Fixture generators: local toolchains and raw output
+.venv/
+node_modules/
+target/
+__pycache__/
+!test/integration/**/*.json

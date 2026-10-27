@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:03:35.602385+0300  localhost log[31720]: (LoggingSupport) Sending stream request to diagnosticd
+2026-10-27 15:03:35.764554+0300  localhost launchctl[31730]: [com.apple.xpc.launchctl:All] launchctl list: launchctl list
+2026-10-27 15:03:36.213368+0300  localhost contactsd[11441]: [com.apple.contacts.contactsd:settingsDefaultApps] SettingsDefaultAppsService will perform check.

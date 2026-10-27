@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="iPhone 16 Pro - iOS 18.4 - 135E741D-8D9B-4E28-84C9-B4F31C81CFFA" tests="1" failures="0" time="12.375" timestamp="2026-10-27T15:09:22">
+    <testcase id="01 - Launch app and see onboarding" name="01 - Launch app and see onboarding" classname="01 - Launch app and see onboarding" file=".maestro/flows/smoke/01-launch.yaml" time="12.338" timestamp="2026-10-27T15:09:22" status="SUCCESS">
+      <properties>
+        <property name="tags" value="smoke, ios"/>
+      </properties>
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Suite" device="iPhone 16 - iOS 18.4 - 607CC6EC-0E56-4457-B8AD-EA88129D2EEF" tests="1" failures="0" time="12.97" timestamp="2026-10-27T15:09:24">
+    <testcase id="01 - Launch app and see onboarding" name="01 - Launch app and see onboarding" classname="01 - Launch app and see onboarding" file=".maestro/flows/smoke/01-launch.yaml" time="12.966" timestamp="2026-10-27T15:09:24" status="SUCCESS">
+      <properties>
+        <property name="tags" value="smoke, ios"/>
+      </properties>
+    </testcase>
+  </testsuite>
+</testsuites>

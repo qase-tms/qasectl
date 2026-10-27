@@ -1,0 +1,30 @@
+appId: org.wikimedia.wikipedia
+name: 03 - Search for an article
+tags:
+  - smoke
+  - search
+env:
+  SEARCH_TERM: "Maestro"
+---
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- runFlow:
+    file: ../../subflows/open-search.yaml
+    label: Open search
+
+- inputText: ${SEARCH_TERM}
+
+- extendedWaitUntil:
+    visible: "Maestro (2023 film)"
+    timeout: 20000
+    label: Wait for search results from the network
+
+- takeScreenshot:
+    path: search-results
+    label: Screenshot of the search results
+
+- assertVisible:
+    text: ".*film.*"
+    label: Results contain a film

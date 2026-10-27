@@ -1,0 +1,17 @@
+appId: org.wikimedia.wikipedia
+name: 02 - Skip onboarding and land on Explore
+tags:
+  - smoke
+---
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- runFlow:
+    file: ../../subflows/assert-main-screen.yaml
+    label: Check the main screen
+
+# An explicit screenshot lands in <flow>/takeScreenshot/, not in screenshots/ like failure screenshots.
+- takeScreenshot:
+    path: explore-tab
+    label: Screenshot of the Explore tab

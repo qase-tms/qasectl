@@ -1,0 +1,173 @@
+[
+  {
+    "body": {
+      "is_autotest": true,
+      "start_time": "2026-10-27 12:09:13",
+      "title": "Integration"
+    },
+    "method": "POST",
+    "path": "/v1/run/TEST"
+  },
+  {
+    "body": {
+      "results": [
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 11225,
+            "end_time": 1793102974.3,
+            "start_time": 1793102963.075,
+            "status": "passed",
+            "thread": "shard-1"
+          },
+          "fields": {
+            "tags": "smoke, ios"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "01-launch::01_-_launch_app_and_see_onboarding::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "Launch the app with a clean state"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 8969,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "First onboarding screen is visible"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1748,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Next button is present"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 259,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Skip button is present"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 241,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "01 - Launch app and see onboarding"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 12578,
+            "end_time": 1793102977.242,
+            "start_time": 1793102964.664,
+            "status": "passed",
+            "thread": "shard-2"
+          },
+          "fields": {
+            "tags": "smoke, ios"
+          },
+          "params": {
+            "device": "iPhone 16 - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "01-launch::01_-_launch_app_and_see_onboarding::{'device':'iphone 16 - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "Launch the app with a clean state"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 10307,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "First onboarding screen is visible"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1871,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Next button is present"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 219,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Skip button is present"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 178,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "01 - Launch app and see onboarding"
+        }
+      ]
+    },
+    "method": "POST",
+    "path": "/v2/TEST/run/1/results"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/run/TEST/1/complete"
+  }
+]

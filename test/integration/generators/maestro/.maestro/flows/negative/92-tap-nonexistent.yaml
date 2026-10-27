@@ -1,0 +1,14 @@
+appId: org.wikimedia.wikipedia
+name: 92 - FAIL - tap on non-existent element
+tags:
+  - negative
+  - expected-failure
+---
+# Expected failure of an action rather than an assertion: the error text has a different shape.
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- tapOn:
+    text: "Element that cannot be tapped"
+    label: Expected tap failure

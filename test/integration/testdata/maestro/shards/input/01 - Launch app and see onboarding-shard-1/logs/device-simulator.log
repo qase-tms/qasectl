@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:09:23.934701+0300  localhost log[70605]: (LoggingSupport) Sending stream request to diagnosticd
+2026-10-27 15:09:23.992831+0300  localhost coreidvd[63670]: (Accounts) Created Activity ID: 0x8ae7e2a, Description: accounts/accounts-with-types-sync
+2026-10-27 15:09:24.028651+0300  localhost SpringBoard[2269]: (PaperBoardUI) [com.apple.PaperBoardUI:Snapshot] [lock]	Snapshot attempt failed because preconditions failed:

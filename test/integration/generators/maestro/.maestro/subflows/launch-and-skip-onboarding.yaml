@@ -1,0 +1,30 @@
+appId: org.wikimedia.wikipedia
+name: subflow - launch and skip onboarding
+---
+- launchApp:
+    clearState: true
+    label: Clean app launch
+
+- extendedWaitUntil:
+    visible: "Skip"
+    timeout: 15000
+    label: Wait for the first onboarding screen
+
+- tapOn:
+    text: "Skip"
+    label: Skip onboarding
+
+# The popups rarely appear, so these blocks usually give a nested SKIPPED status.
+- runFlow:
+    when:
+      visible: "Explore your Wikipedia Year in Review"
+    commands:
+      - tapOn: "Done"
+    label: Close the Year in Review popup if it appears
+
+- runFlow:
+    when:
+      visible: "You have been logged out"
+    commands:
+      - tapOn: "Continue without logging in"
+    label: Close the login modal if it appears

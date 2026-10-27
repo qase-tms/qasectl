@@ -1,0 +1,25 @@
+appId: org.wikimedia.wikipedia
+name: 13 - Flaky step recovered by retry
+tags:
+  - regression
+  - flaky
+---
+# The first attempt fails and the second passes, so the flow is PASSED with a FAILED nested command.
+# The counter in output survives retry attempts, which makes the first failure deterministic.
+- evalScript: ${output.attempt = 0}
+
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- retry:
+    maxRetries: 3
+    label: Block with a flaky step
+    commands:
+      - evalScript: ${output.attempt = Number(output.attempt) + 1}
+      - assertTrue: ${output.attempt >= 2}
+      - assertVisible:
+          text: "Search Wikipedia"
+          label: Step after the recovery
+
+- assertTrue: ${output.attempt == 2}

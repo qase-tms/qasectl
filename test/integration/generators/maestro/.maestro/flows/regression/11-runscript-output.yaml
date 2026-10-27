@@ -1,0 +1,28 @@
+appId: org.wikimedia.wikipedia
+name: 11 - Data from JS via runScript output
+tags:
+  - regression
+  - scripting
+---
+- runScript:
+    file: ../../scripts/search-term.js
+    label: Build a search query in JS
+
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- runFlow:
+    file: ../../subflows/open-search.yaml
+    label: Open search
+
+- inputText: ${output.searchTerm}
+
+- extendedWaitUntil:
+    visible: ${output.expectedResult}
+    timeout: 20000
+    label: Wait for the result whose name came from JS
+
+- evalScript: ${output.checkedAt = 'after the assertion'}
+
+- assertTrue: ${output.meta.dataSource == 'runScript'}

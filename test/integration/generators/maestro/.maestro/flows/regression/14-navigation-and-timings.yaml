@@ -1,0 +1,41 @@
+appId: org.wikimedia.wikipedia
+name: 14 - Navigation with varied step durations
+tags:
+  - regression
+  - navigation
+---
+# Step durations range from milliseconds to seconds to exercise timing handling.
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- tapOn:
+    text: "Places"
+    label: Open the Places tab
+
+- waitForAnimationToEnd:
+    timeout: 5000
+
+- tapOn:
+    text: "History"
+    label: Open the History tab
+
+- assertVisible:
+    text: "History"
+    label: History screen is open
+
+- tapOn:
+    text: "Saved"
+    label: Open the Saved tab
+
+- swipe:
+    direction: UP
+    duration: 500
+
+- tapOn:
+    text: "Explore"
+    label: Back to Explore
+
+- assertVisible:
+    text: "Search Wikipedia"
+    label: Back on the main screen

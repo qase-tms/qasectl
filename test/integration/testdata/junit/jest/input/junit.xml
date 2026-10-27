@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="1" errors="0" time="0.15">
+  <testsuite name="Cart" errors="0" failures="1" skipped="1" timestamp="2026-10-27T11:41:06" time="0.12" tests="3">
+    <testcase classname="Cart Totals adds item prices" name="Cart Totals adds item prices" time="0.001">
+    </testcase>
+    <testcase classname="Cart Totals applies discount" name="Cart Totals applies discount" time="0.001">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 80
+Received: 90
+    at Object.toBe (/workspace/test/integration/generators/junit-jest/cart.test.js:8:24)
+    at Promise.then.completed (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:121:9)
+    at run (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/workspace/test/integration/generators/junit-jest/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/workspace/test/integration/generators/junit-jest/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/workspace/test/integration/generators/junit-jest/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Cart Totals rounds to cents" name="Cart Totals rounds to cents" time="0">
+      <skipped/>
+    </testcase>
+  </testsuite>
+</testsuites>

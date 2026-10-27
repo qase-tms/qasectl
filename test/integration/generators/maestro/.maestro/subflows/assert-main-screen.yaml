@@ -1,0 +1,10 @@
+appId: org.wikimedia.wikipedia
+name: subflow - assert main screen
+---
+- assertVisible:
+    text: "Search Wikipedia"
+    label: Search field is present
+
+- assertVisible:
+    text: "Explore"
+    label: Explore tab is present

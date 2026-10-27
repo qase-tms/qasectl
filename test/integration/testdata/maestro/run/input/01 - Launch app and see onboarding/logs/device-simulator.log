@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:04:10.898903+0300  localhost log[35318]: (LoggingSupport) Sending stream request to diagnosticd
+2026-10-27 15:04:10.899122+0300  localhost SpringBoard[2269]: (SpringBoard) [com.apple.SpringBoard:UIController] Begin requiring home screen content for reason 'SBUIHomeScreenActiveContentRequirementReason'
+2026-10-27 15:04:10.899274+0300  localhost SpringBoard[2269]: (SpringBoard) [com.apple.SpringBoard:Transaction] Root transaction complete: <SBRotateScenesWorkspaceTransaction: 0x100ad1b30>

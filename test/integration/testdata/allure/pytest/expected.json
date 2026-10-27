@@ -1,0 +1,368 @@
+[
+  {
+    "body": {
+      "is_autotest": true,
+      "start_time": "2026-10-27 11:45:20",
+      "title": "Integration"
+    },
+    "method": "POST",
+    "path": "/v1/run/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "e5f606a9-2b4d-4530-8ad0-fe7446435d02-attachment.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "ec963556-be83-4315-8345-9e30554f260b-attachment.txt",
+        "size": 15
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "body": {
+      "results": [
+        {
+          "attachments": [
+            "e9238992cb09b07e55ac365db0eaeacc21a1cdb8"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 1,
+            "end_time": 1793101530.628,
+            "start_time": 1793101530.627,
+            "status": "passed"
+          },
+          "fields": {
+            "framework": "pytest",
+            "host": "localhost",
+            "language": "cpython3",
+            "layer": "api",
+            "package": "tests.test_profile",
+            "parentSuite": "tests",
+            "severity": "critical",
+            "suite": "Profile",
+            "thread": "main"
+          },
+          "param_groups": [],
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "tests"
+                },
+                {
+                  "title": "test_profile"
+                }
+              ]
+            }
+          },
+          "steps": [
+            {
+              "data": {
+                "action": "Open profile page"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "Load user data"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Capture page"
+                  },
+                  "execution": {
+                    "attachments": [
+                      "e1a8b7c53305cfa852f75153f82a2a7ab3d0d51b"
+                    ],
+                    "comment": "",
+                    "duration": 1,
+                    "status": "passed"
+                  },
+                  "steps": []
+                }
+              ]
+            }
+          ],
+          "steps_type": "classic",
+          "testops_id": 12,
+          "title": "test_update_profile_passes"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "end_time": 1793101530.645,
+            "stacktrace": "('/workspace/test/integration/generators/allure-pytest/tests/test_profile.py', 38, 'Skipped: two-factor is not supported yet')",
+            "start_time": 1793101530.645,
+            "status": "skipped"
+          },
+          "fields": {
+            "framework": "pytest",
+            "host": "localhost",
+            "language": "cpython3",
+            "package": "tests.test_profile",
+            "parentSuite": "tests",
+            "suite": "Profile",
+            "thread": "main"
+          },
+          "message": "Skipped: two-factor is not supported yet",
+          "param_groups": [],
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "tests"
+                },
+                {
+                  "title": "test_profile"
+                }
+              ]
+            }
+          },
+          "steps": [],
+          "steps_type": "classic",
+          "title": "test_two_factor_skipped"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "end_time": 1793101530.643,
+            "stacktrace": "@allure.suite(\"Profile\")\n    def test_avatar_upload_broken():\n        with allure.step(\"Upload avatar\"):\n>           raise RuntimeError(\"storage backend unavailable\")\nE           RuntimeError: storage backend unavailable\n\ntests/test_profile.py:33: RuntimeError",
+            "start_time": 1793101530.643,
+            "status": "invalid"
+          },
+          "fields": {
+            "framework": "pytest",
+            "host": "localhost",
+            "language": "cpython3",
+            "package": "tests.test_profile",
+            "parentSuite": "tests",
+            "suite": "Profile",
+            "thread": "main"
+          },
+          "message": "RuntimeError: storage backend unavailable",
+          "param_groups": [],
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "tests"
+                },
+                {
+                  "title": "test_profile"
+                }
+              ]
+            }
+          },
+          "steps": [
+            {
+              "data": {
+                "action": "Upload avatar"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "blocked"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "test_avatar_upload_broken"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "end_time": 1793101530.629,
+            "stacktrace": "@allure.suite(\"Profile\")\n    def test_display_name_fails():\n        with allure.step(\"Check display name\"):\n>           assert \"Alice\" == \"Bob\", \"display name must match\"\nE           AssertionError: display name must match\nE           assert 'Alice' == 'Bob'\nE             \nE             - Bob\nE             + Alice\n\ntests/test_profile.py:27: AssertionError",
+            "start_time": 1793101530.629,
+            "status": "failed"
+          },
+          "fields": {
+            "framework": "pytest",
+            "host": "localhost",
+            "language": "cpython3",
+            "package": "tests.test_profile",
+            "parentSuite": "tests",
+            "suite": "Profile",
+            "thread": "main"
+          },
+          "message": "AssertionError: display name must match\nassert 'Alice' == 'Bob'\n  \n  - Bob\n  + Alice",
+          "param_groups": [],
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "tests"
+                },
+                {
+                  "title": "test_profile"
+                }
+              ]
+            }
+          },
+          "steps": [
+            {
+              "data": {
+                "action": "Check display name"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "failed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "test_display_name_fails"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "end_time": 1793101530.646,
+            "start_time": 1793101530.646,
+            "status": "passed"
+          },
+          "fields": {
+            "framework": "pytest",
+            "host": "localhost",
+            "language": "cpython3",
+            "package": "tests.test_profile",
+            "parentSuite": "tests",
+            "suite": "Profile",
+            "thread": "main"
+          },
+          "param_groups": [],
+          "params": {
+            "language": "'en'"
+          },
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "tests"
+                },
+                {
+                  "title": "test_profile"
+                }
+              ]
+            }
+          },
+          "steps": [
+            {
+              "data": {
+                "action": "Switch language"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "test_language_switch[en]"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "end_time": 1793101530.647,
+            "start_time": 1793101530.647,
+            "status": "passed"
+          },
+          "fields": {
+            "framework": "pytest",
+            "host": "localhost",
+            "language": "cpython3",
+            "package": "tests.test_profile",
+            "parentSuite": "tests",
+            "suite": "Profile",
+            "thread": "main"
+          },
+          "param_groups": [],
+          "params": {
+            "language": "'de'"
+          },
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "tests"
+                },
+                {
+                  "title": "test_profile"
+                }
+              ]
+            }
+          },
+          "steps": [
+            {
+              "data": {
+                "action": "Switch language"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "test_language_switch[de]"
+        }
+      ]
+    },
+    "method": "POST",
+    "path": "/v2/TEST/run/1/results"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/run/TEST/1/complete"
+  }
+]

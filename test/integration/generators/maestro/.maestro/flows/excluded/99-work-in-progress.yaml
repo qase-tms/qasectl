@@ -1,0 +1,8 @@
+appId: org.wikimedia.wikipedia
+name: 99 - Work in progress (excluded by tag)
+tags:
+  - wip
+---
+# Never runs: the wip tag is listed in excludeTags in config.yaml.
+- launchApp
+- assertVisible: "This flow never runs"

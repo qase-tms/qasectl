@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="iPhone 16 Pro - iOS 18.4 - 135E741D-8D9B-4E28-84C9-B4F31C81CFFA" tests="17" failures="4" time="278.083" timestamp="2026-10-27T15:03:35">
+    <testcase id="02 - Skip onboarding and land on Explore" name="02 - Skip onboarding and land on Explore" classname="02 - Skip onboarding and land on Explore" file=".maestro/flows/smoke/02-onboarding-skip.yaml" time="15.886" timestamp="2026-10-27T15:03:35" status="SUCCESS">
+      <properties>
+        <property name="tags" value="smoke"/>
+      </properties>
+    </testcase>
+    <testcase id="03 - Search for an article" name="03 - Search for an article" classname="03 - Search for an article" file=".maestro/flows/smoke/03-search-article.yaml" time="19.405" timestamp="2026-10-27T15:03:50" status="SUCCESS">
+      <properties>
+        <property name="tags" value="smoke, search"/>
+      </properties>
+    </testcase>
+    <testcase id="01 - Launch app and see onboarding" name="01 - Launch app and see onboarding" classname="01 - Launch app and see onboarding" file=".maestro/flows/smoke/01-launch.yaml" time="6.894" timestamp="2026-10-27T15:04:10" status="SUCCESS">
+      <properties>
+        <property name="tags" value="smoke, ios"/>
+      </properties>
+    </testcase>
+    <testcase id="91 - FAIL - failure inside nested subflow" name="91 - FAIL - failure inside nested subflow" classname="91 - FAIL - failure inside nested subflow" file=".maestro/flows/negative/91-fail-inside-subflow.yaml" time="32.758" timestamp="2026-10-27T15:04:17" status="ERROR">
+      <properties>
+        <property name="tags" value="negative, expected-failure, nesting"/>
+      </properties>
+      <failure>Assertion is false: "Screen that does not exist in the app" is visible</failure>
+    </testcase>
+    <testcase id="90 - FAIL - assert on missing element" name="90 - FAIL - assert on missing element" classname="90 - FAIL - assert on missing element" file=".maestro/flows/negative/90-assert-missing-element.yaml" time="36.874" timestamp="2026-10-27T15:04:50" status="ERROR">
+      <properties>
+        <property name="tags" value="negative, expected-failure"/>
+      </properties>
+      <failure>Assertion is false: "Button that does not exist" is visible</failure>
+    </testcase>
+    <testcase id="93 - FAIL - retry exhausted" name="93 - FAIL - retry exhausted" classname="93 - FAIL - retry exhausted" file=".maestro/flows/negative/93-retry-exhausted.yaml" time="21.312" timestamp="2026-10-27T15:05:26" status="ERROR">
+      <properties>
+        <property name="tags" value="negative, expected-failure, flaky"/>
+      </properties>
+      <failure>Assertion is false: "Element that never appears" is visible</failure>
+    </testcase>
+    <testcase id="92 - FAIL - tap on non-existent element" name="92 - FAIL - tap on non-existent element" classname="92 - FAIL - tap on non-existent element" file=".maestro/flows/negative/92-tap-nonexistent.yaml" time="33.211" timestamp="2026-10-27T15:05:48" status="ERROR">
+      <properties>
+        <property name="tags" value="negative, expected-failure"/>
+      </properties>
+      <failure>Element not found: Text matching regex: Element that cannot be tapped</failure>
+    </testcase>
+    <testcase id="20 - qase.id single + suite + custom property" name="20 - qase.id single + suite + custom property" classname="20 - qase.id single + suite + custom property" file=".maestro/flows/qase/20-qase-id-single.yaml" time="0.153" timestamp="2026-10-27T15:06:21" status="SUCCESS">
+      <properties>
+        <property name="qase.id" value="1"/>
+        <property name="qase.suite" value="Maestro.Linking"/>
+        <property name="priority" value="high"/>
+        <property name="tags" value="qase"/>
+      </properties>
+    </testcase>
+    <testcase id="22 - qase.id with project prefix" name="22 - qase.id with project prefix" classname="22 - qase.id with project prefix" file=".maestro/flows/qase/22-qase-id-prefix.yaml" time="0.033" timestamp="2026-10-27T15:06:21" status="SUCCESS">
+      <properties>
+        <property name="qase.id" value="PRJ-5"/>
+        <property name="qase.suite" value="Maestro.Linking"/>
+        <property name="tags" value="qase"/>
+      </properties>
+    </testcase>
+    <testcase id="21 - qase.id list" name="21 - qase.id list" classname="21 - qase.id list" file=".maestro/flows/qase/21-qase-id-list.yaml" time="0.029" timestamp="2026-10-27T15:06:21" status="SUCCESS">
+      <properties>
+        <property name="qase.id" value="2, 4"/>
+        <property name="qase.suite" value="Maestro.Linking"/>
+        <property name="tags" value="qase"/>
+      </properties>
+    </testcase>
+    <testcase id="23 - qase.id with a bad element" name="23 - qase.id with a bad element" classname="23 - qase.id with a bad element" file=".maestro/flows/qase/23-qase-id-bad.yaml" time="0.027" timestamp="2026-10-27T15:06:21" status="SUCCESS">
+      <properties>
+        <property name="qase.id" value="1, abc"/>
+        <property name="qase.suite" value="Maestro.Linking"/>
+        <property name="tags" value="qase"/>
+      </properties>
+    </testcase>
+    <testcase id="24-no-name" name="24-no-name" classname="24-no-name" file=".maestro/flows/qase/24-no-name.yaml" time="0.027" timestamp="2026-10-27T15:06:21" status="SUCCESS">
+      <properties>
+        <property name="team" value="mobile"/>
+        <property name="tags" value="qase"/>
+      </properties>
+    </testcase>
+    <testcase id="10 - Nested subflows three levels deep" name="10 - Nested subflows three levels deep" classname="10 - Nested subflows three levels deep" file=".maestro/flows/regression/10-nested-subflows.yaml" time="19.037" timestamp="2026-10-27T15:06:21" status="SUCCESS">
+      <properties>
+        <property name="tags" value="regression, nesting"/>
+      </properties>
+    </testcase>
+    <testcase id="13 - Flaky step recovered by retry" name="13 - Flaky step recovered by retry" classname="13 - Flaky step recovered by retry" file=".maestro/flows/regression/13-flaky-recovered-by-retry.yaml" time="15.923" timestamp="2026-10-27T15:06:40" status="SUCCESS">
+      <properties>
+        <property name="tags" value="regression, flaky"/>
+      </properties>
+    </testcase>
+    <testcase id="11 - Data from JS via runScript output" name="11 - Data from JS via runScript output" classname="11 - Data from JS via runScript output" file=".maestro/flows/regression/11-runscript-output.yaml" time="19.51" timestamp="2026-10-27T15:06:56" status="SUCCESS">
+      <properties>
+        <property name="tags" value="regression, scripting"/>
+      </properties>
+    </testcase>
+    <testcase id="12 - Conditional, optional and repeated steps" name="12 - Conditional, optional and repeated steps" classname="12 - Conditional, optional and repeated steps" file=".maestro/flows/regression/12-conditional-and-optional.yaml" time="30.469" timestamp="2026-10-27T15:07:16" status="SUCCESS">
+      <properties>
+        <property name="tags" value="regression, control-flow"/>
+      </properties>
+    </testcase>
+    <testcase id="14 - Navigation with varied step durations" name="14 - Navigation with varied step durations" classname="14 - Navigation with varied step durations" file=".maestro/flows/regression/14-navigation-and-timings.yaml" time="26.46" timestamp="2026-10-27T15:07:46" status="SUCCESS">
+      <properties>
+        <property name="tags" value="regression, navigation"/>
+      </properties>
+    </testcase>
+  </testsuite>
+</testsuites>

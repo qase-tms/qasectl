@@ -1,0 +1,10 @@
+appId: org.wikimedia.wikipedia
+name: subflow - open search
+---
+- tapOn:
+    text: "Search Wikipedia"
+    label: Open search
+
+- assertVisible:
+    text: "Cancel"
+    label: Search is open - Cancel is visible
