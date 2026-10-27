@@ -153,39 +153,16 @@ func (p *Parser) convertTest(test Test) models.Result {
 		result.Steps = append(result.Steps, p.convertStep(step))
 	}
 
+	var suite, pkg string
 	for _, v := range test.Labels {
-		if v.Value == "thread" {
-			result.Execution.Thread = &v.Value
-		}
-
-		if v.Name == "package" {
-			suites := strings.Split(v.Value, ".")
-			data := make([]models.SuiteData, 0, len(suites))
-
-			for i := range suites {
-				data = append(data, models.SuiteData{Title: suites[i]})
-			}
-
-			result.Relations = models.Relation{
-				Suite: models.Suite{
-					Data: data,
-				},
-			}
-		}
-
-		if v.Name == "suite" {
-			suites := strings.Split(v.Value, ".")
-			data := make([]models.SuiteData, 0, len(suites))
-
-			for i := range suites {
-				data = append(data, models.SuiteData{Title: suites[i]})
-			}
-
-			result.Relations = models.Relation{
-				Suite: models.Suite{
-					Data: data,
-				},
-			}
+		switch v.Name {
+		case "thread":
+			thread := v.Value
+			result.Execution.Thread = &thread
+		case "suite":
+			suite = v.Value
+		case "package":
+			pkg = v.Value
 		}
 
 		// Handle layer field: if value is not in valid list, rename to custom_layer
@@ -197,11 +174,27 @@ func (p *Parser) convertTest(test Test) models.Result {
 		result.Fields[fieldName] = v.Value
 	}
 
+	if suite == "" {
+		suite = pkg
+	}
+	if suite != "" {
+		result.Relations = models.Relation{Suite: models.Suite{Data: suiteData(suite)}}
+	}
+
 	if test.Description != nil {
 		result.Fields["description"] = *test.Description
 	}
 
 	return result
+}
+
+func suiteData(value string) []models.SuiteData {
+	parts := strings.Split(value, ".")
+	data := make([]models.SuiteData, 0, len(parts))
+	for _, part := range parts {
+		data = append(data, models.SuiteData{Title: part})
+	}
+	return data
 }
 
 func (p *Parser) convertStep(step TestStep) models.Step {

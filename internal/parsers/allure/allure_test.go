@@ -265,3 +265,47 @@ func TestParser_convertTest_SuiteOverridesPackage(t *testing.T) {
 		t.Errorf("expected suites %v, got %v", expectedSuites, result.Relations.Suite.Data)
 	}
 }
+
+func TestParser_convertTest_SuiteWinsOverLaterPackage(t *testing.T) {
+	parser := &Parser{}
+
+	test := Test{
+		Name:   "Test",
+		Start:  1000,
+		Stop:   2000,
+		Status: "passed",
+		Labels: []Label{
+			{Name: "suite", Value: "Profile"},
+			{Name: "package", Value: "tests.test_profile"},
+		},
+	}
+
+	result := parser.convertTest(test)
+
+	expectedSuites := []models.SuiteData{{Title: "Profile"}}
+
+	if !reflect.DeepEqual(result.Relations.Suite.Data, expectedSuites) {
+		t.Errorf("expected suites %v, got %v", expectedSuites, result.Relations.Suite.Data)
+	}
+}
+
+func TestParser_convertTest_Thread(t *testing.T) {
+	parser := &Parser{}
+
+	test := Test{
+		Name:   "Test",
+		Start:  1000,
+		Stop:   2000,
+		Status: "passed",
+		Labels: []Label{
+			{Name: "thread", Value: "worker-1"},
+			{Name: "host", Value: "localhost"},
+		},
+	}
+
+	result := parser.convertTest(test)
+
+	if result.Execution.Thread == nil || *result.Execution.Thread != "worker-1" {
+		t.Errorf("expected thread %q, got %v", "worker-1", result.Execution.Thread)
+	}
+}
