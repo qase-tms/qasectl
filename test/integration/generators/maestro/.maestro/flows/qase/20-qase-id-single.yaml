@@ -1,0 +1,11 @@
+appId: org.wikimedia.wikipedia
+name: "20 - qase.id single + suite + custom property"
+tags:
+  - qase
+properties:
+  qase.id: "1"
+  qase.suite: "Maestro.Linking"
+  priority: high
+---
+- evalScript: ${output.x = 1}
+- takeScreenshot: qase-single

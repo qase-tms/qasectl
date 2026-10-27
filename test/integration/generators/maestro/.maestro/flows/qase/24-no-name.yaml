@@ -1,0 +1,7 @@
+appId: org.wikimedia.wikipedia
+tags:
+  - qase
+properties:
+  team: mobile
+---
+- evalScript: ${output.x = 1}

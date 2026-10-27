@@ -1,0 +1,19 @@
+appId: org.wikimedia.wikipedia
+name: 91 - FAIL - failure inside nested subflow
+tags:
+  - negative
+  - expected-failure
+  - nesting
+---
+# Expected failure inside a subflow: only commands.json depth tells where it happened.
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- runFlow:
+    file: ../../subflows/failing-inner.yaml
+    label: Call a subflow that fails inside
+
+- assertVisible:
+    text: "Search Wikipedia"
+    label: Step after the failure - never runs

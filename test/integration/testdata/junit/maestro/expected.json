@@ -1,0 +1,465 @@
+[
+  {
+    "body": {
+      "is_autotest": true,
+      "title": "Integration"
+    },
+    "method": "POST",
+    "path": "/v1/run/TEST"
+  },
+  {
+    "body": {
+      "results": [
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 15886,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "smoke"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::02 - Skip onboarding and land on Explore::02 - Skip onboarding and land on Explore",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "02 - Skip onboarding and land on Explore"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 19405,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "smoke, search"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::03 - Search for an article::03 - Search for an article",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "03 - Search for an article"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 6894,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "smoke, ios"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::01 - Launch app and see onboarding::01 - Launch app and see onboarding",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "01 - Launch app and see onboarding"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 32758,
+            "stacktrace": "Assertion is false: \"Screen that does not exist in the app\" is visible",
+            "status": "failed"
+          },
+          "fields": {
+            "tags": "negative, expected-failure, nesting"
+          },
+          "message": "",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::91 - FAIL - failure inside nested subflow::91 - FAIL - failure inside nested subflow",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "91 - FAIL - failure inside nested subflow"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 36874,
+            "stacktrace": "Assertion is false: \"Button that does not exist\" is visible",
+            "status": "failed"
+          },
+          "fields": {
+            "tags": "negative, expected-failure"
+          },
+          "message": "",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::90 - FAIL - assert on missing element::90 - FAIL - assert on missing element",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "90 - FAIL - assert on missing element"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 21312,
+            "stacktrace": "Assertion is false: \"Element that never appears\" is visible",
+            "status": "failed"
+          },
+          "fields": {
+            "tags": "negative, expected-failure, flaky"
+          },
+          "message": "",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::93 - FAIL - retry exhausted::93 - FAIL - retry exhausted",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "93 - FAIL - retry exhausted"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 33211,
+            "stacktrace": "Element not found: Text matching regex: Element that cannot be tapped",
+            "status": "failed"
+          },
+          "fields": {
+            "tags": "negative, expected-failure"
+          },
+          "message": "",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::92 - FAIL - tap on non-existent element::92 - FAIL - tap on non-existent element",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "92 - FAIL - tap on non-existent element"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 153,
+            "status": "passed"
+          },
+          "fields": {
+            "priority": "high",
+            "qase.id": "1",
+            "qase.suite": "Maestro.Linking",
+            "tags": "qase"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::20 - qase.id single + suite + custom property::20 - qase.id single + suite + custom property",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "20 - qase.id single + suite + custom property"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 33,
+            "status": "passed"
+          },
+          "fields": {
+            "qase.id": "PRJ-5",
+            "qase.suite": "Maestro.Linking",
+            "tags": "qase"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::22 - qase.id with project prefix::22 - qase.id with project prefix",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "22 - qase.id with project prefix"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 29,
+            "status": "passed"
+          },
+          "fields": {
+            "qase.id": "2, 4",
+            "qase.suite": "Maestro.Linking",
+            "tags": "qase"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::21 - qase.id list::21 - qase.id list",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "21 - qase.id list"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 27,
+            "status": "passed"
+          },
+          "fields": {
+            "qase.id": "1, abc",
+            "qase.suite": "Maestro.Linking",
+            "tags": "qase"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::23 - qase.id with a bad element::23 - qase.id with a bad element",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "23 - qase.id with a bad element"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 27,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "qase",
+            "team": "mobile"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::24-no-name::24-no-name",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "24-no-name"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 19037,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, nesting"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::10 - Nested subflows three levels deep::10 - Nested subflows three levels deep",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "10 - Nested subflows three levels deep"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 15923,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, flaky"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::13 - Flaky step recovered by retry::13 - Flaky step recovered by retry",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "13 - Flaky step recovered by retry"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 19510,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, scripting"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::11 - Data from JS via runScript output::11 - Data from JS via runScript output",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "11 - Data from JS via runScript output"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 30469,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, control-flow"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::12 - Conditional, optional and repeated steps::12 - Conditional, optional and repeated steps",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "12 - Conditional, optional and repeated steps"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 26460,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, navigation"
+          },
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Test Suite"
+                }
+              ]
+            }
+          },
+          "signature": "::Test Suite::14 - Navigation with varied step durations::14 - Navigation with varied step durations",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "14 - Navigation with varied step durations"
+        }
+      ]
+    },
+    "method": "POST",
+    "path": "/v2/TEST/run/1/results"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/run/TEST/1/complete"
+  }
+]

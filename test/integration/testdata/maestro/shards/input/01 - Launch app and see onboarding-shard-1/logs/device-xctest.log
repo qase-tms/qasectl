@@ -1,0 +1,5 @@
+2026-10-27 15:09:18.335 xcodebuild[70222:27760893] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+0gn/T/135E741D-8D9B-4E28-84C9-B4F31C81CFFA902378357423014370/maestro-driver-ios-config.xctestrun -destination id=135E741D-8D9B-4E28-84C9-B4F31C81CFFA -derivedDataPath /tmp
+
+202026-10-27 15:09:21.019072+0300 maestro-driver-iosUITests-Runner[70358:27761690] [Default] Running tests...
+2026-10-27 15:09:21.389078+0300 maestro-driver-iosUITests-Runner[70358:27761690] snapshotKeyHonorModalViews configured to value: (null)

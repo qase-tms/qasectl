@@ -1,0 +1,21 @@
+appId: org.wikimedia.wikipedia
+name: 01 - Launch app and see onboarding
+tags:
+  - smoke
+  - ios
+---
+- launchApp:
+    clearState: true
+    label: Launch the app with a clean state
+
+- assertVisible:
+    text: "The free encyclopedia"
+    label: First onboarding screen is visible
+
+- assertVisible:
+    text: "Next"
+    label: Next button is present
+
+- assertVisible:
+    text: "Skip"
+    label: Skip button is present

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.example.PaymentTest" time="0.033" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.version" value="17"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="maven.version" value="3.9.9"/>
+  </properties>
+  <testcase name="cardPaymentPasses" classname="com.example.PaymentTest" time="0.018"/>
+</testsuite>

@@ -1,0 +1,1171 @@
+[ {
+  "command" : {
+    "defineVariablesCommand" : {
+      "env" : {
+        "MAESTRO_CLI_NO_ANALYTICS" : "1",
+        "MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED" : "true",
+        "MAESTRO_FILENAME" : "10-nested-subflows",
+        "MAESTRO_DEVICE_UDID" : "135E741D-8D9B-4E28-84C9-B4F31C81CFFA",
+        "MAESTRO_SHARD_ID" : "1",
+        "MAESTRO_SHARD_INDEX" : "0"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102781703,
+    "duration" : 1,
+    "sequenceNumber" : 0,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "defineVariablesCommand" : {
+        "env" : {
+          "MAESTRO_CLI_NO_ANALYTICS" : "1",
+          "MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED" : "true",
+          "MAESTRO_FILENAME" : "10-nested-subflows",
+          "MAESTRO_DEVICE_UDID" : "135E741D-8D9B-4E28-84C9-B4F31C81CFFA",
+          "MAESTRO_SHARD_ID" : "1",
+          "MAESTRO_SHARD_INDEX" : "0"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "10 - Nested subflows three levels deep",
+        "tags" : [ "regression", "nesting" ]
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102781704,
+    "duration" : 0,
+    "sequenceNumber" : 1,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "10 - Nested subflows three levels deep",
+          "tags" : [ "regression", "nesting" ]
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "org.wikimedia.wikipedia",
+            "name" : "subflow - launch and skip onboarding"
+          },
+          "optional" : false
+        }
+      }, {
+        "launchAppCommand" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "clearState" : true,
+          "label" : "Clean app launch",
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "textRegex" : "Skip",
+              "optional" : false
+            }
+          },
+          "timeout" : "15000",
+          "label" : "Wait for the first onboarding screen",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Skip",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "label" : "Skip onboarding",
+          "optional" : false
+        }
+      }, {
+        "runFlowCommand" : {
+          "commands" : [ {
+            "tapOnElement" : {
+              "selector" : {
+                "textRegex" : "Done",
+                "optional" : false
+              },
+              "retryIfNoChange" : false,
+              "waitUntilVisible" : false,
+              "longPress" : false,
+              "optional" : false
+            }
+          } ],
+          "condition" : {
+            "visible" : {
+              "textRegex" : "Explore your Wikipedia Year in Review",
+              "optional" : false
+            }
+          },
+          "label" : "Close the Year in Review popup if it appears",
+          "optional" : false
+        }
+      }, {
+        "runFlowCommand" : {
+          "commands" : [ {
+            "tapOnElement" : {
+              "selector" : {
+                "textRegex" : "Continue without logging in",
+                "optional" : false
+              },
+              "retryIfNoChange" : false,
+              "waitUntilVisible" : false,
+              "longPress" : false,
+              "optional" : false
+            }
+          } ],
+          "condition" : {
+            "visible" : {
+              "textRegex" : "You have been logged out",
+              "optional" : false
+            }
+          },
+          "label" : "Close the login modal if it appears",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "../../subflows/launch-and-skip-onboarding.yaml",
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "subflow - launch and skip onboarding"
+      },
+      "label" : "Prepare the main screen",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102781704,
+    "duration" : 15702,
+    "sequenceNumber" : 2,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "org.wikimedia.wikipedia",
+              "name" : "subflow - launch and skip onboarding"
+            },
+            "optional" : false
+          }
+        }, {
+          "launchAppCommand" : {
+            "appId" : "org.wikimedia.wikipedia",
+            "clearState" : true,
+            "label" : "Clean app launch",
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "textRegex" : "Skip",
+                "optional" : false
+              }
+            },
+            "timeout" : "15000",
+            "label" : "Wait for the first onboarding screen",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Skip",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "label" : "Skip onboarding",
+            "optional" : false
+          }
+        }, {
+          "runFlowCommand" : {
+            "commands" : [ {
+              "tapOnElement" : {
+                "selector" : {
+                  "textRegex" : "Done",
+                  "optional" : false
+                },
+                "retryIfNoChange" : false,
+                "waitUntilVisible" : false,
+                "longPress" : false,
+                "optional" : false
+              }
+            } ],
+            "condition" : {
+              "visible" : {
+                "textRegex" : "Explore your Wikipedia Year in Review",
+                "optional" : false
+              }
+            },
+            "label" : "Close the Year in Review popup if it appears",
+            "optional" : false
+          }
+        }, {
+          "runFlowCommand" : {
+            "commands" : [ {
+              "tapOnElement" : {
+                "selector" : {
+                  "textRegex" : "Continue without logging in",
+                  "optional" : false
+                },
+                "retryIfNoChange" : false,
+                "waitUntilVisible" : false,
+                "longPress" : false,
+                "optional" : false
+              }
+            } ],
+            "condition" : {
+              "visible" : {
+                "textRegex" : "You have been logged out",
+                "optional" : false
+              }
+            },
+            "label" : "Close the login modal if it appears",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "../../subflows/launch-and-skip-onboarding.yaml",
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "subflow - launch and skip onboarding"
+        },
+        "label" : "Prepare the main screen",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "subflow - launch and skip onboarding"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102781704,
+    "duration" : 0,
+    "sequenceNumber" : 3,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "subflow - launch and skip onboarding"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "launchAppCommand" : {
+      "appId" : "org.wikimedia.wikipedia",
+      "clearState" : true,
+      "label" : "Clean app launch",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102781704,
+    "duration" : 5031,
+    "sequenceNumber" : 4,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "launchAppCommand" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "clearState" : true,
+        "label" : "Clean app launch",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Skip",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "label" : "Wait for the first onboarding screen",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102786736,
+    "duration" : 1707,
+    "sequenceNumber" : 5,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Skip",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "label" : "Wait for the first onboarding screen",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Skip",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "label" : "Skip onboarding",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102788443,
+    "duration" : 1485,
+    "sequenceNumber" : 6,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Skip",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "label" : "Skip onboarding",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Done",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      } ],
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Explore your Wikipedia Year in Review",
+          "optional" : false
+        }
+      },
+      "label" : "Close the Year in Review popup if it appears",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "SKIPPED",
+    "timestamp" : 1793102789928,
+    "duration" : 7197,
+    "sequenceNumber" : 7,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Done",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        } ],
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Explore your Wikipedia Year in Review",
+            "optional" : false
+          }
+        },
+        "label" : "Close the Year in Review popup if it appears",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Continue without logging in",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      } ],
+      "condition" : {
+        "visible" : {
+          "textRegex" : "You have been logged out",
+          "optional" : false
+        }
+      },
+      "label" : "Close the login modal if it appears",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "SKIPPED",
+    "timestamp" : 1793102797126,
+    "duration" : 280,
+    "sequenceNumber" : 8,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Continue without logging in",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        } ],
+        "condition" : {
+          "visible" : {
+            "textRegex" : "You have been logged out",
+            "optional" : false
+          }
+        },
+        "label" : "Close the login modal if it appears",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "org.wikimedia.wikipedia",
+            "name" : "subflow - nested level 1"
+          },
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "textRegex" : "Search Wikipedia",
+              "optional" : false
+            }
+          },
+          "label" : "[level 1] main screen is present",
+          "optional" : false
+        }
+      }, {
+        "runFlowCommand" : {
+          "commands" : [ {
+            "applyConfigurationCommand" : {
+              "config" : {
+                "appId" : "org.wikimedia.wikipedia",
+                "name" : "subflow - nested level 2"
+              },
+              "optional" : false
+            }
+          }, {
+            "tapOnElement" : {
+              "selector" : {
+                "textRegex" : "Saved",
+                "optional" : false
+              },
+              "retryIfNoChange" : false,
+              "waitUntilVisible" : false,
+              "longPress" : false,
+              "label" : "[level 2] open the Saved tab",
+              "optional" : false
+            }
+          }, {
+            "runFlowCommand" : {
+              "commands" : [ {
+                "applyConfigurationCommand" : {
+                  "config" : {
+                    "appId" : "org.wikimedia.wikipedia",
+                    "name" : "subflow - nested level 3"
+                  },
+                  "optional" : false
+                }
+              }, {
+                "assertConditionCommand" : {
+                  "condition" : {
+                    "visible" : {
+                      "textRegex" : "Saved",
+                      "optional" : false
+                    }
+                  },
+                  "label" : "[level 3] deepest step of the run",
+                  "optional" : false
+                }
+              }, {
+                "tapOnElement" : {
+                  "selector" : {
+                    "textRegex" : "Explore",
+                    "optional" : false
+                  },
+                  "retryIfNoChange" : false,
+                  "waitUntilVisible" : false,
+                  "longPress" : false,
+                  "label" : "[level 3] back to Explore",
+                  "optional" : false
+                }
+              } ],
+              "sourceDescription" : "nested-level-3.yaml",
+              "config" : {
+                "appId" : "org.wikimedia.wikipedia",
+                "name" : "subflow - nested level 3"
+              },
+              "label" : "[level 2] descend to level 3",
+              "optional" : false
+            }
+          } ],
+          "sourceDescription" : "nested-level-2.yaml",
+          "config" : {
+            "appId" : "org.wikimedia.wikipedia",
+            "name" : "subflow - nested level 2"
+          },
+          "label" : "[level 1] descend to level 2",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "../../subflows/nested-level-1.yaml",
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "subflow - nested level 1"
+      },
+      "label" : "Descend three levels of nesting",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102797406,
+    "duration" : 3203,
+    "sequenceNumber" : 9,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "org.wikimedia.wikipedia",
+              "name" : "subflow - nested level 1"
+            },
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "textRegex" : "Search Wikipedia",
+                "optional" : false
+              }
+            },
+            "label" : "[level 1] main screen is present",
+            "optional" : false
+          }
+        }, {
+          "runFlowCommand" : {
+            "commands" : [ {
+              "applyConfigurationCommand" : {
+                "config" : {
+                  "appId" : "org.wikimedia.wikipedia",
+                  "name" : "subflow - nested level 2"
+                },
+                "optional" : false
+              }
+            }, {
+              "tapOnElement" : {
+                "selector" : {
+                  "textRegex" : "Saved",
+                  "optional" : false
+                },
+                "retryIfNoChange" : false,
+                "waitUntilVisible" : false,
+                "longPress" : false,
+                "label" : "[level 2] open the Saved tab",
+                "optional" : false
+              }
+            }, {
+              "runFlowCommand" : {
+                "commands" : [ {
+                  "applyConfigurationCommand" : {
+                    "config" : {
+                      "appId" : "org.wikimedia.wikipedia",
+                      "name" : "subflow - nested level 3"
+                    },
+                    "optional" : false
+                  }
+                }, {
+                  "assertConditionCommand" : {
+                    "condition" : {
+                      "visible" : {
+                        "textRegex" : "Saved",
+                        "optional" : false
+                      }
+                    },
+                    "label" : "[level 3] deepest step of the run",
+                    "optional" : false
+                  }
+                }, {
+                  "tapOnElement" : {
+                    "selector" : {
+                      "textRegex" : "Explore",
+                      "optional" : false
+                    },
+                    "retryIfNoChange" : false,
+                    "waitUntilVisible" : false,
+                    "longPress" : false,
+                    "label" : "[level 3] back to Explore",
+                    "optional" : false
+                  }
+                } ],
+                "sourceDescription" : "nested-level-3.yaml",
+                "config" : {
+                  "appId" : "org.wikimedia.wikipedia",
+                  "name" : "subflow - nested level 3"
+                },
+                "label" : "[level 2] descend to level 3",
+                "optional" : false
+              }
+            } ],
+            "sourceDescription" : "nested-level-2.yaml",
+            "config" : {
+              "appId" : "org.wikimedia.wikipedia",
+              "name" : "subflow - nested level 2"
+            },
+            "label" : "[level 1] descend to level 2",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "../../subflows/nested-level-1.yaml",
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "subflow - nested level 1"
+        },
+        "label" : "Descend three levels of nesting",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "subflow - nested level 1"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102797406,
+    "duration" : 0,
+    "sequenceNumber" : 10,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "subflow - nested level 1"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Search Wikipedia",
+          "optional" : false
+        }
+      },
+      "label" : "[level 1] main screen is present",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102797406,
+    "duration" : 133,
+    "sequenceNumber" : 11,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Search Wikipedia",
+            "optional" : false
+          }
+        },
+        "label" : "[level 1] main screen is present",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "org.wikimedia.wikipedia",
+            "name" : "subflow - nested level 2"
+          },
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Saved",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "label" : "[level 2] open the Saved tab",
+          "optional" : false
+        }
+      }, {
+        "runFlowCommand" : {
+          "commands" : [ {
+            "applyConfigurationCommand" : {
+              "config" : {
+                "appId" : "org.wikimedia.wikipedia",
+                "name" : "subflow - nested level 3"
+              },
+              "optional" : false
+            }
+          }, {
+            "assertConditionCommand" : {
+              "condition" : {
+                "visible" : {
+                  "textRegex" : "Saved",
+                  "optional" : false
+                }
+              },
+              "label" : "[level 3] deepest step of the run",
+              "optional" : false
+            }
+          }, {
+            "tapOnElement" : {
+              "selector" : {
+                "textRegex" : "Explore",
+                "optional" : false
+              },
+              "retryIfNoChange" : false,
+              "waitUntilVisible" : false,
+              "longPress" : false,
+              "label" : "[level 3] back to Explore",
+              "optional" : false
+            }
+          } ],
+          "sourceDescription" : "nested-level-3.yaml",
+          "config" : {
+            "appId" : "org.wikimedia.wikipedia",
+            "name" : "subflow - nested level 3"
+          },
+          "label" : "[level 2] descend to level 3",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "nested-level-2.yaml",
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "subflow - nested level 2"
+      },
+      "label" : "[level 1] descend to level 2",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102797540,
+    "duration" : 3069,
+    "sequenceNumber" : 12,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "org.wikimedia.wikipedia",
+              "name" : "subflow - nested level 2"
+            },
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Saved",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "label" : "[level 2] open the Saved tab",
+            "optional" : false
+          }
+        }, {
+          "runFlowCommand" : {
+            "commands" : [ {
+              "applyConfigurationCommand" : {
+                "config" : {
+                  "appId" : "org.wikimedia.wikipedia",
+                  "name" : "subflow - nested level 3"
+                },
+                "optional" : false
+              }
+            }, {
+              "assertConditionCommand" : {
+                "condition" : {
+                  "visible" : {
+                    "textRegex" : "Saved",
+                    "optional" : false
+                  }
+                },
+                "label" : "[level 3] deepest step of the run",
+                "optional" : false
+              }
+            }, {
+              "tapOnElement" : {
+                "selector" : {
+                  "textRegex" : "Explore",
+                  "optional" : false
+                },
+                "retryIfNoChange" : false,
+                "waitUntilVisible" : false,
+                "longPress" : false,
+                "label" : "[level 3] back to Explore",
+                "optional" : false
+              }
+            } ],
+            "sourceDescription" : "nested-level-3.yaml",
+            "config" : {
+              "appId" : "org.wikimedia.wikipedia",
+              "name" : "subflow - nested level 3"
+            },
+            "label" : "[level 2] descend to level 3",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "nested-level-2.yaml",
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "subflow - nested level 2"
+        },
+        "label" : "[level 1] descend to level 2",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "subflow - nested level 2"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102797540,
+    "duration" : 0,
+    "sequenceNumber" : 13,
+    "depth" : 2,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "subflow - nested level 2"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Saved",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "label" : "[level 2] open the Saved tab",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102797540,
+    "duration" : 1499,
+    "sequenceNumber" : 14,
+    "depth" : 2,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Saved",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "label" : "[level 2] open the Saved tab",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "org.wikimedia.wikipedia",
+            "name" : "subflow - nested level 3"
+          },
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "textRegex" : "Saved",
+              "optional" : false
+            }
+          },
+          "label" : "[level 3] deepest step of the run",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Explore",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "label" : "[level 3] back to Explore",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "nested-level-3.yaml",
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "subflow - nested level 3"
+      },
+      "label" : "[level 2] descend to level 3",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102799039,
+    "duration" : 1568,
+    "sequenceNumber" : 15,
+    "depth" : 2,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "org.wikimedia.wikipedia",
+              "name" : "subflow - nested level 3"
+            },
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "textRegex" : "Saved",
+                "optional" : false
+              }
+            },
+            "label" : "[level 3] deepest step of the run",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Explore",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "label" : "[level 3] back to Explore",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "nested-level-3.yaml",
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "subflow - nested level 3"
+        },
+        "label" : "[level 2] descend to level 3",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "org.wikimedia.wikipedia",
+        "name" : "subflow - nested level 3"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102799040,
+    "duration" : 0,
+    "sequenceNumber" : 16,
+    "depth" : 3,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "org.wikimedia.wikipedia",
+          "name" : "subflow - nested level 3"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Saved",
+          "optional" : false
+        }
+      },
+      "label" : "[level 3] deepest step of the run",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102799040,
+    "duration" : 157,
+    "sequenceNumber" : 17,
+    "depth" : 3,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Saved",
+            "optional" : false
+          }
+        },
+        "label" : "[level 3] deepest step of the run",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Explore",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "label" : "[level 3] back to Explore",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1793102799197,
+    "duration" : 1410,
+    "sequenceNumber" : 18,
+    "depth" : 3,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Explore",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "label" : "[level 3] back to Explore",
+        "optional" : false
+      }
+    }
+  }
+} ]

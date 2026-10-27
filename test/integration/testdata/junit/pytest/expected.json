@@ -1,0 +1,384 @@
+[
+  {
+    "body": {
+      "is_autotest": true,
+      "title": "Integration"
+    },
+    "method": "POST",
+    "path": "/v1/run/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-err.txt",
+        "size": 82
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-err.txt",
+        "size": 82
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-err.txt",
+        "size": 82
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-err.txt",
+        "size": 82
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-err.txt",
+        "size": 82
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-err.txt",
+        "size": 82
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-err.txt",
+        "size": 82
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-out.txt",
+        "size": 164
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-out.txt",
+        "size": 164
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-out.txt",
+        "size": 164
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-out.txt",
+        "size": 164
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-out.txt",
+        "size": 164
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-out.txt",
+        "size": 164
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".txt",
+        "name": "system-out.txt",
+        "size": 181
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "body": {
+      "results": [
+        {
+          "attachments": [
+            "4e00e5cb51fb64869cd6ae7ff5e1dd4dc35118d5",
+            "48df5662a5dc22bb95e126d2c2112671fa4ff48a"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "status": "passed"
+          },
+          "fields": {},
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "pytest tests"
+                },
+                {
+                  "title": "pytest"
+                }
+              ]
+            }
+          },
+          "signature": "pytest tests::pytest::tests.test_checkout::test_add_item_passes",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "test_add_item_passes"
+        },
+        {
+          "attachments": [
+            "4e00e5cb51fb64869cd6ae7ff5e1dd4dc35118d5",
+            "48df5662a5dc22bb95e126d2c2112671fa4ff48a"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "stacktrace": "def test_total_is_wrong_fails():\n>       assert sum([10, 20]) == 40, \"total must include both items\"\nE       AssertionError: total must include both items\nE       assert 30 == 40\nE        +  where 30 = sum([10, 20])\n\ntests/test_checkout.py:16: AssertionError",
+            "status": "failed"
+          },
+          "fields": {},
+          "message": "AssertionError: total must include both items\nassert 30 == 40\n +  where 30 = sum([10, 20])",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "pytest tests"
+                },
+                {
+                  "title": "pytest"
+                }
+              ]
+            }
+          },
+          "signature": "pytest tests::pytest::tests.test_checkout::test_total_is_wrong_fails",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "test_total_is_wrong_fails"
+        },
+        {
+          "attachments": [
+            "4e00e5cb51fb64869cd6ae7ff5e1dd4dc35118d5",
+            "48df5662a5dc22bb95e126d2c2112671fa4ff48a"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "stacktrace": "@pytest.fixture\n    def broken_fixture():\n>       raise RuntimeError(\"fixture setup failed\")\nE       RuntimeError: fixture setup failed\n\ntests/test_checkout.py:6: RuntimeError",
+            "status": "invalid"
+          },
+          "fields": {},
+          "message": "failed on setup with \"RuntimeError: fixture setup failed\"",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "pytest tests"
+                },
+                {
+                  "title": "pytest"
+                }
+              ]
+            }
+          },
+          "signature": "pytest tests::pytest::tests.test_checkout::test_fixture_error",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "test_fixture_error"
+        },
+        {
+          "attachments": [
+            "4e00e5cb51fb64869cd6ae7ff5e1dd4dc35118d5",
+            "48df5662a5dc22bb95e126d2c2112671fa4ff48a"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "status": "skipped"
+          },
+          "fields": {},
+          "message": "not supported on this platform",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "pytest tests"
+                },
+                {
+                  "title": "pytest"
+                }
+              ]
+            }
+          },
+          "signature": "pytest tests::pytest::tests.test_checkout::test_skipped",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "test_skipped"
+        },
+        {
+          "attachments": [
+            "4e00e5cb51fb64869cd6ae7ff5e1dd4dc35118d5",
+            "48df5662a5dc22bb95e126d2c2112671fa4ff48a"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "status": "passed"
+          },
+          "fields": {},
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "pytest tests"
+                },
+                {
+                  "title": "pytest"
+                }
+              ]
+            }
+          },
+          "signature": "pytest tests::pytest::tests.test_checkout::test_discount[10]",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "test_discount[10]"
+        },
+        {
+          "attachments": [
+            "4e00e5cb51fb64869cd6ae7ff5e1dd4dc35118d5",
+            "48df5662a5dc22bb95e126d2c2112671fa4ff48a"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "status": "passed"
+          },
+          "fields": {},
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "pytest tests"
+                },
+                {
+                  "title": "pytest"
+                }
+              ]
+            }
+          },
+          "signature": "pytest tests::pytest::tests.test_checkout::test_discount[50]",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "test_discount[50]"
+        },
+        {
+          "attachments": [
+            "dd45563980e70444d4a9a046964d9fc197fb99d3",
+            "48df5662a5dc22bb95e126d2c2112671fa4ff48a"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "status": "passed"
+          },
+          "fields": {},
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "pytest tests"
+                },
+                {
+                  "title": "pytest"
+                }
+              ]
+            }
+          },
+          "signature": "pytest tests::pytest::tests.test_checkout::test_prints_to_stdout",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "test_prints_to_stdout"
+        }
+      ]
+    },
+    "method": "POST",
+    "path": "/v2/TEST/run/1/results"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/run/TEST/1/complete"
+  }
+]

@@ -1,0 +1,11 @@
+appId: org.wikimedia.wikipedia
+name: subflow - failing inner
+---
+# Fails on purpose to show a failure that happens below the root flow.
+- assertVisible:
+    text: "Screen that does not exist in the app"
+    label: "[inner] expected failure inside the subflow"
+
+- tapOn:
+    text: "This step never runs"
+    label: "[inner] step after the failure"

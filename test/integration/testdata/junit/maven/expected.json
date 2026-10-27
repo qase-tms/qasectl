@@ -1,0 +1,117 @@
+[
+  {
+    "body": {
+      "is_autotest": true,
+      "title": "Integration"
+    },
+    "method": "POST",
+    "path": "/v1/run/TEST"
+  },
+  {
+    "body": {
+      "results": [
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 9,
+            "stacktrace": "org.opentest4j.AssertionFailedError: total must include both items ==> expected: <40> but was: <30>\n\tat org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n\tat org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n\tat org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)\n\tat org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)\n\tat org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:563)\n\tat com.example.CartTest.totalIsWrongFails(CartTest.java:17)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:583)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1612)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1612)\n",
+            "status": "failed"
+          },
+          "fields": {},
+          "message": "total must include both items ==> expected: <40> but was: <30>",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "com.example.CartTest"
+                }
+              ]
+            }
+          },
+          "signature": "::com.example.CartTest::com.example.CartTest::totalIsWrongFails",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "totalIsWrongFails"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "status": "skipped"
+          },
+          "fields": {},
+          "message": "not implemented yet",
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "com.example.CartTest"
+                }
+              ]
+            }
+          },
+          "signature": "::com.example.CartTest::com.example.CartTest::couponIsSkipped",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "couponIsSkipped"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 0,
+            "status": "passed"
+          },
+          "fields": {},
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "com.example.CartTest"
+                }
+              ]
+            }
+          },
+          "signature": "::com.example.CartTest::com.example.CartTest::addItemPasses",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "addItemPasses"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 18,
+            "status": "passed"
+          },
+          "fields": {},
+          "params": {},
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "com.example.PaymentTest"
+                }
+              ]
+            }
+          },
+          "signature": "::com.example.PaymentTest::com.example.PaymentTest::cardPaymentPasses",
+          "steps": [],
+          "steps_type": "classic",
+          "title": "cardPaymentPasses"
+        }
+      ]
+    },
+    "method": "POST",
+    "path": "/v2/TEST/run/1/results"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/run/TEST/1/complete"
+  }
+]

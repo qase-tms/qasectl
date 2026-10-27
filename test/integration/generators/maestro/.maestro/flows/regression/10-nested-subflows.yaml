@@ -1,0 +1,14 @@
+appId: org.wikimedia.wikipedia
+name: 10 - Nested subflows three levels deep
+tags:
+  - regression
+  - nesting
+---
+# commands.json stays a flat array; the hierarchy is only in metadata.depth (1, 2, 3).
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Prepare the main screen
+
+- runFlow:
+    file: ../../subflows/nested-level-1.yaml
+    label: Descend three levels of nesting

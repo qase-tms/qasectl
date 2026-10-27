@@ -38,3 +38,11 @@ coverhtml:
 .PHONY: docker
 docker:
 	@docker build -t ghcr.io/qase-tms/qase-cli:$(version) -t ghcr.io/qase-tms/qase-cli:$latest -f ./build/Dockerfile --build-arg VERSION=$(version) .
+
+.PHONY: update-golden
+update-golden:
+	@go test ./test/integration/ -update
+
+.PHONY: fixtures
+fixtures:
+	@test/integration/generators/generate.sh $(GEN)

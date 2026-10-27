@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="1" skipped="1" tests="7" time="0.023" timestamp="2026-10-27T14:41:02.081411+03:00" hostname="localhost"><testcase classname="tests.test_checkout" name="test_add_item_passes" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_checkout" name="test_total_is_wrong_fails" time="0.000"><failure message="AssertionError: total must include both items&#10;assert 30 == 40&#10; +  where 30 = sum([10, 20])">def test_total_is_wrong_fails():
+&gt;       assert sum([10, 20]) == 40, "total must include both items"
+E       AssertionError: total must include both items
+E       assert 30 == 40
+E        +  where 30 = sum([10, 20])
+
+tests/test_checkout.py:16: AssertionError</failure><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_checkout" name="test_fixture_error" time="0.000"><error message="failed on setup with &quot;RuntimeError: fixture setup failed&quot;">@pytest.fixture
+    def broken_fixture():
+&gt;       raise RuntimeError("fixture setup failed")
+E       RuntimeError: fixture setup failed
+
+tests/test_checkout.py:6: RuntimeError</error><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_checkout" name="test_skipped" time="0.000"><skipped type="pytest.skip" message="not supported on this platform">/workspace/test/integration/generators/junit-pytest/tests/test_checkout.py:24: not supported on this platform</skipped><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_checkout" name="test_discount[10]" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_checkout" name="test_discount[50]" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_checkout" name="test_prints_to_stdout" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+checkout started
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase></testsuite></testsuites>

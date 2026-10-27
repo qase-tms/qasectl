@@ -1,0 +1,5 @@
+15:03:28.723 [ INFO] maestro.cli.report.TestDebugReporter.logSystemInfo: Debug output path: /tmp/out/maestro/run/input
+15:03:28.725 [ INFO] MAESTRO.logSystemInfo: ---- System Info ----
+15:03:28.725 [ INFO] MAESTRO.logSystemInfo: Maestro Version: 2.8.0
+15:03:28.726 [ INFO] MAESTRO.logSystemInfo: CI: Undefined
+15:03:28.726 [ INFO] MAESTRO.logSystemInfo: OS Name: Mac OS X

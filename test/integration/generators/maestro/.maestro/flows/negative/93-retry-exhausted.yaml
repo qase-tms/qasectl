@@ -1,0 +1,21 @@
+appId: org.wikimedia.wikipedia
+name: 93 - FAIL - retry exhausted
+tags:
+  - negative
+  - expected-failure
+  - flaky
+---
+# Expected failure after all attempts: maxRetries 3 means 4 attempts, none of them numbered in commands.json.
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+- retry:
+    maxRetries: 3
+    label: Block that no attempt can save
+    commands:
+      # extendedWaitUntil has a timeout, so each attempt fails fast instead of waiting the default time.
+      - extendedWaitUntil:
+          visible: "Element that never appears"
+          timeout: 2000
+          label: Expected failure on every attempt

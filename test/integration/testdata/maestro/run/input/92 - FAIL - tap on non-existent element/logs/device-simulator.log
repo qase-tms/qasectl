@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:05:48.755502+0300  localhost dataaccessd[58197]: (Network) [com.apple.network:connection] [C6 73FBCA4D-B46F-41D4-8502-AD7A0D554E83 IPv4#daf0e237:443 quic-connection, account id: dd179e25, url hash: b42a70bf, traffic class: 100, tls, definite, attribution: website] cancel
+2026-10-27 15:05:48.756523+0300  localhost dataaccessd[58197]: (Network) [com.apple.network:connection] nw_connection_copy_connected_local_endpoint_block_invoke [C6] Client called nw_connection_copy_connected_local_endpoint on unconnected nw_connection
+2026-10-27 15:05:48.756573+0300  localhost dataaccessd[58197]: (Network) [com.apple.network:connection] nw_connection_copy_connected_remote_endpoint_block_invoke [C6] Client called nw_connection_copy_connected_remote_endpoint on unconnected nw_connection

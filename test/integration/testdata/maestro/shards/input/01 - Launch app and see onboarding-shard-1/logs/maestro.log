@@ -1,0 +1,5 @@
+15:09:23.076 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: [shard 1] Define variables RUNNING
+15:09:23.079 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: [shard 1] Define variables COMPLETED
+15:09:23.080 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: [shard 1] Apply configuration RUNNING
+15:09:23.081 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: [shard 1] Apply configuration COMPLETED
+15:09:23.081 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: [shard 1] Launch the app with a clean state RUNNING

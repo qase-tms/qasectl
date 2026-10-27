@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:07:47.190871+0300  localhost log[63629]: (LoggingSupport) Sending stream request to diagnosticd
+2026-10-27 15:07:47.193371+0300  localhost axassetsd[96625]: (PlugInKit) [com.apple.PlugInKit:lifecycle] [u 7E76285A-33D0-492B-86FA-A24E0D9D4348:m (null)] [com.apple.ax.KonaTTSSupport.KonaSynthesizer(1.0)] got pid from ready request: 4840
+2026-10-27 15:07:47.194604+0300  localhost runningboardd[2272]: (RunningBoard) Created Activity ID: 0x8ae7b9f, Description: acquireAssertionWithDescriptor

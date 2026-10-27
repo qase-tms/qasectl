@@ -1,0 +1,3245 @@
+[
+  {
+    "body": {
+      "is_autotest": true,
+      "start_time": "2026-10-27 12:03:25",
+      "title": "Integration"
+    },
+    "method": "POST",
+    "path": "/v1/run/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "device-simulator.log",
+        "size": 555
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "device-simulator.log",
+        "size": 626
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "device-simulator.log",
+        "size": 663
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "device-simulator.log",
+        "size": 889
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "device-xctest.log",
+        "size": 586
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "device-xctest.log",
+        "size": 586
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "device-xctest.log",
+        "size": 586
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "device-xctest.log",
+        "size": 586
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "explore-tab.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "maestro.log",
+        "size": 526
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "maestro.log",
+        "size": 526
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "maestro.log",
+        "size": 526
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".log",
+        "name": "maestro.log",
+        "size": 526
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "qase-single.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "search-results.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-010-assertCondition-Button_that_does_not_exi.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-010-retry.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-010-runFlow.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-010-tapOnElement-Element_that_cannot_be_tapp.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-010-tapOnElement-There_is_no_such_button_in.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-011-assertCondition-Element_that_never_appea.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-012-assertCondition-Element_that_never_appea.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-012-assertCondition-Screen_that_does_not_exi.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-013-assertCondition-Element_that_never_appea.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-013-assertCondition.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "files": [
+      {
+        "ext": ".png",
+        "name": "step-014-assertCondition-Element_that_never_appea.png",
+        "size": 69
+      }
+    ],
+    "method": "POST",
+    "path": "/v1/attachment/TEST"
+  },
+  {
+    "body": {
+      "results": [
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 6831,
+            "end_time": 1793102657.189,
+            "start_time": 1793102650.358,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "smoke, ios"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "01-launch::01_-_launch_app_and_see_onboarding::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch the app with a clean state"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 4953,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "First onboarding screen is visible"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1601,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Next button is present"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 135,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Skip button is present"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 139,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "01 - Launch app and see onboarding"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 15464,
+            "end_time": 1793102630.688,
+            "start_time": 1793102615.224,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "smoke"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "02-onboarding-skip::02_-_skip_onboarding_and_land_on_explore::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 2,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 15115,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 4385,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1946,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1294,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7226,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 259,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Check the main screen"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 265,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Search field is present"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 128,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Explore tab is present"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 136,
+                    "status": "passed"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Screenshot of the Explore tab"
+              },
+              "execution": {
+                "attachments": [
+                  "711ecf46a1786e9f4ba6fe34437629ad78aad4fa"
+                ],
+                "comment": "",
+                "duration": 80,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "02 - Skip onboarding and land on Explore"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 19320,
+            "end_time": 1793102650.267,
+            "start_time": 1793102630.947,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "smoke, search"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "03-search-article::03_-_search_for_an_article::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 14641,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 4303,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1613,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1206,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7256,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 260,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Open search"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1272,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Open search"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 879,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Search is open - Cancel is visible"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 392,
+                    "status": "passed"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Input text \"${SEARCH_TERM}\""
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 2890,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Wait for search results from the network"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 218,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Screenshot of the search results"
+              },
+              "execution": {
+                "attachments": [
+                  "f70cfab60fecd18e08c0ba4ff29f0ad21c8e0484"
+                ],
+                "comment": "",
+                "duration": 80,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Results contain a film"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 216,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "03 - Search for an article"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 18906,
+            "end_time": 1793102800.609,
+            "start_time": 1793102781.703,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, nesting"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "10-nested-subflows::10_-_nested_subflows_three_levels_deep::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Prepare the main screen"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 15702,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 5031,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1707,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1485,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7197,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 280,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Descend three levels of nesting"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 3203,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "[level 1] main screen is present"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 133,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "[level 1] descend to level 2"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 3069,
+                    "status": "passed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "applyConfiguration"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 0,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    },
+                    {
+                      "data": {
+                        "action": "[level 2] open the Saved tab"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 1499,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    },
+                    {
+                      "data": {
+                        "action": "[level 2] descend to level 3"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 1568,
+                        "status": "passed"
+                      },
+                      "steps": [
+                        {
+                          "data": {
+                            "action": "applyConfiguration"
+                          },
+                          "execution": {
+                            "attachments": [],
+                            "comment": "",
+                            "duration": 0,
+                            "status": "passed"
+                          },
+                          "steps": []
+                        },
+                        {
+                          "data": {
+                            "action": "[level 3] deepest step of the run"
+                          },
+                          "execution": {
+                            "attachments": [],
+                            "comment": "",
+                            "duration": 157,
+                            "status": "passed"
+                          },
+                          "steps": []
+                        },
+                        {
+                          "data": {
+                            "action": "[level 3] back to Explore"
+                          },
+                          "execution": {
+                            "attachments": [],
+                            "comment": "",
+                            "duration": 1410,
+                            "status": "passed"
+                          },
+                          "steps": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "steps_type": "classic",
+          "title": "10 - Nested subflows three levels deep"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 19417,
+            "end_time": 1793102836.091,
+            "start_time": 1793102816.674,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, scripting"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "11-runscript-output::11_-_data_from_js_via_runscript_output::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 3,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Build a search query in JS"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 26,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 15599,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 4919,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1783,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1349,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7248,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 299,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Open search"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1309,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Open search"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 877,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Search is open - Cancel is visible"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 432,
+                    "status": "passed"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Input text \"${output.searchTerm}\""
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 2247,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Wait for the result whose name came from JS"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 226,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Eval script: output.checkedAt = 'after the assertion'"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 3,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Assert true: output.meta.dataSource == 'runScript'"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 2,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "11 - Data from JS via runScript output"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 30340,
+            "end_time": 1793102866.526,
+            "start_time": 1793102836.186,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, control-flow"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "12-conditional-and-optional::12_-_conditional,_optional_and_repeated_steps::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 15584,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 4902,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1683,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1447,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7249,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 301,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Optional tap on a missing element"
+              },
+              "execution": {
+                "attachments": [
+                  "091dde0c71eae10bf109974662f0e2d07ad256fd"
+                ],
+                "comment": "Optional command failed",
+                "duration": 7276,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Conditional block - condition is true, block runs"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 285,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "Inside the executed conditional block"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 143,
+                    "status": "passed"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Conditional block - condition is false, block is skipped"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 308,
+                "status": "skipped"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Repeat 2 times"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 6654,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "Iteration 1"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 3308,
+                    "status": "passed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "Switch to Saved"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 1595,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    },
+                    {
+                      "data": {
+                        "action": "Back to Explore"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 1712,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    }
+                  ]
+                },
+                {
+                  "data": {
+                    "action": "Iteration 2"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 3329,
+                    "status": "passed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "Switch to Saved"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 1635,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    },
+                    {
+                      "data": {
+                        "action": "Back to Explore"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 1694,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "steps_type": "classic",
+          "title": "12 - Conditional, optional and repeated steps"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 15822,
+            "end_time": 1793102816.567,
+            "start_time": 1793102800.745,
+            "status": "passed"
+          },
+          "fields": {
+            "is_flaky": "true",
+            "tags": "regression, flaky"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "13-flaky-recovered-by-retry::13_-_flaky_step_recovered_by_retry::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 5,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Eval script: output.attempt = 0"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 15,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 15245,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 4855,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1641,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1260,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7204,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 282,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Block with a flaky step"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 546,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "Attempt 1"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 173,
+                    "status": "failed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "Eval script: output.attempt = Number(output.attempt) + 1"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 22,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    },
+                    {
+                      "data": {
+                        "action": "Assert true: output.attempt >= 2"
+                      },
+                      "execution": {
+                        "attachments": [
+                          "864c6d1bf3d021f9a5d996d08042d20cd83d27d2"
+                        ],
+                        "comment": "Assertion is false: false is true",
+                        "duration": 151,
+                        "status": "failed"
+                      },
+                      "steps": []
+                    }
+                  ]
+                },
+                {
+                  "data": {
+                    "action": "Attempt 2"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 150,
+                    "status": "passed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "Eval script: output.attempt = Number(output.attempt) + 1"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 2,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    },
+                    {
+                      "data": {
+                        "action": "Assert true: output.attempt >= 2"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 2,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    },
+                    {
+                      "data": {
+                        "action": "Step after the recovery"
+                      },
+                      "execution": {
+                        "attachments": [],
+                        "comment": "",
+                        "duration": 146,
+                        "status": "passed"
+                      },
+                      "steps": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Assert true: output.attempt == 2"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 7,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "13 - Flaky step recovered by retry"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 26332,
+            "end_time": 1793102893.008,
+            "start_time": 1793102866.676,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "regression, navigation"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "14-navigation-and-timings::14_-_navigation_with_varied_step_durations::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 16548,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 5678,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1981,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1345,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7249,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 294,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Open the Places tab"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 935,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Wait for animation to end"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 2133,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Open the History tab"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1606,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "History screen is open"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 163,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Open the Saved tab"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1450,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Swipe up"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1392,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Back to Explore"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1959,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Back on the main screen"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 141,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "14 - Navigation with varied step durations"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 129,
+            "end_time": 1793102781.556,
+            "start_time": 1793102781.427,
+            "status": "passed"
+          },
+          "fields": {
+            "priority": "high",
+            "tags": "qase"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Maestro"
+                },
+                {
+                  "title": "Linking"
+                }
+              ]
+            }
+          },
+          "signature": "1::maestro::linking::20-qase-id-single::20_-_qase.id_single_+_suite_+_custom_property::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Eval script: output.x = 1"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 52,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Take screenshot qase-single"
+              },
+              "execution": {
+                "attachments": [
+                  "ad5c3d9df7e09b88231c4822a5f3ca8e941b9f09"
+                ],
+                "comment": "",
+                "duration": 76,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "testops_id": null,
+          "testops_ids": [
+            1
+          ],
+          "title": "20 - qase.id single + suite + custom property"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 12,
+            "end_time": 1793102781.622,
+            "start_time": 1793102781.61,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "qase"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Maestro"
+                },
+                {
+                  "title": "Linking"
+                }
+              ]
+            }
+          },
+          "signature": "2-4::maestro::linking::21-qase-id-list::21_-_qase.id_list::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Eval script: output.x = 1"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 11,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "testops_id": null,
+          "testops_ids": [
+            2,
+            4
+          ],
+          "title": "21 - qase.id list"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 14,
+            "end_time": 1793102781.591,
+            "start_time": 1793102781.577,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "qase"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Maestro"
+                },
+                {
+                  "title": "Linking"
+                }
+              ]
+            }
+          },
+          "signature": "5::maestro::linking::22-qase-id-prefix::22_-_qase.id_with_project_prefix::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Eval script: output.x = 1"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 13,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "testops_id": null,
+          "testops_ids": [
+            5
+          ],
+          "title": "22 - qase.id with project prefix"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 10,
+            "end_time": 1793102781.65,
+            "start_time": 1793102781.64,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "qase"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": [
+                {
+                  "title": "Maestro"
+                },
+                {
+                  "title": "Linking"
+                }
+              ]
+            }
+          },
+          "signature": "1::maestro::linking::23-qase-id-bad::23_-_qase.id_with_a_bad_element::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Eval script: output.x = 1"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 9,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "testops_id": null,
+          "testops_ids": [
+            1
+          ],
+          "title": "23 - qase.id with a bad element"
+        },
+        {
+          "attachments": [],
+          "defect": false,
+          "execution": {
+            "duration": 9,
+            "end_time": 1793102781.678,
+            "start_time": 1793102781.669,
+            "status": "passed"
+          },
+          "fields": {
+            "tags": "qase",
+            "team": "mobile"
+          },
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "24-no-name::24-no-name::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Eval script: output.x = 1"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 8,
+                "status": "passed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "24-no-name"
+        },
+        {
+          "attachments": [
+            "0f0955f0aae016e6457ab7a17f65a288c0151ad8",
+            "938170f094d26d1c0290b69fb8d3be06882b3c37",
+            "d63ac81fda79d8e203ad5ed8cc9491c9a32a98cd"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 36449,
+            "end_time": 1793102726.478,
+            "stacktrace": "Assertion '\"Button that does not exist\" is visible' failed. Check the UI hierarchy in debug artifacts to verify the element state and properties.\n\nPossible causes:\n- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.\n- Element may be temporarily unavailable due to loading state\n- This could be a real regression that needs to be addressed",
+            "start_time": 1793102690.029,
+            "status": "failed"
+          },
+          "fields": {
+            "tags": "negative, expected-failure"
+          },
+          "message": "Assertion is false: \"Button that does not exist\" is visible",
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "90-assert-missing-element::90_-_fail_-_assert_on_missing_element::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 18965,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7742,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 2294,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1342,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7283,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 299,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Expected assertion failure"
+              },
+              "execution": {
+                "attachments": [
+                  "35afd0a2bbfdea880804c51eb1b3e6cfa38f49b7"
+                ],
+                "comment": "Assertion is false: \"Button that does not exist\" is visible",
+                "duration": 17482,
+                "status": "failed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "90 - FAIL - assert on missing element"
+        },
+        {
+          "attachments": [
+            "4a1b14de7f52e9151b02b383e028a571e6729575",
+            "750b34a853a4b3ddccdc7530fb5db46934b75c95",
+            "d63ac81fda79d8e203ad5ed8cc9491c9a32a98cd"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 32483,
+            "end_time": 1793102689.733,
+            "stacktrace": "Assertion '\"Screen that does not exist in the app\" is visible' failed. Check the UI hierarchy in debug artifacts to verify the element state and properties.\n\nPossible causes:\n- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.\n- Element may be temporarily unavailable due to loading state\n- This could be a real regression that needs to be addressed",
+            "start_time": 1793102657.25,
+            "status": "failed"
+          },
+          "fields": {
+            "tags": "negative, expected-failure, nesting"
+          },
+          "message": "Assertion is false: \"Screen that does not exist in the app\" is visible",
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "91-fail-inside-subflow::91_-_fail_-_failure_inside_nested_subflow::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 14643,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 4247,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1595,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1318,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7209,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 272,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Call a subflow that fails inside"
+              },
+              "execution": {
+                "attachments": [
+                  "ba202dcfa636755ce202b4583beb9434e7f237a5"
+                ],
+                "comment": "Assertion is false: \"Screen that does not exist in the app\" is visible",
+                "duration": 17839,
+                "status": "failed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "[inner] expected failure inside the subflow"
+                  },
+                  "execution": {
+                    "attachments": [
+                      "310ff4861d77e59b53dfb12b9b2611efdcc44fb9"
+                    ],
+                    "comment": "Assertion is false: \"Screen that does not exist in the app\" is visible",
+                    "duration": 17522,
+                    "status": "failed"
+                  },
+                  "steps": []
+                }
+              ]
+            }
+          ],
+          "steps_type": "classic",
+          "title": "91 - FAIL - failure inside nested subflow"
+        },
+        {
+          "attachments": [
+            "afd5d2722015b965a0786b052292213e8e3e4069",
+            "d3d548f2263c8990a28db8aa4e8a4408bf0267be",
+            "d63ac81fda79d8e203ad5ed8cc9491c9a32a98cd"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 32871,
+            "end_time": 1793102781.081,
+            "stacktrace": "Element with Text matching regex: Element that cannot be tapped not found. Check the UI hierarchy in debug artifacts to verify if the element exists.\n\nPossible causes:\n- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.\n- Element may be temporarily unavailable due to loading state.\n- This could be a real regression that needs to be addressed.",
+            "start_time": 1793102748.21,
+            "status": "failed"
+          },
+          "fields": {
+            "tags": "negative, expected-failure"
+          },
+          "message": "Element not found: Text matching regex: Element that cannot be tapped",
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "92-tap-nonexistent::92_-_fail_-_tap_on_non-existent_element::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 15727,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 4814,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1617,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1374,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7523,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 397,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Expected tap failure"
+              },
+              "execution": {
+                "attachments": [
+                  "7ad82fd823df5c98aca3289ea3bc440d645295e5"
+                ],
+                "comment": "Element not found: Text matching regex: Element that cannot be tapped",
+                "duration": 17144,
+                "status": "failed"
+              },
+              "steps": []
+            }
+          ],
+          "steps_type": "classic",
+          "title": "92 - FAIL - tap on non-existent element"
+        },
+        {
+          "attachments": [
+            "e15c148419d2d4039e7b278fe05d57329d8244e5",
+            "b1fa98a33fc65f3d655768afb1da1ae12c1f738b",
+            "d63ac81fda79d8e203ad5ed8cc9491c9a32a98cd"
+          ],
+          "defect": false,
+          "execution": {
+            "duration": 21124,
+            "end_time": 1793102748.019,
+            "stacktrace": "Assertion '\"Element that never appears\" is visible' failed. Check the UI hierarchy in debug artifacts to verify the element state and properties.\n\nPossible causes:\n- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.\n- Element may be temporarily unavailable due to loading state\n- This could be a real regression that needs to be addressed",
+            "start_time": 1793102726.895,
+            "status": "failed"
+          },
+          "fields": {
+            "tags": "negative, expected-failure, flaky"
+          },
+          "message": "Assertion is false: \"Element that never appears\" is visible",
+          "params": {
+            "device": "iPhone 16 Pro - iOS 18.4"
+          },
+          "relations": {
+            "suite": {
+              "data": []
+            }
+          },
+          "signature": "93-retry-exhausted::93_-_fail_-_retry_exhausted::{'device':'iphone 16 pro - ios 18.4'}",
+          "steps": [
+            {
+              "data": {
+                "action": "defineVariables"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 1,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "applyConfiguration"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 0,
+                "status": "passed"
+              },
+              "steps": []
+            },
+            {
+              "data": {
+                "action": "Launch and skip onboarding"
+              },
+              "execution": {
+                "attachments": [],
+                "comment": "",
+                "duration": 16527,
+                "status": "passed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "applyConfiguration"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 0,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Clean app launch"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 5640,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Wait for the first onboarding screen"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1726,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Skip onboarding"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 1493,
+                    "status": "passed"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the Year in Review popup if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 7353,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                },
+                {
+                  "data": {
+                    "action": "Close the login modal if it appears"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 311,
+                    "status": "skipped"
+                  },
+                  "steps": []
+                }
+              ]
+            },
+            {
+              "data": {
+                "action": "Block that no attempt can save"
+              },
+              "execution": {
+                "attachments": [
+                  "9a13649fc4eddc7adcca6275f33dbd554f4b3f71"
+                ],
+                "comment": "Assertion is false: \"Element that never appears\" is visible",
+                "duration": 4596,
+                "status": "failed"
+              },
+              "steps": [
+                {
+                  "data": {
+                    "action": "Attempt 1"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 2404,
+                    "status": "failed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "Expected failure on every attempt"
+                      },
+                      "execution": {
+                        "attachments": [
+                          "6bbbd07340a5b68e22c4c0f5b095853c57206639"
+                        ],
+                        "comment": "Assertion is false: \"Element that never appears\" is visible",
+                        "duration": 2404,
+                        "status": "failed"
+                      },
+                      "steps": []
+                    }
+                  ]
+                },
+                {
+                  "data": {
+                    "action": "Attempt 2"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 426,
+                    "status": "failed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "Expected failure on every attempt"
+                      },
+                      "execution": {
+                        "attachments": [
+                          "fb675074f705aa96950d7ead9bdac8bcae4b487c"
+                        ],
+                        "comment": "Assertion is false: \"Element that never appears\" is visible",
+                        "duration": 426,
+                        "status": "failed"
+                      },
+                      "steps": []
+                    }
+                  ]
+                },
+                {
+                  "data": {
+                    "action": "Attempt 3"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 422,
+                    "status": "failed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "Expected failure on every attempt"
+                      },
+                      "execution": {
+                        "attachments": [
+                          "b60d005f1d71d5507b44334f3a15047dbd780edc"
+                        ],
+                        "comment": "Assertion is false: \"Element that never appears\" is visible",
+                        "duration": 422,
+                        "status": "failed"
+                      },
+                      "steps": []
+                    }
+                  ]
+                },
+                {
+                  "data": {
+                    "action": "Attempt 4"
+                  },
+                  "execution": {
+                    "attachments": [],
+                    "comment": "",
+                    "duration": 456,
+                    "status": "failed"
+                  },
+                  "steps": [
+                    {
+                      "data": {
+                        "action": "Expected failure on every attempt"
+                      },
+                      "execution": {
+                        "attachments": [
+                          "4c2172b744ff9772d4fb46e3cee43aa14205beb8"
+                        ],
+                        "comment": "Assertion is false: \"Element that never appears\" is visible",
+                        "duration": 456,
+                        "status": "failed"
+                      },
+                      "steps": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "steps_type": "classic",
+          "title": "93 - FAIL - retry exhausted"
+        }
+      ]
+    },
+    "method": "POST",
+    "path": "/v2/TEST/run/1/results"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/run/TEST/1/complete"
+  }
+]

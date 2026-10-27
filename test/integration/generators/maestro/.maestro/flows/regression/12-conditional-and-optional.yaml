@@ -1,0 +1,42 @@
+appId: org.wikimedia.wikipedia
+name: 12 - Conditional, optional and repeated steps
+tags:
+  - regression
+  - control-flow
+---
+# Steps that do not succeed while the flow stays green: the flow status alone hides them.
+- runFlow:
+    file: ../../subflows/launch-and-skip-onboarding.yaml
+    label: Launch and skip onboarding
+
+# The optional command fails with status WARNED without failing the flow.
+- tapOn:
+    text: "There is no such button in the app"
+    optional: true
+    label: Optional tap on a missing element
+
+- runFlow:
+    when:
+      visible: "Search Wikipedia"
+    commands:
+      - assertVisible:
+          text: "Explore"
+          label: Inside the executed conditional block
+    label: Conditional block - condition is true, block runs
+
+- runFlow:
+    when:
+      visible: "A screen with this text does not exist"
+    commands:
+      - assertVisible: "This step never runs"
+    label: Conditional block - condition is false, block is skipped
+
+- repeat:
+    times: 2
+    commands:
+      - tapOn:
+          text: "Saved"
+          label: Switch to Saved
+      - tapOn:
+          text: "Explore"
+          label: Back to Explore

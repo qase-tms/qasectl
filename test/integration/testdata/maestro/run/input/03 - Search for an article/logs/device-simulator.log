@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:03:51.571999+0300  localhost SpringBoard[2269]: (PaperBoardUI) [com.apple.PaperBoardUI:Snapshot] [lock]	Snapshot attempt failed because preconditions failed:
+2026-10-27 15:03:51.572050+0300  localhost SpringBoard[2269]: (PaperBoardUI) [com.apple.PaperBoardUI:Snapshot] [lock]	--> 'Lock variant needs to be fully locked ((null)/(null))'
+2026-10-27 15:03:51.606382+0300  localhost launchctl[31885]: [com.apple.xpc.launchctl:All] launchctl list: launchctl list

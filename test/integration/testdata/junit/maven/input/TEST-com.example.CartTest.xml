@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.example.CartTest" time="0.015" tests="3" errors="0" skipped="1" failures="1">
+  <properties>
+    <property name="java.version" value="17"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="maven.version" value="3.9.9"/>
+  </properties>
+  <testcase name="totalIsWrongFails" classname="com.example.CartTest" time="0.009">
+    <failure message="total must include both items ==&gt; expected: &lt;40&gt; but was: &lt;30&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: total must include both items ==> expected: <40> but was: <30>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:563)
+	at com.example.CartTest.totalIsWrongFails(CartTest.java:17)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:583)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+]]></failure>
+  </testcase>
+  <testcase name="couponIsSkipped" classname="com.example.CartTest" time="0.0">
+    <skipped message="not implemented yet"/>
+  </testcase>
+  <testcase name="addItemPasses" classname="com.example.CartTest" time="0.0"/>
+</testsuite>

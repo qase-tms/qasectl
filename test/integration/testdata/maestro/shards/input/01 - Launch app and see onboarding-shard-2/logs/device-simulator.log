@@ -1,0 +1,5 @@
+getpwuid_r did not find a match for uid 501
+Timestamp                       (process)[PID]    
+2026-10-27 15:09:25.272126+0300  localhost nsurlsessiond[63955]: (StreamingExtractor) [com.apple.StreamingExtractor:framework] -[STRemoteExtractor supplyBytes:withCompletionBlock:]: <STRemoteExtractor: 0x600002914a80>: -supplyBytes:[65536 bytes]
+2026-10-27 15:09:25.273777+0300  localhost STExtractionService[64001]: (STAEAExtractionPlugin) [com.apple.StreamingExtractor:STAEAExtractorPlugin] [com_apple_MobileAsset_Trial_Siri_SiriTextToSpeech.e6982c99bc7cf9b318661c94ce97b6155177bcf2.auto.A1503034-2118-4E18-9CF7-F197CFCB5308] -[STAEAExtractor supplyBytes:withCompletionBlock:]: Received 65536 bytes for extraction, offset 41123840
+2026-10-27 15:09:25.273810+0300  localhost STExtractionService[64001]: (STAEAExtractionPlugin) [com.apple.StreamingExtractor:STAEAExtractorPlugin] [com_apple_MobileAsset_Trial_Siri_SiriTextToSpeech.e6982c99bc7cf9b318661c94ce97b6155177bcf2.auto.A1503034-2118-4E18-9CF7-F197CFCB5308] -[STAEAExtractor supplyBytes:withCompletionBlock:]_block_invoke: Extracting 65536 bytes, offset 41123840

@@ -1,0 +1,16 @@
+appId: org.wikimedia.wikipedia
+
+flows:
+  - "flows/**"
+
+# Tag-excluded flows never reach the report; flow 99 shows they are not reported as skipped.
+excludeTags:
+  - wip
+
+executionOrder:
+  # Negative flows must not stop the run, otherwise later outcomes are missing from the fixture.
+  continueOnFailure: true
+
+platform:
+  ios:
+    disableAnimations: true

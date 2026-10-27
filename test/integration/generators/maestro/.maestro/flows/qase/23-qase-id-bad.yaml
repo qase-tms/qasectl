@@ -1,0 +1,9 @@
+appId: org.wikimedia.wikipedia
+name: "23 - qase.id with a bad element"
+tags:
+  - qase
+properties:
+  qase.id: "1, abc"
+  qase.suite: "Maestro.Linking"
+---
+- evalScript: ${output.x = 1}
