@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+- feat: add the `maestro` format to `testops result upload`; it reads the debug output of a Maestro 2.x run and
+  uploads one result per flow with steps, screenshots and logs of failed flows
+- feat: map Maestro flow `properties` to Qase IDs (`qase.id`), suites (`qase.suite`) and result fields, report retries
+  as `Attempt N` steps with the `is_flaky` field, and report shards as threads and devices as parameters
+
 ## [v0.5.2] - 2026-10-14
 
 - fix: upload XCTest step attachments only for failed steps; every step of a failed test was treated as failed, so the
