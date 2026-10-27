@@ -1,0 +1,29 @@
+test/integration/framework_test.go
+  s_ee1c14af4af76e::t_f804cbf611f6a2 8,31-34
+  s_ee1c14af4af76e::t_7ede63d5b7d552 1-4,6-7,9-19,26-30,35-136
+  s_ee1c14af4af76e::t_45ccf9ef65ca02 5,20-25
+Makefile
+  s_ee1c14af4af76e::t_f804cbf611f6a2 41-44
+test/integration/fakeqase_test.go
+  s_ee1c14af4af76e::t_4e7794cf14b75b 1-146
+test/integration/golden_test.go
+  s_ee1c14af4af76e::t_f747c159ba6924 1-131
+test/integration/main_test.go
+  s_ee1c14af4af76e::t_5fd94f7588518d 1-76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "27bad5876da997d2888db8da6ca8d02f8e034caf",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
