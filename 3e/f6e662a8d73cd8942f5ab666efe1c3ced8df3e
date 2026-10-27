@@ -1,0 +1,21 @@
+test/integration/golden_test.go
+  s_ee1c14af4af76e::t_99a705a136d2fc 61,64-67,69-72
+test/integration/framework_test.go
+  s_ee1c14af4af76e::t_99a705a136d2fc 151-186
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3ef6e662a8d73cd8942f5ab666efe1c3ced8df3e",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
