@@ -1,0 +1,23 @@
+internal/parsers/maestro/metadata_test.go
+  s_ee1c14af4af76e::t_55fc87c7bb1b40 1-94
+internal/parsers/maestro/maestro.go
+  s_ee1c14af4af76e::t_768589133279c8 146-149,153,161-166
+internal/parsers/maestro/metadata.go
+  s_ee1c14af4af76e::t_768589133279c8 1-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "afc92a48557993aa10c369ae146049e3707d10f4",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
