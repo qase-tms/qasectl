@@ -1,0 +1,26 @@
+test/integration/testdata/junit/maven/input/TEST-com.example.PaymentTest.xml
+  s_ee1c14af4af76e::t_105a5c083ebe01 2-9
+test/integration/testdata/junit/maven/expected.json
+  s_ee1c14af4af76e::t_105a5c083ebe01 17,89
+test/integration/generators/junit-maven/generate.sh
+  s_ee1c14af4af76e::t_2953cfd25f743b 14
+  s_ee1c14af4af76e::t_105a5c083ebe01 16-27
+test/integration/testdata/junit/maven/input/TEST-com.example.CartTest.xml
+  s_ee1c14af4af76e::t_105a5c083ebe01 2-8,25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2bda34325750f323581a9c6d829e0ae2b90db231",
+  "prompts": {},
+  "sessions": {
+    "s_ee1c14af4af76e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98bed826-6ca1-411e-8a1b-830d457ec99a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
