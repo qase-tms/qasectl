@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [v0.6.1] - 2026-10-27
 
 - fix: take the Allure result suite from the `suite` label even when a `package` label follows it; the `package` label
   is now used only when there is no `suite` ([#108](https://github.com/qase-tms/qasectl/pull/108))
