@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v0.7.0] - 2026-10-30
+
+- feat: read `ids`, `title`, `suite`, `fields`, `params`, `ignore` and `muted` from the XCTest `Qase config`
+  attachment; a test may add several configs, and they are merged in order
+  ([#109](https://github.com/qase-tms/qasectl/pull/109))
+- deprecate the `caseId` key of the XCTest `Qase config` in favour of `ids`; it still works and logs a warning
+  ([#109](https://github.com/qase-tms/qasectl/pull/109))
+
 ## [v0.6.1] - 2026-10-27
 
 - fix: take the Allure result suite from the `suite` label even when a `package` label follows it; the `package` label
