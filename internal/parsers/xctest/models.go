@@ -157,6 +157,16 @@ type Attachment struct {
 	} `json:"uniformTypeIdentifier"`
 }
 
-type QaseId struct {
-	ID int64 `json:"caseId"`
+// QaseConfig is the JSON of a "Qase config" attachment. A test may add several of them;
+// they are merged in the order they were added.
+type QaseConfig struct {
+	// Deprecated: use IDs.
+	CaseID *int64            `json:"caseId,omitempty"`
+	IDs    []int64           `json:"ids,omitempty"`
+	Title  string            `json:"title,omitempty"`
+	Suite  string            `json:"suite,omitempty"`
+	Fields map[string]string `json:"fields,omitempty"`
+	Params map[string]string `json:"params,omitempty"`
+	Ignore bool              `json:"ignore,omitempty"`
+	Muted  bool              `json:"muted,omitempty"`
 }

@@ -18,20 +18,18 @@ func TestParser_InstanceIsolation(t *testing.T) {
 	}
 
 	// Initialize fields on p1
-	var id1 int64 = 42
-	p1.caseId = &id1
+	p1.config = QaseConfig{IDs: []int64{42}}
 	p1.failures = map[string]FailureSummary{"key1": {}}
 	p1.processedFailures = []string{"f1"}
 
 	// Initialize fields on p2
-	var id2 int64 = 99
-	p2.caseId = &id2
+	p2.config = QaseConfig{IDs: []int64{99}}
 	p2.failures = map[string]FailureSummary{"key2": {}}
 	p2.processedFailures = []string{"f2"}
 
 	// Verify p1 fields are not affected by p2
-	if *p1.caseId != 42 {
-		t.Errorf("p1.caseId = %d, want 42", *p1.caseId)
+	if p1.config.IDs[0] != 42 {
+		t.Errorf("p1.config.IDs = %v, want [42]", p1.config.IDs)
 	}
 	if _, ok := p1.failures["key1"]; !ok {
 		t.Error("p1.failures missing key1")
@@ -44,8 +42,8 @@ func TestParser_InstanceIsolation(t *testing.T) {
 	}
 
 	// Verify p2 fields are not affected by p1
-	if *p2.caseId != 99 {
-		t.Errorf("p2.caseId = %d, want 99", *p2.caseId)
+	if p2.config.IDs[0] != 99 {
+		t.Errorf("p2.config.IDs = %v, want [99]", p2.config.IDs)
 	}
 	if _, ok := p2.failures["key2"]; !ok {
 		t.Error("p2.failures missing key2")
