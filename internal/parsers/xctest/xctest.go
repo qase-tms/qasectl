@@ -20,7 +20,7 @@ type Parser struct {
 	path              string
 	level             stepLevel
 	stepAttachments   stepAttachmentMode
-	caseId            *int64
+	config            QaseConfig
 	failures          map[string]FailureSummary
 	processedFailures []string
 	// stepPayloads holds the payload IDs already attached to a step of the current test.
@@ -31,6 +31,8 @@ type Parser struct {
 	sips string
 	// legacy is set once xcresulttool has required --legacy.
 	legacy bool
+	// caseIDWarned keeps the deprecation warning for caseId to one per parse.
+	caseIDWarned bool
 }
 
 // NewParser creates a new Parser
@@ -332,7 +334,7 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 	var results []models.Result
 
 	for i, t := range tests {
-		p.caseId = nil
+		p.config = QaseConfig{}
 		p.failures = make(map[string]FailureSummary)
 		p.processedFailures = make([]string, 0)
 		p.stepPayloads = make(map[string]struct{})
@@ -356,9 +358,7 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 		result.Attachments = append(result.Attachments, testLevelAttachments...)
 
 		result.Steps = steps
-		if p.caseId != nil {
-			result.TestOpsID = p.caseId
-		}
+		p.config.apply(&result)
 
 		for k, v := range p.failures {
 			if p.isFailureProcessed(k) {
@@ -382,6 +382,11 @@ func (p *Parser) getResults(tests []XCTest) []models.Result {
 			} else {
 				logger.Debug("no attachments found in failure", "failureId", k)
 			}
+		}
+
+		if p.config.Ignore {
+			logger.Info("skipping test ignored by its Qase config", "title", t.Name)
+			continue
 		}
 
 		logger.Debug("completed test processing", "attachmentCount", len(result.Attachments), "stepCount", len(result.Steps))
@@ -676,21 +681,19 @@ func (p *Parser) getSteps(as ActivitySummaries, level int) ([]models.Step, bool,
 				continue
 			}
 
-			logger.Debug("parsing Qase ID from attachment", "contentSize", len(*att.Content))
-			var ID QaseId
-			err = json.Unmarshal(*att.Content, &ID)
-			if err != nil {
-				logger.Error("failed to unmarshal Qase ID", "error", err)
+			var cfg QaseConfig
+			if err := json.Unmarshal(*att.Content, &cfg); err != nil {
+				logger.Error("failed to unmarshal Qase config", "error", err)
 				continue
 			}
 
-			logger.Debug("successfully parsed Qase ID", "caseId", ID.ID)
-			if p.caseId == nil {
-				p.caseId = &ID.ID
-				logger.Debug("set case ID", "caseId", *p.caseId)
-			} else {
-				logger.Debug("case ID already set", "existingCaseId", *p.caseId, "newCaseId", ID.ID)
+			if cfg.CaseID != nil && !p.caseIDWarned {
+				p.caseIDWarned = true
+				logger.Warn("the caseId key of the Qase config is deprecated, use ids instead")
 			}
+
+			logger.Debug("parsed Qase config", "config", cfg)
+			p.config.merge(cfg)
 
 			continue
 		}

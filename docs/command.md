@@ -195,6 +195,61 @@ with the code `PROJ`:
 qasectl testops result upload --project PROJ --token <token> --id 1 --format allure --path /path/to/allure-results --attachment-extensions "png,jpg" --verbose
 ```
 
+## XCTest
+
+The `xctest` format reads an `.xcresult` bundle with `xcrun xcresulttool`, so it runs only on macOS with Xcode
+installed. Each test becomes one test result, and its activities become steps.
+
+Set the Qase attributes of a test by adding an attachment named `Qase config` with a JSON object in it. Keep the
+attachment with `.keepAlways`, or Xcode deletes it from the bundle of a passed test:
+
+```swift
+import XCTest
+
+extension XCTestCase {
+    func qase(_ config: [String: Any]) {
+        guard let data = try? JSONSerialization.data(withJSONObject: config) else { return }
+        let attachment = XCTAttachment(data: data)
+        attachment.name = "Qase config"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+}
+
+final class LoginTests: XCTestCase {
+    func testLogin() {
+        qase([
+            "ids": [123, 456],
+            "title": "Login with valid credentials",
+            "suite": "Auth.Login",
+            "fields": ["severity": "critical", "description": "The user logs in with email and password"],
+            "params": ["user": "admin"],
+        ])
+        // ...
+    }
+}
+```
+
+| Key | Type | Description |
+|---|---|---|
+| `ids` | array of integers | The IDs of the Qase test cases the result belongs to. With several IDs, Qase records a result for each case. |
+| `title` | string | The result title. By default it is the test method name, for example `testLogin()`. |
+| `suite` | string | The suite of the test case; levels are separated by a dot. It replaces the suites built from the test target and classes. |
+| `fields` | object of strings | Result fields, such as `severity`, `priority`, `layer`, `description`, `preconditions`, `postconditions`. Qase applies a field only if the project has a system or custom field with that name. |
+| `params` | object of strings | Result parameters. They are added to the `Device` and `Configuration` parameters; `--skip-params` drops all of them. |
+| `ignore` | boolean | `true` leaves the test out of the upload. |
+| `muted` | boolean | `true` sends the result as muted, so it does not affect the run status. |
+| `caseId` | integer | **Deprecated**, use `ids`. The ID of one Qase test case. It still works and logs a warning. |
+
+A test can add several `Qase config` attachments, for example one in `setUp()` and one in the test method. They are
+merged in the order they were added: IDs, fields and params add up, the later `title` and `suite` win, and `ignore` or
+`muted` set by any of them stays set. An attachment that is not valid JSON or has a wrong value type is skipped with
+an error in the log. The `Qase config` attachments are not uploaded to the result.
+
+Without `ids`, Qase matches the result to a test case by its signature, the XCTest identifier of the test
+(`test://com.apple.xcode/<target>/<class>/<method>`). `title`, `suite` and `params` do not change the signature, so
+setting them later does not create a new test case.
+
 ## Maestro
 
 The `maestro` format reads the debug output of a Maestro 2.x run; Maestro 1.x is not supported. Run the flows with
