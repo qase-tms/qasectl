@@ -8,6 +8,7 @@ import (
 	"time"
 
 	apiV1Client "github.com/qase-tms/qase-go/qase-api-client"
+	"github.com/qase-tms/qasectl/internal"
 	"github.com/qase-tms/qasectl/internal/models/fields/custom"
 	"github.com/qase-tms/qasectl/internal/models/plan"
 	models "github.com/qase-tms/qasectl/internal/models/result"
@@ -568,6 +569,7 @@ func (c *ClientV1) getApiV1Client(ctx context.Context) (context.Context, *apiV1C
 	cfg.Servers = apiV1Client.ServerConfigurations{
 		{URL: apiURL(c.host, "v1")},
 	}
+	cfg.UserAgent = userAgent(internal.ResolveVersion(), cfg.UserAgent)
 	client := apiV1Client.NewAPIClient(cfg)
 
 	return ctx, client

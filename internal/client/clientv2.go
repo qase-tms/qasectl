@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	apiV2Client "github.com/qase-tms/qase-go/qase-api-v2-client"
+	"github.com/qase-tms/qasectl/internal"
 	models "github.com/qase-tms/qasectl/internal/models/result"
 	"log/slog"
 )
@@ -68,6 +69,7 @@ func (c *ClientV2) getApiV2Client(ctx context.Context) (context.Context, *apiV2C
 	cfg.Servers = apiV2Client.ServerConfigurations{
 		{URL: apiURL(c.host, "v2")},
 	}
+	cfg.UserAgent = userAgent(internal.ResolveVersion(), cfg.UserAgent)
 	client := apiV2Client.NewAPIClient(cfg)
 
 	return ctx, client

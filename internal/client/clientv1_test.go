@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -197,5 +198,19 @@ func TestClientV1_UsesConfiguredHost(t *testing.T) {
 				t.Errorf("server URL = %q, want %q", servers[0].URL, tt.want)
 			}
 		})
+	}
+}
+
+func TestClientV1_SendsCliUserAgent(t *testing.T) {
+	c := NewClientV1("token", "")
+
+	_, apiClient := c.getApiV1Client(context.Background())
+
+	ua := apiClient.GetConfig().UserAgent
+	if !strings.HasPrefix(ua, cliName+"/") {
+		t.Errorf("User-Agent = %q, want it to start with %q", ua, cliName+"/")
+	}
+	if !strings.Contains(ua, "qase-api-client-go/") {
+		t.Errorf("User-Agent = %q, want it to keep the generated client agent", ua)
 	}
 }

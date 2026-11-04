@@ -4,10 +4,15 @@ import (
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/qase-tms/qasectl/internal"
 )
 
 // defaultHost is the Qase API host used when no host is configured.
 const defaultHost = "api.qase.io"
+
+// cliName is how the CLI identifies itself to the Qase API.
+const cliName = "qasectl"
 
 // apiURL builds a base URL for the given Qase API version.
 // The host may be a bare host name ("api.qase.io"), in which case the https
@@ -25,6 +30,25 @@ func apiURL(host, version string) string {
 	}
 
 	return host + "/" + version
+}
+
+// userAgent builds the User-Agent sent to the Qase API. The CLI identifies
+// itself first so that the backend can tell it apart from any other Go
+// integration, and the generated client's own agent is kept as the suffix.
+func userAgent(version, base string) string {
+	version = strings.TrimSpace(version)
+	if version == "" {
+		version = internal.UnknownVersion
+	}
+
+	agent := cliName + "/" + version
+
+	base = strings.TrimSpace(base)
+	if base == "" {
+		return agent
+	}
+
+	return agent + " " + base
 }
 
 func extractBody(resp *http.Response) io.ReadCloser {

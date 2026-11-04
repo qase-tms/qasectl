@@ -2,9 +2,9 @@ package version
 
 import (
 	"fmt"
+
 	"github.com/qase-tms/qasectl/internal"
 	"github.com/spf13/cobra"
-	"runtime/debug"
 )
 
 func VersionCmd() *cobra.Command {
@@ -13,18 +13,18 @@ func VersionCmd() *cobra.Command {
 		Short:              "Print the version number of this application",
 		DisableFlagParsing: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			if internal.Version == "" {
-				info, ok := debug.ReadBuildInfo()
-				if ok && info.Main.Version != "(devel)" {
-					fmt.Println("Qase CLI " + info.Main.Version)
-					return
-				}
-				fmt.Println("Qase CLI: version not set during build.")
-			} else {
-				fmt.Println("Qase CLI " + internal.Version)
-			}
+			fmt.Println(versionOutput(internal.ResolveVersion()))
 		},
 	}
 
 	return versionCmd
+}
+
+// versionOutput renders the line printed by the version command.
+func versionOutput(version string) string {
+	if version == internal.UnknownVersion {
+		return "Qase CLI: version not set during build."
+	}
+
+	return "Qase CLI " + version
 }
